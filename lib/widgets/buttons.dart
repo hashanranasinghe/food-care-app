@@ -140,6 +140,7 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
       padding: const EdgeInsets.only(top: 15,left: 10,bottom: 15,right: 10),
       child: ElevatedButton(
         onPressed: () {
+          widget.onpress();
           setState(() {
             _isButtonClicked = !_isButtonClicked;
           });
@@ -164,3 +165,43 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
     );
   }
 }
+
+
+class RadioButton extends StatefulWidget {
+  const RadioButton({Key? key}) : super(key: key);
+
+  @override
+  State<RadioButton> createState() => _RadioButtonState();
+}
+
+class _RadioButtonState extends State<RadioButton> {
+
+  String? _selectedValue;
+
+  void _handleRadioValueChange(String? value) {
+    setState(() {
+      _selectedValue = value;
+      print(value);
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        RadioListTile(
+          value: 'Option 1',
+          groupValue: _selectedValue,
+          onChanged: _handleRadioValueChange,
+          title: Text('Newset'),
+        ),
+        RadioListTile(
+          value: 'Option 2',
+          groupValue: _selectedValue,
+          onChanged: _handleRadioValueChange,
+          title: Text('Closet'),
+        ),
+      ],
+    );
+  }
+}
+

@@ -65,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _showAddModal(context);
+                      },
                       icon: Icon(
                         Icons.filter_alt_outlined,
                         size: 35,
@@ -108,6 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+            FoodPost(),
+            FoodPost(),
             FoodPost()
           ],
         ),
@@ -128,6 +132,148 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(15),
         color: kSecondColorlight,
       ),
+    );
+  }
+
+  void _showAddModal(BuildContext context) {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(),
+                      Text(
+                        "Food Filter",
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(onPressed: () {}, icon: Icon(Icons.close))
+                    ],
+                  ),
+                  Divider(
+                    thickness: 2,
+                    color: Colors.black,
+                  ),
+                  Text("Maximum Distance",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ColorChangeButton(
+                          onpress: () {},
+                          text: "All",
+                          ptop: 5,
+                          pbottom: 5,
+                          pleft: 25,
+                          pright: 25,
+                        ),
+                        ColorChangeButton(
+                          onpress: () {},
+                          text: "Available only",
+                          ptop: 5,
+                          pbottom: 5,
+                          pleft: 25,
+                          pright: 25,
+                        ),
+                        ColorChangeButton(
+                          onpress: () {},
+                          text: "Just Gone",
+                          ptop: 5,
+                          pbottom: 5,
+                          pleft: 25,
+                          pright: 25,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text("Item Availability",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ColorChangeButton(
+                          onpress: () {},
+                          text: "All",
+                          ptop: 5,
+                          pbottom: 5,
+                          pleft: 25,
+                          pright: 25,
+                        ),
+                        ColorChangeButton(
+                          onpress: () {},
+                          text: "1 km",
+                          ptop: 5,
+                          pbottom: 5,
+                          pleft: 25,
+                          pright: 25,
+                        ),
+                        ColorChangeButton(
+                          onpress: () {},
+                          text: "2 km",
+                          ptop: 5,
+                          pbottom: 5,
+                          pleft: 25,
+                          pright: 25,
+                        ),
+                        ColorChangeButton(
+                          onpress: () {},
+                          text: "5 km",
+                          ptop: 5,
+                          pbottom: 5,
+                          pleft: 25,
+                          pright: 25,
+                        ),
+                        ColorChangeButton(
+                          onpress: () {},
+                          text: "10 km",
+                          ptop: 5,
+                          pbottom: 5,
+                          pleft: 25,
+                          pright: 25,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text("Sort by",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  RadioButton(),
+                  Divider(
+                    thickness: 2,
+                    color: Colors.black,
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Genaralbutton(
+                      pleft: 100,
+                      pright: 100,
+                      onpress: () {
+
+                      },
+                      text: "Apply",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

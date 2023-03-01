@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color kPrimaryColorlight = Color.fromARGB(255, 242, 251, 255);
+const Color kPrimaryColorlight = Color.fromARGB(255, 212, 241, 254);
 const Color kPrimaryColordark = Color(0xFF286B8C);
 const Color kBNavigationColordark = Color(0xFF050736);
 const Color kSecondColorlight = Color(0xFFF5F5F5);
