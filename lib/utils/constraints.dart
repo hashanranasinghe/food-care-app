@@ -32,3 +32,6 @@ const kGradientGreen = LinearGradient(begin: Alignment.topCenter, colors: [
   Color(0xff00692b),
   Color.fromARGB(255, 39, 102, 56),
 ]);
+
+
+const image = "assets/images/icon.png";

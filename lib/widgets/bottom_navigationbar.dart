@@ -1,7 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:food_care/screens/chat_screen.dart';
 import 'package:food_care/screens/forum_screen.dart';
 import 'package:food_care/screens/home_screen.dart';
+import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/add_post_row.dart';
 
@@ -19,7 +21,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     const HomeScreen(),
     const ForumScreen(),
     const HomeScreen(),
-    const HomeScreen(),
+    const ChatScreen(),
     const HomeScreen()
   ];
   late final List<Widget> items;
@@ -71,6 +73,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
             child: Column(
               children: [
                 AddPostRow(
+                    onpress: () {
+                      openAddFoodPost(context);
+                    },
                     icon: Icons.fastfood_rounded,
                     title: "Free",
                     subtitle: "Give away free food"),
@@ -78,6 +83,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   thickness: 2,
                 ),
                 AddPostRow(
+                    onpress: () {
+                      openAddForum(context);
+                    },
                     icon: Icons.forum_rounded,
                     title: "Forum",
                     subtitle: "Share your ideas"),

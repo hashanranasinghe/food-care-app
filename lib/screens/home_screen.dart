@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:food_care/utils/constraints.dart';
+import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/food_post.dart';
 
@@ -25,98 +26,71 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      key: _scaffoldKey, // set the key to the scaffold
-      drawer: MenuDrawer(),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        title: Text(
-          "Hi Hashan",
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            _scaffoldKey.currentState
-                ?.openDrawer(); // use the current state of the key to open the drawer
-          },
-          icon: Icon(
-            Icons.menu_rounded,
-            color: Colors.black,
-            size: 35,
-          ),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon:
-                  Icon(Icons.notifications_none, color: Colors.black, size: 35))
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 300, child: _buildSearchBar()),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: IconButton(
-                      onPressed: () {
-                        _showAddModal(context);
-                      },
-                      icon: Icon(
-                        Icons.filter_alt_outlined,
-                        size: 35,
-                      )),
-                )
-              ],
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+    return AppBarWidget(
+        text: "Hi Hashan",
+        icon: Icons.notifications_none,
+        widget: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ColorChangeButton(
-                    onpress: () {},
-                    pleft: 30,
-                    pright: 30,
-                    pbottom: 15,
-                    ptop: 15,
-                    text: "Nearby",
-                    fontsize: 20,
-                  ),
-                  ColorChangeButton(
-                    onpress: () {},
-                    pleft: 30,
-                    pright: 30,
-                    pbottom: 15,
-                    ptop: 15,
-                    text: "Top Rated",
-                    fontsize: 20,
-                  ),
-                  ColorChangeButton(
-                    onpress: () {},
-                    pleft: 30,
-                    pright: 30,
-                    pbottom: 15,
-                    ptop: 15,
-                    text: "Quick",
-                    fontsize: 20,
-                  ),
+                  SizedBox(width: 300, child: _buildSearchBar()),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: IconButton(
+                        onPressed: () {
+                          _showAddModal(context);
+                        },
+                        icon: Icon(
+                          Icons.filter_alt_outlined,
+                          size: 35,
+                        )),
+                  )
                 ],
               ),
-            ),
-            FoodPost(),
-            FoodPost(),
-            FoodPost()
-          ],
-        ),
-      ),
-    );
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ColorChangeButton(
+                      onpress: () {},
+                      pleft: 30,
+                      pright: 30,
+                      pbottom: 15,
+                      ptop: 15,
+                      text: "Nearby",
+                      fontsize: 20,
+                    ),
+                    ColorChangeButton(
+                      onpress: () {},
+                      pleft: 30,
+                      pright: 30,
+                      pbottom: 15,
+                      ptop: 15,
+                      text: "Top Rated",
+                      fontsize: 20,
+                    ),
+                    ColorChangeButton(
+                      onpress: () {},
+                      pleft: 30,
+                      pright: 30,
+                      pbottom: 15,
+                      ptop: 15,
+                      text: "Quick",
+                      fontsize: 20,
+                    ),
+                  ],
+                ),
+              ),
+              FoodPost(),
+              FoodPost(),
+              FoodPost()
+            ],
+          ),
+        ));
   }
 
   Widget _buildSearchBar() {
@@ -155,8 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(),
                       Text(
                         "Food Filter",
-                        style:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       IconButton(onPressed: () {}, icon: Icon(Icons.close))
                     ],
@@ -262,9 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Genaralbutton(
                       pleft: 100,
                       pright: 100,
-                      onpress: () {
-
-                      },
+                      onpress: () {},
                       text: "Apply",
                     ),
                   ),
