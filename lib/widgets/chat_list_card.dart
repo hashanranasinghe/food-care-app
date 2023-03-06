@@ -11,7 +11,7 @@ class ChatListCard extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: kPrimaryColorlight,
-          child: Image.asset(image),
+          child: Image.asset(icon),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

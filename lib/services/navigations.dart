@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_care/screens/add_food_post_screen.dart';
 import 'package:food_care/screens/add_forum_screen.dart';
 import 'package:food_care/screens/chat_screen.dart';
-import 'package:food_care/screens/home_screen.dart';
 import 'package:food_care/screens/login_screen.dart';
 import 'package:food_care/screens/signup_screen.dart';
 import 'package:food_care/widgets/bottom_navigationbar.dart';

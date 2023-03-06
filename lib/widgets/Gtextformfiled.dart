@@ -122,7 +122,7 @@ class _GpasswordformfiledState extends State<Gpasswordformfiled> {
                           enabledBorder: InputBorder.none,
                           suffixIcon: InkWell(
                               onTap: _viewPassword,
-                              child: const Icon(Icons.visibility)),
+                              child: isHidepassword == true ? Icon(Icons.visibility_off_rounded):Icon(Icons.visibility_rounded)),
                         ),
                       ),
                     ),

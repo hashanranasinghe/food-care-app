@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_care/services/api%20services/food_api_services.dart';
+import 'package:food_care/services/api%20services/forum_api_services.dart';
+import 'package:food_care/services/store_token.dart';
+import 'package:food_care/services/api%20services/user_api_services.dart';
 import 'package:food_care/widgets/popup_dialog.dart';
 
 import '../services/navigations.dart';
@@ -45,7 +49,7 @@ class MenuDrawer extends StatelessWidget {
                 ),
                 title: const Text('Home'),
                 onTap: () async {
-                  openHome(context);
+                  FoodApiServices.getFoodPosts();
                 },
               ),
             ),
@@ -58,7 +62,9 @@ class MenuDrawer extends StatelessWidget {
                   color: kPrimaryColordark,
                 ),
                 title: const Text('Filter'),
-                onTap: () async {},
+                onTap: () async {
+                  ForumApiServices.getForums();
+                },
               ),
             ),
             // : Container(),
@@ -105,7 +111,7 @@ class MenuDrawer extends StatelessWidget {
                   ),
                   title: const Text('Settings'),
                   onTap: () {
-
+                    UserAPiServices.getCurrentUser();
                   }),
             ),
 
@@ -119,7 +125,13 @@ class MenuDrawer extends StatelessWidget {
                 title: const Text('Logout'),
                 onTap: () {
                   PopupDialog.showPopuplogout(context, "Logout",
-                      "Do you want to Logout ? ", () async {});
+                      "Do you want to Logout ? ", () async {
+                    await StoreToken.removeToken();
+                    var token = await StoreToken.getToken();
+                    if(token ==null){
+                      openUserSignIn(context);
+                    }
+                      });
                 },
               ),
             ),

@@ -1,7 +1,9 @@
+
+
 import 'commentModel.dart';
 
 class Forum {
-  String userId;
+  String? userId;
   String title;
   String description;
   String author;
@@ -12,12 +14,12 @@ class Forum {
   DateTime updatedAt;
 
   Forum({
-    required this.userId,
+    this.userId,
     required this.title,
     required this.description,
     required this.author,
-    this.imageUrl,
     required this.likes,
+    this.imageUrl,
     required this.comments,
     required this.createdAt,
     required this.updatedAt,

@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
 
+import '../services/store_token.dart';
+
 class SplashScreen extends StatefulWidget {
   static const routName = 'splash-screen';
   const SplashScreen({Key? key}) : super(key: key);
@@ -32,8 +34,14 @@ class StartState extends State<SplashScreen> {
     return new Timer(duration, route);
   }
 
-  route() {
-    openUserSignUp(context);
+  route() async{
+    var token = await StoreToken.getToken();
+    if(token != null){
+      openHome(context);
+    }else{
+      openUserSignIn(context);
+    }
+
   }
 
   initScreen(BuildContext context) {

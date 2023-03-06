@@ -10,11 +10,10 @@ class PopupDialog {
   static showPopupDilog(BuildContext context, String titel, String description,
       Function actionFun) {
     AwesomeDialog(
+
         context: context,
-        dialogType: DialogType.INFO,
-        animType: AnimType.BOTTOMSLIDE,
-        title: titel,
-        desc: description,
+        dialogType: DialogType.question,
+        animType: AnimType.scale,
         btnCancelText: "Cancel",
         btnOkText: "Ok",
         btnCancelOnPress: () {},

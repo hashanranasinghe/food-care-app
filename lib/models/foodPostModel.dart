@@ -1,4 +1,4 @@
-class FoodPost {
+class Food {
   String userId;
   String title;
   String description;
@@ -11,7 +11,7 @@ class FoodPost {
   DateTime createdAt;
   DateTime updatedAt;
 
-  FoodPost({
+  Food({
     required this.userId,
     required this.title,
     required this.description,
@@ -25,7 +25,7 @@ class FoodPost {
     required this.updatedAt,
   });
 
-  factory FoodPost.fromJson(Map<String, dynamic> json) => FoodPost(
+  factory Food.fromJson(Map<String, dynamic> json) => Food(
         userId: json["user_id"],
         title: json["title"],
         description: json["description"],
@@ -33,7 +33,9 @@ class FoodPost {
         other: json["other"],
         pickupTimes: json["pickupTimes"],
         listDays: json["listDays"],
-        location: Location.fromJson(json["location"]),
+        location: json["location"] is List
+            ? Location.fromJson(json["location"][0])
+            : Location.fromJson(json["location"]),
         imageUrl: json["imageUrl"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
@@ -73,3 +75,4 @@ class Location {
         "lon": lon,
       };
 }
+

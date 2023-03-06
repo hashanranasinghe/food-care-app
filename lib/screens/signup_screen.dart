@@ -6,7 +6,7 @@ import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/Gtextformfiled.dart';
 import 'package:food_care/widgets/buttons.dart';
 
-import '../services/user_api_services.dart';
+import '../services/api services/user_api_services.dart';
 import '../services/validate_handeler.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -190,7 +190,7 @@ class _SignupScreenState extends State<SignupScreen> {
           email: email,
           phone: mobileNumber,
           password: password);
-      UserAPiServices.register(user);
+      UserAPiServices.registerUser(user);
       print("ok");
     }
   }

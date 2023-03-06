@@ -7,7 +7,8 @@ class AppBarWidget extends StatefulWidget {
   final Widget widget;
   final IconData? icon;
 
-  const AppBarWidget({Key? key, required this.text, required this.widget, this.icon})
+  const AppBarWidget(
+      {Key? key, required this.text, required this.widget, this.icon})
       : super(key: key);
 
   @override
@@ -38,8 +39,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
-            _scaffoldKey.currentState
-                ?.openDrawer(); // use the current state of the key to open the drawer
+            _scaffoldKey.currentState?.openDrawer();
           },
           icon: Icon(
             Icons.menu_rounded,
@@ -50,8 +50,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         actions: [
           IconButton(
               onPressed: () {},
-              icon:
-              Icon(widget.icon, color: Colors.black, size: 35))
+              icon: Icon(widget.icon, color: Colors.black, size: 35))
         ],
       ),
       body: widget.widget,
