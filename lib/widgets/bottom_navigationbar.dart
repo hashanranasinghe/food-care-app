@@ -19,7 +19,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int index = 0;
   final screens = [
     const HomeScreen(),
-    const ForumScreen(),
+    const ForumScreen(forum: true),
     const HomeScreen(),
     const ChatScreen(),
     const HomeScreen()

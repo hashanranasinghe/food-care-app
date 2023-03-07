@@ -86,7 +86,7 @@ class MenuDrawer extends StatelessWidget {
                   ),
                   title: const Text('My Post'),
                   onTap: () {
-
+                    openOwnForums(context);
                   }),
             ),
             Card(

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:food_care/services/store_token.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,6 +31,24 @@ class ForumApiServices {
     }
   }
 
+  //get own forums
+  static Future<List<Forum>> getOwnForums() async {
+    String? token = await StoreToken.getToken();
+    final response = await client.get(
+      Uri.http(Config.apiURL, Config.getOwnForums),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonList = json.decode(response.body) as List<dynamic>;
+      return jsonList.map((json) => Forum.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to get forums: ${response.statusCode}');
+    }
+  }
+
+  //create forum
   static Future<String> createForum({required Forum forum}) async {
     String? token = await StoreToken.getToken();
     var request = http.MultipartRequest(
@@ -53,13 +70,14 @@ class ForumApiServices {
     }
   }
 
+  //like forum
   static Future<void> likeForum(String forumId) async {
     // Get the JWT token from secure storage
     String? token = await StoreToken.getToken();
 
     // Send a PUT request to the API with the token in the Authorization header
     final response = await client.put(
-      Uri.http(Config.apiURL,Config.likeForum(forumId)),
+      Uri.http(Config.apiURL, Config.likeForum(forumId)),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json; charset=UTF-8',
@@ -74,5 +92,4 @@ class ForumApiServices {
       throw Exception('Failed to like forum');
     }
   }
-
 }

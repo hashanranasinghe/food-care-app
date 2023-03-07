@@ -14,9 +14,10 @@ class Config {
 
   //forum
   static const String getApostForums = "/api/forums";
-  static const String getOwnForums = "/api/forums/ownnforums";
+  static const String getOwnForums = "/api/forums/ownforums";
+
   static String getOwnForum(String id) {
-    String path = "/api/forums/ownnforums/:$id";
+    String path = "/api/forums/ownforums/:$id";
     return path;
   }
 

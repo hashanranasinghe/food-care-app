@@ -68,7 +68,10 @@ class _ForumPostState extends State<ForumPost> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(forum.author),
+                              Text(forum.author,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)),
                               Row(
                                 children: [
                                   Icon(
@@ -85,10 +88,20 @@ class _ForumPostState extends State<ForumPost> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 10),
-                    child: Text(textAlign: TextAlign.left, forum.title),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 10),
+                        child: Text(
+                          textAlign: TextAlign.left,
+                          forum.title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                      ),
+                    ],
                   ),
                   forum.imageUrl == null
                       ? Container()
@@ -124,10 +137,19 @@ class _ForumPostState extends State<ForumPost> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: InkWell(
-                                        onTap: () async{
-                                          Navigator.push(context,
-                                              MaterialPageRoute(fullscreenDialog: true,builder: (context) =>  CommentScreen(forumId: forum.id.toString(),)));
-                                          print(ForumCommentApi.getAllCommentsInForum(forum.id.toString()));
+                                        onTap: () async {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  fullscreenDialog: true,
+                                                  builder: (context) =>
+                                                      CommentScreen(
+                                                        forumId:
+                                                            forum.id.toString(),
+                                                      )));
+                                          print(ForumCommentApi
+                                              .getAllCommentsInForum(
+                                                  forum.id.toString()));
                                           print(forum.id.toString());
                                         },
                                         child: Image.asset(

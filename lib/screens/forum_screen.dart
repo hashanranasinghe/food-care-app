@@ -6,7 +6,8 @@ import '../view models/forum view/forum_list-view_model.dart';
 import '../view models/userViewModel.dart';
 
 class ForumScreen extends StatefulWidget {
-  const ForumScreen({Key? key}) : super(key: key);
+  final bool forum;
+  const ForumScreen({Key? key,required this.forum}) : super(key: key);
 
   @override
   State<ForumScreen> createState() => _ForumScreenState();
@@ -25,7 +26,12 @@ class _ForumScreenState extends State<ForumScreen> {
   }
 
   void _populateAllForums() {
-    Provider.of<ForumListViewModel>(context, listen: false).getAllForums();
+    if(widget.forum == true){
+      Provider.of<ForumListViewModel>(context, listen: false).getAllForums();
+    }else{
+      Provider.of<ForumListViewModel>(context, listen: false).getOwnAllForums();
+    }
+
   }
 
   @override
