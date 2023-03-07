@@ -100,10 +100,22 @@ class UserAPiServices {
     if (response.statusCode == 200) {
       final userJson = json.decode(response.body) as Map<String, dynamic>;
       final user = User.fromJson(userJson);
-      print(user.name);
+      print(user.id);
       return user;
     } else {
       throw Exception('Failed to get current user');
+    }
+  }
+
+
+  Future<User> getUser(String id) async {
+    final response = await client.get(Uri.http(Config.apiURL,Config.getUser(id)));
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 404) {
+      throw Exception('User not found');
+    } else {
+      throw Exception('Failed to get user');
     }
   }
 }

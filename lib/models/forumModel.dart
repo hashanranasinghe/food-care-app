@@ -3,6 +3,7 @@
 import 'commentModel.dart';
 
 class Forum {
+  String? id;
   String? userId;
   String title;
   String description;
@@ -14,6 +15,7 @@ class Forum {
   DateTime updatedAt;
 
   Forum({
+    this.id,
     this.userId,
     required this.title,
     required this.description,
@@ -26,6 +28,7 @@ class Forum {
   });
 
   factory Forum.fromJson(Map<String, dynamic> json) => Forum(
+        id: json["_id"],
         userId: json["user_id"],
         title: json["title"],
         description: json["description"],
@@ -39,6 +42,7 @@ class Forum {
       );
 
   Map<String, dynamic> toJson() => {
+        "_id": id,
         "user_id": userId,
         "title": title,
         "description": description,

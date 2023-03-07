@@ -1,15 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/food_post.dart';
 import 'package:provider/provider.dart';
-
-import '../services/store_token.dart';
 import '../view models/userViewModel.dart';
-import '../widgets/drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,14 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserViewModel>(
-        builder: (context, userViewModel, child) {
+    return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       if (userViewModel.user == null) {
         userViewModel.getCurrentUser();
         return const Center(child: CircularProgressIndicator());
       } else {
-        return
-        AppBarWidget(
+        return AppBarWidget(
             text: "Hi ${userViewModel.user!.name}",
             icon: Icons.notifications_none,
             widget: SingleChildScrollView(
@@ -66,9 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ColorChangeButton(
-                          onpress: () {
-
-                          },
+                          onpress: () async {},
                           pleft: 30,
                           pright: 30,
                           pbottom: 15,
@@ -102,8 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   FoodPost()
                 ],
               ),
-            ));}
-        });
+            ));
+      }
+    });
   }
 
   Widget _buildSearchBar() {

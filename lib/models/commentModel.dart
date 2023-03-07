@@ -1,23 +1,31 @@
 class Comment {
+  String? id;
   String text;
-  String commentor;
+  String? commenterId;
+  String commenter;
   DateTime date;
 
   Comment({
+    this.id,
     required this.text,
-    required this.commentor,
+    this.commenterId,
+    required this.commenter,
     required this.date,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-    text: json["text"],
-    commentor: json["commentor"],
-    date: DateTime.parse(json["date"]),
-  );
+        id: json['id'],
+        text: json["text"],
+        commenterId: json['commentId'],
+        commenter: json["commenter"],
+        date: DateTime.parse(json["date"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "text": text,
-    "commentor": commentor,
-    "date": date.toIso8601String(),
-  };
+        'id': id,
+        'commenterId': commenterId,
+        "text": text,
+        "commenter": commenter,
+        "date": date.toIso8601String(),
+      };
 }

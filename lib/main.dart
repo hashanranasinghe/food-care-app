@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_care/screens/splash_screen.dart';
+import 'package:food_care/view%20models/comment%20view%20model/comment_add_view_model.dart';
+import 'package:food_care/view%20models/comment%20view%20model/comment_list_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_add_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_list-view_model.dart';
 import 'package:food_care/view%20models/userViewModel.dart';
@@ -11,6 +13,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => ForumListViewModel()),
         ChangeNotifierProvider(create: (_) => AddForumViewModel()),
+        ChangeNotifierProvider(create: (_) => CommentListViewModel()),
+        ChangeNotifierProvider(create: (_) => CommentAddViewModel()),
       ],
       child: const MyApp()));
 }

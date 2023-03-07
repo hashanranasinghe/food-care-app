@@ -6,6 +6,10 @@ class ForumViewModel {
 
   ForumViewModel({required this.forum});
 
+  String? get id {
+    return forum.id;
+  }
+
   String? get userId {
     return forum.userId;
   }
@@ -26,8 +30,8 @@ class ForumViewModel {
     return forum.author;
   }
 
-  int get likesCount {
-    return forum.likes.length;
+  List<dynamic> get likes {
+    return forum.likes;
   }
 
   List<Comment> get comments {

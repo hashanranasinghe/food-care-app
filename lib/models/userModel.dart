@@ -1,4 +1,4 @@
-import '../utils/constraints.dart';
+
 
 class User {
   String? id;
@@ -17,16 +17,16 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["_id"],
+        id: json["id"],
         name: json["name"],
         email: json["email"],
         phone: json["phone"],
         // imageUrl: json["imageUrl"],
         password: json["password"],
-
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "name": name,
         "email": email,
         "phone": phone,

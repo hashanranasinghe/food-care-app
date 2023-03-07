@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_care/services/api%20services/food_api_services.dart';
-import 'package:food_care/services/api%20services/forum_api_services.dart';
 import 'package:food_care/services/store_token.dart';
 import 'package:food_care/services/api%20services/user_api_services.dart';
 import 'package:food_care/widgets/popup_dialog.dart';
@@ -63,7 +62,7 @@ class MenuDrawer extends StatelessWidget {
                 ),
                 title: const Text('Filter'),
                 onTap: () async {
-                  ForumApiServices.getForums();
+
                 },
               ),
             ),

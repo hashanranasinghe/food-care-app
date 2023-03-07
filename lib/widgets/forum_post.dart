@@ -1,29 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:food_care/services/api%20services/forum_api_services.dart';
+import 'package:food_care/services/api%20services/forums_comment_api_services.dart';
 import 'package:food_care/utils/constraints.dart';
-
+import 'package:food_care/view%20models/userViewModel.dart';
+import 'package:food_care/screens/comment_screen.dart';
+import 'package:provider/provider.dart';
 import '../services/date.dart';
 import '../utils/config.dart';
+import '../view models/forum view/forum_list-view_model.dart';
 import '../view models/forum view/forum_view_model.dart';
 
-class ForumPost extends StatelessWidget {
+class ForumPost extends StatefulWidget {
   final List<ForumViewModel> forums;
   final Function comment;
-  final Function like;
+  final UserViewModel user;
   const ForumPost(
       {Key? key,
       required this.forums,
       required this.comment,
-      required this.like})
+      required this.user})
       : super(key: key);
+
+  @override
+  State<ForumPost> createState() => _ForumPostState();
+}
+
+class _ForumPostState extends State<ForumPost> {
+  late ForumListViewModel _forumListViewModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _forumListViewModel =
+        Provider.of<ForumListViewModel>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: forums.length,
+        itemCount: widget.forums.length,
         itemBuilder: (context, index) {
-          final forum = forums[index];
+          final forum = widget.forums[index];
           return Card(
             color: Colors.white,
             elevation: 10,
@@ -73,7 +93,7 @@ class ForumPost extends StatelessWidget {
                   forum.imageUrl == null
                       ? Container()
                       : SizedBox(
-                          height: 200,
+                          height: 500,
                           child: Image.network(
                               'http://${'${Config.apiURL}\\${forum.imageUrl}'}'
                                   .replaceAll('\\', '/'))),
@@ -104,8 +124,11 @@ class ForumPost extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: InkWell(
-                                        onTap: () {
-                                          comment();
+                                        onTap: () async{
+                                          Navigator.push(context,
+                                              MaterialPageRoute(fullscreenDialog: true,builder: (context) =>  CommentScreen(forumId: forum.id.toString(),)));
+                                          print(ForumCommentApi.getAllCommentsInForum(forum.id.toString()));
+                                          print(forum.id.toString());
                                         },
                                         child: Image.asset(
                                             "assets/images/comment.png")),
@@ -115,14 +138,18 @@ class ForumPost extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: InkWell(
-                                        onTap: () {
-                                          like();
+                                        onTap: () async {
+                                          print(forum.likes);
+                                          await ForumApiServices.likeForum(
+                                              forum.id.toString());
+                                          await _forumListViewModel
+                                              .getAllForums();
                                         },
-                                        child: Image.asset(
-                                            "assets/images/unfavorite.png")),
+                                        child: _like(
+                                            forum.likes, widget.user.user!.id)),
                                   ),
                                   SizedBox(width: 8),
-                                  Text("${forum.likesCount} Likes"),
+                                  Text("${forum.likes.length} Likes"),
                                 ],
                               ),
                             ),
@@ -136,5 +163,13 @@ class ForumPost extends StatelessWidget {
             ),
           );
         });
+  }
+
+  Widget _like(List<dynamic> likes, id) {
+    if (likes.contains(id)) {
+      return Image.asset("assets/images/favorite.png");
+    } else {
+      return Image.asset("assets/images/unfavorite.png");
+    }
   }
 }
