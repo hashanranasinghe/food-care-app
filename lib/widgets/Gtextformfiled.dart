@@ -10,10 +10,12 @@ class Gtextformfiled extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
 
+  final TextInputAction textInputAction;
   final Function(String) onchange;
   final Function(String?) save;
   final String? Function(String?) valid;
   const Gtextformfiled({
+    this.textInputAction = TextInputAction.none,
     this.hintText = "Text",
     required this.onchange,
     required this.valid,
@@ -29,6 +31,8 @@ class Gtextformfiled extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: TextFormField(
+        textInputAction: textInputAction,
+        maxLines: null,
         keyboardType: keybordtype,
         onChanged: onchange,
         onSaved: save,
@@ -122,7 +126,9 @@ class _GpasswordformfiledState extends State<Gpasswordformfiled> {
                           enabledBorder: InputBorder.none,
                           suffixIcon: InkWell(
                               onTap: _viewPassword,
-                              child: isHidepassword == true ? Icon(Icons.visibility_off_rounded):Icon(Icons.visibility_rounded)),
+                              child: isHidepassword == true
+                                  ? Icon(Icons.visibility_off_rounded)
+                                  : Icon(Icons.visibility_rounded)),
                         ),
                       ),
                     ),

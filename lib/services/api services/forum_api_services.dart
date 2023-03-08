@@ -48,6 +48,31 @@ class ForumApiServices {
     }
   }
 
+  //get a own forum
+  static Future<Forum> getOwnForum({required String forumId}) async {
+    String? token = await StoreToken.getToken();
+    final response = await client.get(
+      Uri.http(Config.apiURL, Config.getOwnForum(id: forumId)),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Forum found
+      final forumJson = jsonDecode(response.body);
+      final forum = Forum.fromJson(forumJson);
+      return forum;
+    } else if (response.statusCode == 404) {
+      // Forum not found
+      throw Exception('Forum not found');
+    } else {
+      // Other error
+      throw Exception('Failed to get forum');
+    }
+  }
+
   //create forum
   static Future<String> createForum({required Forum forum}) async {
     String? token = await StoreToken.getToken();
@@ -77,7 +102,7 @@ class ForumApiServices {
 
     // Send a PUT request to the API with the token in the Authorization header
     final response = await client.put(
-      Uri.http(Config.apiURL, Config.likeForum(forumId)),
+      Uri.http(Config.apiURL, Config.likeForum(id: forumId)),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json; charset=UTF-8',
@@ -90,6 +115,67 @@ class ForumApiServices {
       print("ok");
     } else {
       throw Exception('Failed to like forum');
+    }
+  }
+
+  //update forum
+  static Future<String> updateForum({required Forum forum}) async {
+    String? token = await StoreToken.getToken();
+
+    final request = http.MultipartRequest(
+      'PUT',
+      Uri.http(Config.apiURL, Config.getOwnForum(id: forum.id.toString())),
+    );
+
+    request.headers.addAll({
+      'Content-Type': 'multipart/form-data',
+      'Authorization': 'Bearer $token',
+    });
+
+    if (forum.imageUrl != null) {
+      print('Adding image to request...');
+      request.files.add(await http.MultipartFile.fromPath(
+        'imageUrl',
+        forum.imageUrl.toString(),
+      ));
+    }
+
+    request.fields.addAll({
+      'title': forum.title,
+      'description': forum.description,
+      'author': forum.author,
+    });
+
+    final response = await request.send();
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update forum');
+    }
+
+    final responseString = await response.stream.bytesToString();
+
+    return responseString;
+  }
+
+
+  //delete forum
+  static Future<void> deleteForum(String forumId) async {
+    // Get the JWT token from secure storage
+    String? token = await StoreToken.getToken();
+    final response = await client.delete(
+      Uri.http(Config.apiURL, Config.getOwnForum(id: forumId)),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Forum deleted successfully
+      print('Forum deleted successfully');
+    } else {
+      // Forum not found or other error
+      print('Failed to delete forum');
     }
   }
 }

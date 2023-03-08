@@ -192,7 +192,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -208,7 +208,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Divider(
                   thickness: 2,
                   color: Color(0xFFE3E3E3FF),

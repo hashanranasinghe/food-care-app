@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:food_care/screens/add_forum_screen.dart';
 import 'package:food_care/services/api%20services/forum_api_services.dart';
 import 'package:food_care/services/api%20services/forums_comment_api_services.dart';
+import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/userViewModel.dart';
 import 'package:food_care/screens/comment_screen.dart';
+import 'package:food_care/widgets/popup_dialog.dart';
 import 'package:provider/provider.dart';
 import '../services/date.dart';
 import '../utils/config.dart';
 import '../view models/forum view/forum_list-view_model.dart';
 import '../view models/forum view/forum_view_model.dart';
+import 'package:expandable_text/expandable_text.dart';
 
 class ForumPost extends StatefulWidget {
   final List<ForumViewModel> forums;
   final Function comment;
   final UserViewModel user;
+  final bool? own;
   const ForumPost(
       {Key? key,
       required this.forums,
       required this.comment,
-      required this.user})
+      required this.user,
+      this.own})
       : super(key: key);
 
   @override
@@ -47,7 +53,7 @@ class _ForumPostState extends State<ForumPost> {
           return Card(
             color: Colors.white,
             elevation: 10,
-            margin: EdgeInsets.only(top: 20, left: 15, right: 15),
+            margin: const EdgeInsets.only(top: 20, left: 15, right: 15),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -58,33 +64,122 @@ class _ForumPostState extends State<ForumPost> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CircleAvatar(
-                          child: Image.asset("assets/images/icon.png"),
-                          backgroundColor: kPrimaryColorlight,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(forum.author,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15)),
-                              Row(
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              child: Image.asset("assets/images/icon.png"),
+                              backgroundColor: kPrimaryColorlight,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    Icons.av_timer_outlined,
-                                    size: 20,
+                                  Text(forum.author,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.av_timer_outlined,
+                                        size: 20,
+                                      ),
+                                      Text(
+                                          "${Date.getStringdatetime(forum.updatedAt)} ago"),
+                                    ],
                                   ),
-                                  Text(
-                                      "${Date.getStringdatetime(forum.createdAt)} ago"),
                                 ],
                               ),
-                            ],
-                          ),
-                        )
+                            )
+                          ],
+                        ),
+                        if (widget.own == false) ...[
+                          IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          color: Colors.white,
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    final getForum =
+                                                        await ForumApiServices
+                                                            .getOwnForum(
+                                                                forumId: forum
+                                                                    .id
+                                                                    .toString());
+                                                    openUpdateForum(
+                                                        context, getForum);
+                                                  },
+                                                  child: const Text(
+                                                    'Update Forum',
+                                                    style: TextStyle(
+                                                      color: kPrimaryColordark,
+                                                      fontSize: 16.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Divider(
+                                                  thickness: 2,
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    PopupDialog.showPopupWarning(
+                                                        context,
+                                                        "Do you want to delete this post?",
+                                                        "description",
+                                                        () async {
+                                                      await ForumApiServices
+                                                          .deleteForum(forum.id
+                                                              .toString());
+                                                      Provider.of<ForumListViewModel>(
+                                                              context,
+                                                              listen: false)
+                                                          .getOwnAllForums();
+                                                      Navigator.pop(context);
+                                                    });
+                                                  },
+                                                  child: const Text(
+                                                    'Delete  Forum',
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 16.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.more_vert))
+                        ] else ...[
+                          Container()
+                        ]
                       ],
                     ),
                   ),
@@ -97,7 +192,7 @@ class _ForumPostState extends State<ForumPost> {
                         child: Text(
                           textAlign: TextAlign.left,
                           forum.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                       ),
@@ -110,11 +205,18 @@ class _ForumPostState extends State<ForumPost> {
                           child: Image.network(
                               'http://${'${Config.apiURL}\\${forum.imageUrl}'}'
                                   .replaceAll('\\', '/'))),
+                  // ignore: prefer_const_constructors
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 10),
-                    child:
-                        Text(textAlign: TextAlign.justify, forum.description),
+                    // ignore: prefer_const_constructors
+                    child: ExpandableText(
+                      forum.description,
+                      textAlign: TextAlign.justify,
+                      maxLines: 4,
+                      collapseText: "show less",
+                      expandText: 'show more',
+                    ),
                   ),
                   SizedBox(
                     height: 50,
@@ -155,7 +257,7 @@ class _ForumPostState extends State<ForumPost> {
                                         child: Image.asset(
                                             "assets/images/comment.png")),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   Text("${forum.comments.length} Comments"),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -170,7 +272,7 @@ class _ForumPostState extends State<ForumPost> {
                                         child: _like(
                                             forum.likes, widget.user.user!.id)),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   Text("${forum.likes.length} Likes"),
                                 ],
                               ),

@@ -23,7 +23,7 @@ class ForumListViewModel extends ChangeNotifier {
   Future<void> getOwnAllForums() async {
     status = Status.loading;
     final results = await ForumApiServices.getOwnForums();
-    results.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    results.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
     forums = results.map((forum) => ForumViewModel(forum: forum)).toList();
     status = forums.isEmpty ? Status.empty : Status.success;
 

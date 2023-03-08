@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -12,10 +14,12 @@ import 'package:food_care/widgets/app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../services/validate_handeler.dart';
+import '../utils/config.dart';
 import '../widgets/buttons.dart';
 
 class AddForumScreen extends StatefulWidget {
-  const AddForumScreen({Key? key}) : super(key: key);
+  final Forum? forum;
+  const AddForumScreen({Key? key, this.forum}) : super(key: key);
 
   @override
   State<AddForumScreen> createState() => _AddForumScreenState();
@@ -28,17 +32,22 @@ class _AddForumScreenState extends State<AddForumScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if (widget.forum != null) {
+      titleController.text = widget.forum!.title;
+      descriptionController.text = widget.forum!.description;
+      imageUrl = widget.forum!.imageUrl.toString();
+    }
     _addForumViewModel = Provider.of<AddForumViewModel>(context, listen: false);
-    _forumListViewModel = Provider.of<ForumListViewModel>(context, listen: false);
+    _forumListViewModel =
+        Provider.of<ForumListViewModel>(context, listen: false);
   }
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  String title = "";
   String description = "";
   String imagePath = "";
-  late File image;
+  String imageUrl = "";
 
   final _form = GlobalKey<FormState>();
   @override
@@ -87,10 +96,17 @@ class _AddForumScreenState extends State<AddForumScreen> {
                         ],
                       ),
                     ),
-                    imagePath == ""
-                        ? Container()
-                        : SizedBox(
-                            height: 200, child: Image.file(File(imagePath))),
+                    if (imagePath != "") ...[
+                      SizedBox(height: 200, child: Image.file(File(imagePath)))
+                    ] else if (imageUrl != "") ...[
+                      SizedBox(
+                          height: 500,
+                          child: Image.network(
+                              'http://${'${Config.apiURL}\\$imageUrl'}'
+                                  .replaceAll('\\', '/')))
+                    ] else ...[
+                      Container()
+                    ],
                     Form(
                       key: _form,
                       child: Column(
@@ -104,10 +120,11 @@ class _AddForumScreenState extends State<AddForumScreen> {
                                 return Validater.genaralvalid(text!);
                               },
                               save: (text) {
-                                title = text!;
+                                vm.title = text!;
                               },
                               controller: titleController),
                           Gtextformfiled(
+                              keybordtype: TextInputType.multiline,
                               label: "Description",
                               onchange: (text) {
                                 vm.description = text;
@@ -126,7 +143,7 @@ class _AddForumScreenState extends State<AddForumScreen> {
                       pleft: 100,
                       pright: 100,
                       onpress: () {
-                        uploadForum(context,author: userViewModel.user!.name);
+                        uploadForum(context, author: userViewModel.user!.name);
                       },
                       text: "Upload",
                     ),
@@ -138,15 +155,34 @@ class _AddForumScreenState extends State<AddForumScreen> {
         ));
   }
 
-  void uploadForum(BuildContext context,
-      {required String author}) async {
+  void uploadForum(BuildContext context, {required String author}) async {
     if (_form.currentState!.validate()) {
-      setState((){
-        _addForumViewModel.author = author;
-        _addForumViewModel.imageUrl = image.path.toString();
-      });
-      await _addForumViewModel.saveIncident();
-    await _forumListViewModel.getAllForums();
+      if (widget.forum != null) {
+        setState(() {
+          _addForumViewModel.id = widget.forum!.id.toString();
+          _addForumViewModel.title = titleController.text;
+          _addForumViewModel.description = descriptionController.text;
+          _addForumViewModel.author = author;
+          if (imagePath != "") {
+            print('Image path: $imagePath');
+            _addForumViewModel.imageUrl = imagePath.toString();
+          } else {
+            print('Image path is null');
+          }
+        });
+        await _addForumViewModel.updateForum();
+        await _forumListViewModel.getOwnAllForums();
+        print("ok");
+      } else {
+        setState(() {
+          _addForumViewModel.author = author;
+          _addForumViewModel.imageUrl = imagePath.toString();
+        });
+
+        await _addForumViewModel.saveForum();
+        await _forumListViewModel.getAllForums();
+      }
+
       Navigator.pop(context);
     }
   }
@@ -177,7 +213,6 @@ class _AddForumScreenState extends State<AddForumScreen> {
                     print(pickedFile!.path);
                     setState(() {
                       imagePath = pickedFile.path;
-                      image = File(pickedFile.path);
                     });
                     Navigator.pop(context);
                   },
@@ -201,7 +236,6 @@ class _AddForumScreenState extends State<AddForumScreen> {
 
                     setState(() {
                       imagePath = pickedFile.path;
-                      image = File(pickedFile.path);
                     });
 
                     Navigator.pop(context);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_care/models/forumModel.dart';
 import 'package:food_care/screens/add_food_post_screen.dart';
 import 'package:food_care/screens/add_forum_screen.dart';
 import 'package:food_care/screens/chat_screen.dart';
@@ -38,4 +39,9 @@ void openCHats(BuildContext context) async {
 void openOwnForums(BuildContext context) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => const ForumScreen(forum: false)));
+}
+
+void openUpdateForum(BuildContext context,Forum forum) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) =>  AddForumScreen(forum: forum,)));
 }

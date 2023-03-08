@@ -7,7 +7,7 @@ import '../view models/userViewModel.dart';
 
 class ForumScreen extends StatefulWidget {
   final bool forum;
-  const ForumScreen({Key? key,required this.forum}) : super(key: key);
+  const ForumScreen({Key? key, required this.forum}) : super(key: key);
 
   @override
   State<ForumScreen> createState() => _ForumScreenState();
@@ -26,28 +26,26 @@ class _ForumScreenState extends State<ForumScreen> {
   }
 
   void _populateAllForums() {
-    if(widget.forum == true){
+    if (widget.forum == true) {
       Provider.of<ForumListViewModel>(context, listen: false).getAllForums();
-    }else{
+    } else {
       Provider.of<ForumListViewModel>(context, listen: false).getOwnAllForums();
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserViewModel>(
-        builder: (context, userViewModel, child) {
-          final vm = Provider.of<ForumListViewModel>(context);
-          print(userViewModel.user!.id);
-          return AppBarWidget(
-            text: "Forum",
-            widget: _updateUi(vm,userViewModel),
-          );
-        });
+    return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
+      final vm = Provider.of<ForumListViewModel>(context);
+      print(userViewModel.user!.id);
+      return AppBarWidget(
+        text: "Forum",
+        widget: _updateUi(vm, userViewModel),
+      );
+    });
   }
 
-  Widget _updateUi(ForumListViewModel vm,user) {
+  Widget _updateUi(ForumListViewModel vm, user) {
     switch (vm.status) {
       case Status.loading:
         return Align(
@@ -55,7 +53,12 @@ class _ForumScreenState extends State<ForumScreen> {
           child: CircularProgressIndicator(),
         );
       case Status.success:
-        return ForumPost(forums: vm.forums, comment: () {},user: user,);
+        return ForumPost(
+          forums: vm.forums,
+          comment: () {},
+          user: user,
+          own: widget.forum,
+        );
       case Status.empty:
         return Align(
           alignment: Alignment.center,

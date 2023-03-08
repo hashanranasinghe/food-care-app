@@ -1,27 +1,24 @@
-
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/constraints.dart';
 
-
 class PopupDialog {
-  static showPopupDilog(BuildContext context, String titel, String description,
+  static showPopupDialog(BuildContext context, String titel, String description,
       Function actionFun) {
     AwesomeDialog(
-
-        context: context,
-        dialogType: DialogType.question,
-        animType: AnimType.scale,
-        btnCancelText: "Cancel",
-        btnOkText: "Ok",
-        btnCancelOnPress: () {},
-        btnOkOnPress: () {
-          actionFun();
-        },
-        btnOkColor: kPrimaryColordark,
-        btnCancelColor: Colors.grey)
+            title: titel,
+            context: context,
+            dialogType: DialogType.question,
+            animType: AnimType.scale,
+            btnCancelText: "Cancel",
+            btnOkText: "Ok",
+            btnCancelOnPress: () {},
+            btnOkOnPress: () {
+              actionFun();
+            },
+            btnOkColor: kPrimaryColordark,
+            btnCancelColor: Colors.grey)
         .show();
   }
 
@@ -72,7 +69,6 @@ class PopupDialog {
       dialogType: DialogType.WARNING,
       animType: AnimType.BOTTOMSLIDE,
       title: titel,
-      desc: description,
       btnCancelText: "No",
       btnOkText: "Yes",
       btnCancelOnPress: () {},
@@ -100,10 +96,10 @@ class PopupDialog {
   }
 
   static showPopupErorr(
-      BuildContext context,
-      String titel,
-      String description,
-      ) {
+    BuildContext context,
+    String titel,
+    String description,
+  ) {
     AwesomeDialog(
       context: context,
       dialogType: DialogType.error,

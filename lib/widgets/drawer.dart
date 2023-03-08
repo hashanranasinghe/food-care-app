@@ -25,17 +25,18 @@ class MenuDrawer extends StatelessWidget {
               height: 230,
               child: UserAccountsDrawerHeader(
                 decoration: const BoxDecoration(color: kPrimaryColorlight),
-                accountName: const Text("Hashan Ranasinghe",style: TextStyle(
-                    color: kPrimaryColordark
-                ),),
-                accountEmail: Text("test@gmail.com",style: TextStyle(
-                  color: kPrimaryColordark
-                ),),
+                accountName: const Text(
+                  "Hashan Ranasinghe",
+                  style: TextStyle(color: kPrimaryColordark),
+                ),
+                accountEmail: Text(
+                  "test@gmail.com",
+                  style: TextStyle(color: kPrimaryColordark),
+                ),
                 currentAccountPicture: const CircleAvatar(
                   backgroundColor: Colors.white,
                   backgroundImage: AssetImage("assets/images/icon.png"),
                 ),
-
               ),
             ),
 
@@ -48,7 +49,7 @@ class MenuDrawer extends StatelessWidget {
                 ),
                 title: const Text('Home'),
                 onTap: () async {
-                  FoodApiServices.getFoodPosts();
+                  openHome(context);
                 },
               ),
             ),
@@ -61,9 +62,7 @@ class MenuDrawer extends StatelessWidget {
                   color: kPrimaryColordark,
                 ),
                 title: const Text('Filter'),
-                onTap: () async {
-
-                },
+                onTap: () async {},
               ),
             ),
             // : Container(),
@@ -97,9 +96,7 @@ class MenuDrawer extends StatelessWidget {
                     color: kPrimaryColordark,
                   ),
                   title: const Text('Notifications'),
-                  onTap: () {
-
-                  }),
+                  onTap: () {}),
             ),
             Card(
               elevation: 0,
@@ -123,14 +120,14 @@ class MenuDrawer extends StatelessWidget {
                 ),
                 title: const Text('Logout'),
                 onTap: () {
-                  PopupDialog.showPopuplogout(context, "Logout",
-                      "Do you want to Logout ? ", () async {
+                  PopupDialog.showPopuplogout(
+                      context, "Logout", "Do you want to Logout ? ", () async {
                     await StoreToken.removeToken();
                     var token = await StoreToken.getToken();
-                    if(token ==null){
+                    if (token == null) {
                       openUserSignIn(context);
                     }
-                      });
+                  });
                 },
               ),
             ),
