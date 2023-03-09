@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_care/services/api%20services/food_api_services.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/food_post.dart';
 import 'package:provider/provider.dart';
+import '../view models/food post view/food_post_list_view_model.dart';
 import '../view models/userViewModel.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,11 +23,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _scaffoldKey = GlobalKey<ScaffoldState>();
+    _populateAllFoodPosts();
+  }
+
+  void _populateAllFoodPosts() {
+      Provider.of<FoodPostListViewModel>(context, listen: false).getAllFoodPosts();
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
+      final vm = Provider.of<FoodPostListViewModel>(context);
       if (userViewModel.user == null) {
         userViewModel.getCurrentUser();
         return const Center(child: CircularProgressIndicator());
@@ -60,7 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ColorChangeButton(
-                          onpress: () async {},
+                          onpress: () async {
+                            await FoodApiServices.getFoodPosts();
+                          },
                           pleft: 30,
                           pright: 30,
                           pbottom: 15,
@@ -89,14 +99,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  FoodPost(),
-                  FoodPost(),
-                  FoodPost()
+                  _updateUi(vm, userViewModel),
                 ],
               ),
             ));
       }
     });
+  }
+
+  Widget _updateUi(FoodPostListViewModel vm, user) {
+    switch (vm.status) {
+      case Status.loading:
+        return Align(
+          alignment: Alignment.center,
+          child: CircularProgressIndicator(),
+        );
+      case Status.success:
+        return FoodPost(foods: vm.foods);
+      case Status.empty:
+        return Align(
+          alignment: Alignment.center,
+          child: Text("No foru found...."),
+        );
+    }
   }
 
   Widget _buildSearchBar() {
@@ -138,7 +163,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.close))
+                      IconButton(onPressed: () {
+                        Navigator.pop(context);
+                      }, icon: Icon(Icons.close))
                     ],
                   ),
                   Divider(

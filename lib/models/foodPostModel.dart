@@ -1,31 +1,39 @@
+
+
 class Food {
-  String userId;
+  String? id;
+  String? userId;
+  String? author;
   String title;
   String description;
   String quantity;
-  String other;
+  String? other;
   String pickupTimes;
   String listDays;
   Location location;
-  String imageUrl;
+  List<dynamic> imageUrls;
   DateTime createdAt;
   DateTime updatedAt;
 
   Food({
-    required this.userId,
+    this.id,
+    this.userId,
+    this.author,
     required this.title,
     required this.description,
     required this.quantity,
-    required this.other,
+    this.other,
     required this.pickupTimes,
     required this.listDays,
     required this.location,
-    required this.imageUrl,
+    required this.imageUrls,
     required this.createdAt,
     required this.updatedAt,
   });
 
   factory Food.fromJson(Map<String, dynamic> json) => Food(
+        id: json["_id"],
+        author: json['author'],
         userId: json["user_id"],
         title: json["title"],
         description: json["description"],
@@ -36,21 +44,23 @@ class Food {
         location: json["location"] is List
             ? Location.fromJson(json["location"][0])
             : Location.fromJson(json["location"]),
-        imageUrl: json["imageUrl"],
+        imageUrls: json["imageUrls"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "_id": id,
         "user_id": userId,
         "title": title,
+        "author": author,
         "description": description,
         "quantity": quantity,
         "other": other,
         "pickupTimes": pickupTimes,
         "listDays": listDays,
         "location": location.toJson(),
-        "imageUrl": imageUrl,
+        "imageUrls": imageUrls,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
       };
@@ -75,4 +85,3 @@ class Location {
         "lon": lon,
       };
 }
-
