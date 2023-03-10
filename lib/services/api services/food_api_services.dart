@@ -36,6 +36,7 @@ class FoodApiServices {
       String? token = await StoreToken.getToken();
       request.headers.addAll({'Authorization': 'Bearer $token'});
       request.fields['title'] = food.title;
+      request.fields['author'] = food.author.toString();
       request.fields['description'] = food.description;
       request.fields['quantity'] = food.quantity.toString();
       request.fields['other'] = food.other.toString();
@@ -45,7 +46,7 @@ class FoodApiServices {
       request.fields['location[lon]'] = food.location.lon.toString();
       for (var file in food.imageUrls) {
         request.files
-            .add(await http.MultipartFile.fromPath('imageUrls', file.path));
+            .add(await http.MultipartFile.fromPath('imageUrls', file));
       }
       var response = await request.send();
       if (response.statusCode == 200) {

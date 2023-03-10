@@ -1,16 +1,24 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:food_care/services/navigations.dart';
+
 
 import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_model.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
+import 'package:food_care/view%20models/userViewModel.dart';
 
-import 'package:food_care/widgets/app_bar.dart';
-import 'package:food_care/widgets/dash_line.dart';
+
+import 'package:food_care/widgets/divider.dart';
+import 'package:food_care/widgets/quantity_row.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../models/foodPostModel.dart';
 import '../services/validate_handeler.dart';
 import '../widgets/Gtextformfiled.dart';
 import '../widgets/buttons.dart';
+import '../widgets/show_images.dart';
 
 class AddFoodPostScreen extends StatefulWidget {
   const AddFoodPostScreen({Key? key}) : super(key: key);
@@ -37,7 +45,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   String description = "";
   String other = "";
   String pickUpTimes = "";
-  String imagePath = "";
+  List<String> imagePaths = [];
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -45,7 +53,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   TextEditingController pickUptimesController = TextEditingController();
 
   String? _selectedDay;
-  List<String> _days = [
+  final List<String> _days = [
     'Until midnight',
     '1 hour',
     '2 hours',
@@ -61,239 +69,184 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     '1 week',
   ];
 
+  final List<String> quantities = ['1', '2', '3', '4', '5'];
+
   final _form = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<FoodPostAddViewModel>(context);
-    return AppBarWidget(
-        text: "Free Food",
-        widget: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 20),
-                    child: GestureDetector(
-                      onTap: (){
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return _takeImage(context);
-                          },
-                        );
-                      },
-                      child: DashedSquare(
-                        size: 120,
-                        strokeWidth: 2.5,
-                        borderRadius: 10,
-                        icon: Icons.camera_alt_outlined,
-                        iconSize: 60,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Text(
+          "Free Food",
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      body: Form(
+          key: _form,
+          child:
+              Consumer<UserViewModel>(builder: (context, userViewModel, child) {
+            if (userViewModel.user == null) {
+              userViewModel.getCurrentUser();
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ShowImages(
+                        imagePaths: imagePaths,
+                        galleryOnPress: () async {
+                          final pickedFiles =
+                              await ImagePicker().pickMultiImage(
+                            maxWidth: 800,
+                            imageQuality: 80,
+                          );
+                          if (pickedFiles != null) {
+                            setState(() {
+                              imagePaths.addAll(pickedFiles
+                                  .map((file) => file.path)
+                                  .toList());
+                            });
+                            print(imagePaths);
+                            Navigator.pop(context);
+                          }
+                        },
+                        cameraOnPress: () async {
+                          final pickedFile = await ImagePicker()
+                              .getImage(source: ImageSource.camera);
+                          if (pickedFile != null) {
+                            setState(() {
+                              imagePaths.add(pickedFile.path);
+                            });
+                            Navigator.pop(context);
+                          }
+                        }),
+                    const DividerWidget(),
+                    Gtextformfiled(
+                        label: "Title",
+                        onchange: (text) {
+                          vm.title = text;
+                        },
+                        valid: (text) {
+                          return Validater.genaralvalid(text!);
+                        },
+                        save: (text) {
+                          title = text!;
+                        },
+                        controller: titleController),
+                    Gtextformfiled(
+                        label: "Description",
+                        onchange: (text) {
+                          vm.description = text;
+                        },
+                        valid: (text) {
+                          return Validater.genaralvalid(text!);
+                        },
+                        save: (text) {
+                          description = text!;
+                        },
+                        controller: descriptionController),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Quantity",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Text(
+                            "(optional)",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  Text("Add upto 5 images"),
-                ],
-              ),
-              Divider(
-                thickness: 2,
-              ),
-              Gtextformfiled(
-                  label: "Title",
-                  onchange: (text) {
-                    vm.title = text;
-                  },
-                  valid: (text) {
-                    return Validater.genaralvalid(text!);
-                  },
-                  save: (text) {
-                    title = text!;
-                  },
-                  controller: titleController),
-              Gtextformfiled(
-                  label: "Description",
-                  onchange: (text) {
-                    vm.description = text;
-                  },
-                  valid: (text) {
-                    return Validater.genaralvalid(text!);
-                  },
-                  save: (text) {
-                    description = text!;
-                  },
-                  controller: descriptionController),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Row(
-                  children: [
-                    Text(
-                      "Quantity",
-                      style: TextStyle(color: Colors.black),
+                    QuantityRow(
+                        quantities: quantities,
+                        function: (index) {
+                          setState(() {
+                            vm.quantity = quantities[index];
+                          });
+                          print(vm.quantity);
+                        }),
+                    const DividerWidget(),
+                    Gtextformfiled(
+                        label: "Other",
+                        onchange: (text) {
+                          vm.other = text;
+                        },
+                        valid: (text) {},
+                        save: (text) {
+                          other = text!;
+                        },
+                        controller: otherController),
+                    Gtextformfiled(
+                        label: "PickUp Times",
+                        onchange: (text) {
+                          vm.pickupTimes = text;
+                        },
+                        valid: (text) {
+                          return Validater.genaralvalid(text!);
+                        },
+                        save: (text) {
+                          pickUpTimes = text!;
+                        },
+                        controller: pickUptimesController),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Your Location",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.arrow_forward_ios_rounded)),
+                        ],
+                      ),
                     ),
-                    Text(
-                      "(optional)",
-                      style: TextStyle(color: Colors.grey),
+                    const DividerWidget(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "List for",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          _getDropDown(),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ColorChangeButton(
-                      onpress: () {
-                        setState(() {
-                          vm.quantity = "1";
-                        });
-                      },
-                      text: "1",
-                      ptop: 5,
-                      pbottom: 5,
-                      pleft: 25,
-                      pright: 25,
-                    ),
-                    ColorChangeButton(
-                      onpress: () {
-                        setState(() {
-                          vm.quantity = "2";
-                        });
-                      },
-                      text: "2",
-                      ptop: 5,
-                      pbottom: 5,
-                      pleft: 25,
-                      pright: 25,
-                    ),
-                    ColorChangeButton(
-                      onpress: () {
-                        setState(() {
-                          vm.quantity = "3";
-                        });
-                      },
-                      text: "3",
-                      ptop: 5,
-                      pbottom: 5,
-                      pleft: 25,
-                      pright: 25,
-                    ),
-                    ColorChangeButton(
-                      onpress: () {
-                        setState(() {
-                          vm.quantity = "4";
-                        });
-                      },
-                      text: "4",
-                      ptop: 5,
-                      pbottom: 5,
-                      pleft: 25,
-                      pright: 25,
-                    ),
-                    ColorChangeButton(
-                      onpress: () {
-                        setState(() {
-                          vm.quantity = "5";
-                        });
-                      },
-                      text: "5",
-                      ptop: 5,
-                      pbottom: 5,
-                      pleft: 25,
-                      pright: 25,
+                    const DividerWidget(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Genaralbutton(
+                        pleft: 100,
+                        pright: 100,
+                        onpress: () {
+                          uploadAPost(vm: vm, author: userViewModel.user!.name);
+                        },
+                        text: "Upload",
+                      ),
                     ),
                   ],
                 ),
-              ),
-              Gtextformfiled(
-                  label: "Other",
-                  onchange: (text) {
-                    vm.other = text;
-                  },
-                  valid: (text) {
-                    return Validater.genaralvalid(text!);
-                  },
-                  save: (text) {
-                    other = text!;
-                  },
-                  controller: otherController),
-              Gtextformfiled(
-                  label: "PickUp Times",
-                  onchange: (text) {
-                    vm.pickupTimes = text;
-                  },
-                  valid: (text) {
-                    return Validater.genaralvalid(text!);
-                  },
-                  save: (text) {
-                    pickUpTimes = text!;
-                  },
-                  controller: pickUptimesController),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Your Location",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.arrow_forward_ios_rounded)),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Divider(
-                  thickness: 2,
-                  color: Color(0xFFE3E3E3FF),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "List for",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    _getDropDown(),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Divider(
-                  thickness: 2,
-                  color: Color(0xFFE3E3E3FF),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Genaralbutton(
-                  pleft: 100,
-                  pright: 100,
-                  onpress: () {
-                    vm.listDays = _selectedDay.toString();
-                  },
-                  text: "Upload",
-                ),
-              ),
-            ],
-          ),
-        ));
+              );
+            }
+          })),
+    );
   }
 
   _getDropDown() {
@@ -314,76 +267,18 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     );
   }
 
-  Widget _takeImage(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      elevation: 0.0,
-      backgroundColor: Colors.transparent,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    final pickedFile = await ImagePicker()
-                        .getImage(source: ImageSource.camera);
-                    print(pickedFile!.path);
-                    setState(() {
-                      imagePath = pickedFile.path;
-                    });
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        Icon(Icons.camera_alt),
-                        SizedBox(width: 8),
-                        Text("Take a picture"),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16),
-                InkWell(
-                  onTap: () async {
-                    final pickedFile = await ImagePicker()
-                        .getImage(source: ImageSource.gallery);
-                    print(pickedFile!.path);
-
-                    setState(() {
-                      imagePath = pickedFile.path;
-                      print(imagePath);
-                    });
-
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        Icon(Icons.photo_library),
-                        SizedBox(width: 8),
-                        Text("Choose from gallery"),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+  void uploadAPost(
+      {required FoodPostAddViewModel vm, required String author}) async {
+    if (_form.currentState!.validate()) {
+      setState(() {
+        vm.listDays = _selectedDay.toString();
+        vm.imageUrls = imagePaths;
+        vm.author = author;
+        vm.location = Location(lan: '2', lon: '2');
+      });
+      await _foodPostAddViewModel.saveFoodPost();
+      await _foodPostListViewModel.getAllFoodPosts();
+      openHome(context);
+    }
   }
 }

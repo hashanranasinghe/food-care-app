@@ -33,4 +33,10 @@ class Config {
 
   //food
   static const String getFoodPosts = "/api/food";
+
+  //image
+  static String imageUrl({required String imageUrl}) {
+    String url = 'http://${'$apiURL\\$imageUrl'}'.replaceAll('\\', '/');
+    return url;
+  }
 }

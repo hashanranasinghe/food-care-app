@@ -41,68 +41,73 @@ class _HomeScreenState extends State<HomeScreen> {
         return AppBarWidget(
             text: "Hi ${userViewModel.user!.name}",
             icon: Icons.notifications_none,
-            widget: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            widget: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 300, child: _buildSearchBar()),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: IconButton(
+                        onPressed: () {
+                          _showAddModal(context);
+                        },
+                        icon: Icon(
+                          Icons.filter_alt_outlined,
+                          size: 35,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Column(
                     children: [
-                      SizedBox(width: 300, child: _buildSearchBar()),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: IconButton(
-                            onPressed: () {
-                              _showAddModal(context);
-                            },
-                            icon: Icon(
-                              Icons.filter_alt_outlined,
-                              size: 35,
-                            )),
-                      )
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ColorChangeButton(
+                              onpress: () async {
+                                await FoodApiServices.getFoodPosts();
+                              },
+                              pleft: 30,
+                              pright: 30,
+                              pbottom: 15,
+                              ptop: 15,
+                              text: "Nearby",
+                              fontsize: 20,
+                            ),
+                            ColorChangeButton(
+                              onpress: () {},
+                              pleft: 30,
+                              pright: 30,
+                              pbottom: 15,
+                              ptop: 15,
+                              text: "Top Rated",
+                              fontsize: 20,
+                            ),
+                            ColorChangeButton(
+                              onpress: () {},
+                              pleft: 30,
+                              pright: 30,
+                              pbottom: 15,
+                              ptop: 15,
+                              text: "Quick",
+                              fontsize: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(child: _updateUi(vm, userViewModel)),
                     ],
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ColorChangeButton(
-                          onpress: () async {
-                            await FoodApiServices.getFoodPosts();
-                          },
-                          pleft: 30,
-                          pright: 30,
-                          pbottom: 15,
-                          ptop: 15,
-                          text: "Nearby",
-                          fontsize: 20,
-                        ),
-                        ColorChangeButton(
-                          onpress: () {},
-                          pleft: 30,
-                          pright: 30,
-                          pbottom: 15,
-                          ptop: 15,
-                          text: "Top Rated",
-                          fontsize: 20,
-                        ),
-                        ColorChangeButton(
-                          onpress: () {},
-                          pleft: 30,
-                          pright: 30,
-                          pbottom: 15,
-                          ptop: 15,
-                          text: "Quick",
-                          fontsize: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                  _updateUi(vm, userViewModel),
-                ],
-              ),
-            ));
+                ),
+              ],
+            ),);
       }
     });
   }

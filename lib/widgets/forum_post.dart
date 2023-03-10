@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:food_care/screens/add_forum_screen.dart';
 import 'package:food_care/services/api%20services/forum_api_services.dart';
 import 'package:food_care/services/api%20services/forums_comment_api_services.dart';
 import 'package:food_care/services/navigations.dart';
@@ -202,9 +201,8 @@ class _ForumPostState extends State<ForumPost> {
                       ? Container()
                       : SizedBox(
                           height: 500,
-                          child: Image.network(
-                              'http://${'${Config.apiURL}\\${forum.imageUrl}'}'
-                                  .replaceAll('\\', '/'))),
+                          child: Image.network(Config.imageUrl(
+                              imageUrl: forum.imageUrl.toString()))),
                   // ignore: prefer_const_constructors
                   Padding(
                     padding: const EdgeInsets.only(

@@ -9,6 +9,11 @@ class FoodPostViewModel {
     return food.id;
   }
 
+  String? get author {
+    return food.author;
+  }
+
+
   String? get userId {
     return food.userId;
   }

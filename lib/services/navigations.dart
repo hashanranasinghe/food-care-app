@@ -9,31 +9,39 @@ import 'package:food_care/screens/signup_screen.dart';
 import 'package:food_care/widgets/bottom_navigationbar.dart';
 
 void openUserSignUp(BuildContext context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const SignupScreen()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const SignupScreen()));
 }
+
 void openUserSignIn(BuildContext context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const LoginScreen()));
 }
 
 void openHome(BuildContext context) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => const BottomNavigation()));
 }
+
 void openAddForum(BuildContext context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const AddForumScreen()));
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const AddForumScreen()));
 }
 
 void openAddFoodPost(BuildContext context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const AddFoodPostScreen()));
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const AddFoodPostScreen()));
 }
 
 void openCHats(BuildContext context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const ChatScreen()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const ChatScreen()));
 }
 
 void openOwnForums(BuildContext context) async {
@@ -41,7 +49,16 @@ void openOwnForums(BuildContext context) async {
       MaterialPageRoute(builder: (context) => const ForumScreen(forum: false)));
 }
 
-void openUpdateForum(BuildContext context,Forum forum) async {
+void openForums(BuildContext context) async {
   Navigator.push(context,
-      MaterialPageRoute(builder: (context) =>  AddForumScreen(forum: forum,)));
+      MaterialPageRoute(builder: (context) => const ForumScreen(forum: true)));
+}
+
+void openUpdateForum(BuildContext context, Forum forum) async {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => AddForumScreen(
+                forum: forum,
+              )));
 }

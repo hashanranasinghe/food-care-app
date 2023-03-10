@@ -20,6 +20,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
 
   Future<void> saveFoodPost() async {
     final foodPost = Food(
+        author: author,
         title: title,
         description: description,
         quantity: quantity,
@@ -30,6 +31,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now());
     await FoodApiServices.createFoodPost(food: foodPost);
+    print(foodPost);
     notifyListeners();
   }
 }
