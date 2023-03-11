@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:food_care/models/foodPostModel.dart';
+import 'package:food_care/services/api%20services/user_api_services.dart';
+import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
+import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
+import '../models/userModel.dart';
+import '../services/api services/food_api_services.dart';
 import '../services/date.dart';
 import '../utils/config.dart';
 import '../view models/food post view/food_post_view_model.dart';
 
 class FoodPost extends StatefulWidget {
+  final bool? food;
   final List<FoodPostViewModel> foods;
-  const FoodPost({Key? key, required this.foods}) : super(key: key);
+  const FoodPost({Key? key, required this.foods, this.food}) : super(key: key);
 
   @override
   State<FoodPost> createState() => _FoodPostState();
@@ -16,11 +23,13 @@ class FoodPost extends StatefulWidget {
 
 class _FoodPostState extends State<FoodPost> {
   late FoodPostListViewModel _foodPostListViewModel;
+  late User user;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    
     _foodPostListViewModel =
         Provider.of<FoodPostListViewModel>(context, listen: false);
   }
@@ -30,7 +39,7 @@ class _FoodPostState extends State<FoodPost> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: ListView.builder(
-        shrinkWrap: true,
+          shrinkWrap: true,
           itemCount: widget.foods.length,
           itemBuilder: (context, index) {
             final food = widget.foods[index];
@@ -52,7 +61,8 @@ class _FoodPostState extends State<FoodPost> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 50, bottom: 10),
+                              padding:
+                                  const EdgeInsets.only(top: 50, bottom: 10),
                               child: Text(
                                 food.title,
                                 style: TextStyle(
@@ -189,10 +199,47 @@ class _FoodPostState extends State<FoodPost> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                              Icons.arrow_circle_right_outlined))
+                                      if (widget.food == true) ...[
+                                        IconButton(
+                                            onPressed: () async{
+                                              print("ok");
+
+                                              print(user.id);
+
+                                            },
+                                            icon: Icon(Icons
+                                                .arrow_circle_right_outlined))
+                                      ] else ...[
+                                        IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return UpdateNDelete(
+                                                      update: () async {
+                                                    final getForum =
+                                                        await FoodApiServices
+                                                            .getOwnFoodPost(
+                                                                foodId: food.id
+                                                                    .toString());
+                                                    print(getForum.id);
+                                                  }, delete: () async {
+                                                        print("ok");
+                                                    await FoodApiServices
+                                                        .deleteFoodPost(foodId: food.id.toString());
+                                                    Provider.of<FoodPostListViewModel>(
+                                                            context,
+                                                            listen: false)
+                                                        .getAllOwnFoodPosts();
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                              );
+                                            },
+                                            icon: Icon(Icons
+                                                .arrow_circle_right_outlined))
+                                      ]
                                     ],
                                   )
                                 ],
@@ -217,11 +264,11 @@ class _FoodPostState extends State<FoodPost> {
                             backgroundColor: kPrimaryColorlight,
                             backgroundImage: food.imageUrls.length == 0
                                 ? AssetImage('assets/images/food.jpg')
-                                : NetworkImage(Config.imageUrl(imageUrl: food.imageUrls[0].toString())) as ImageProvider<Object>,
+                                : NetworkImage(Config.imageUrl(
+                                        imageUrl: food.imageUrls[0].toString()))
+                                    as ImageProvider<Object>,
                           ),
-
                         ),
-
                       )),
                 ),
               ]),

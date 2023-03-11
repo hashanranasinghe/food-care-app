@@ -10,7 +10,8 @@ import '../view models/food post view/food_post_list_view_model.dart';
 import '../view models/userViewModel.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final bool food;
+  const HomeScreen({Key? key, required this.food}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -27,17 +28,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _populateAllFoodPosts() {
+    if (widget.food == true) {
       Provider.of<FoodPostListViewModel>(context, listen: false).getAllFoodPosts();
+    } else {
+      Provider.of<FoodPostListViewModel>(context, listen: false).getAllOwnFoodPosts();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final vm = Provider.of<FoodPostListViewModel>(context);
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
-      final vm = Provider.of<FoodPostListViewModel>(context);
       if (userViewModel.user == null) {
         userViewModel.getCurrentUser();
         return const Center(child: CircularProgressIndicator());
       } else {
+        print(userViewModel.user!.name);
         return AppBarWidget(
             text: "Hi ${userViewModel.user!.name}",
             icon: Icons.notifications_none,
@@ -120,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: CircularProgressIndicator(),
         );
       case Status.success:
-        return FoodPost(foods: vm.foods);
+        return FoodPost(foods: vm.foods,food: widget.food,);
       case Status.empty:
         return Align(
           alignment: Alignment.center,

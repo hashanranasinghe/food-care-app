@@ -4,9 +4,13 @@ import 'package:food_care/screens/add_food_post_screen.dart';
 import 'package:food_care/screens/add_forum_screen.dart';
 import 'package:food_care/screens/chat_screen.dart';
 import 'package:food_care/screens/forum_screen.dart';
+import 'package:food_care/screens/home_screen.dart';
 import 'package:food_care/screens/login_screen.dart';
+import 'package:food_care/screens/messaging_screen.dart';
 import 'package:food_care/screens/signup_screen.dart';
 import 'package:food_care/widgets/bottom_navigationbar.dart';
+
+import '../models/foodPostModel.dart';
 
 void openUserSignUp(BuildContext context) async {
   Navigator.push(
@@ -39,7 +43,15 @@ void openAddFoodPost(BuildContext context) async {
           builder: (context) => const AddFoodPostScreen()));
 }
 
-void openCHats(BuildContext context) async {
+void openUpdateFoodPost(BuildContext context,Food food) async {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) =>  AddFoodPostScreen(food: food)));
+}
+
+void openChats(BuildContext context) async {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const ChatScreen()));
 }
@@ -61,4 +73,14 @@ void openUpdateForum(BuildContext context, Forum forum) async {
           builder: (context) => AddForumScreen(
                 forum: forum,
               )));
+}
+
+void openMessaging(BuildContext context) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const MessagingScreen()));
+}
+
+void openOwnFoodPosts(BuildContext context) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const HomeScreen(food: false)));
 }

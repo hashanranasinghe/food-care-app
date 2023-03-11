@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:food_care/models/userModel.dart';
@@ -5,9 +7,11 @@ import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/Gtextformfiled.dart';
 import 'package:food_care/widgets/buttons.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../services/api services/user_api_services.dart';
 import '../services/validate_handeler.dart';
+import '../widgets/take_images.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -21,6 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
   String mobileNumber = '';
   String address = '';
   String email = '';
+  String imagePath ='';
   String password = '';
   String confirmPassword = '';
   TextEditingController nameController = TextEditingController();
@@ -114,6 +119,54 @@ class _SignupScreenState extends State<SignupScreen> {
                           email = text!;
                         },
                         controller: emailController),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal:25 ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25),
+                            child: Text("Profile Picture"),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25),
+                            child: IconButton(onPressed: (){
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return TakeImages(galleryOnPress: () async {
+                                    final pickedFile = await ImagePicker()
+                                        .getImage(source: ImageSource.gallery);
+                                    print(pickedFile!.path);
+
+                                    setState(() {
+                                      imagePath = pickedFile.path;
+                                    });
+
+                                    Navigator.pop(context);
+                                  }, cameraOnPress: () async {
+                                    final pickedFile = await ImagePicker()
+                                        .getImage(source: ImageSource.camera);
+                                    print(pickedFile!.path);
+                                    setState(() {
+                                      imagePath = pickedFile.path;
+                                    });
+                                    Navigator.pop(context);
+                                  });
+                                },
+                              );
+                            }
+                            , icon: Icon(Icons.camera_alt_outlined)),
+                          )
+                        ],
+                      ),
+                    ),
+                    if (imagePath != "") ...[
+                      SizedBox(height: 200, child: Image.file(File(imagePath)))
+                    ] else ...[
+                      Container()
+                    ],
                     Gpasswordformfiled(
                       valid: (text) {
                         return Validater.signupPassword(text!);
@@ -189,8 +242,10 @@ class _SignupScreenState extends State<SignupScreen> {
           name: name,
           email: email,
           phone: mobileNumber,
+          address: address,
+          imageUrl: imagePath,
           password: password);
-      UserAPiServices.registerUser(user);
+      await UserAPiServices.registerUser(user).whenComplete(() => openUserSignIn(context));
       print("ok");
     }
   }

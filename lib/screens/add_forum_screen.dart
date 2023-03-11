@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../services/validate_handeler.dart';
 import '../utils/config.dart';
 import '../widgets/buttons.dart';
+import '../widgets/take_images.dart';
 
 class AddForumScreen extends StatefulWidget {
   final Forum? forum;
@@ -94,7 +95,25 @@ class _AddForumScreenState extends State<AddForumScreen> {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return _takeImage(context);
+                                      return TakeImages(galleryOnPress: () async {
+                                        final pickedFile = await ImagePicker()
+                                            .getImage(source: ImageSource.gallery);
+                                        print(pickedFile!.path);
+
+                                        setState(() {
+                                          imagePath = pickedFile.path;
+                                        });
+
+                                        Navigator.pop(context);
+                                      }, cameraOnPress: () async {
+                                        final pickedFile = await ImagePicker()
+                                            .getImage(source: ImageSource.camera);
+                                        print(pickedFile!.path);
+                                        setState(() {
+                                          imagePath = pickedFile.path;
+                                        });
+                                        Navigator.pop(context);
+                                      });
                                     },
                                   );
                                 },
@@ -107,9 +126,7 @@ class _AddForumScreenState extends State<AddForumScreen> {
                       ] else if (imageUrl != "") ...[
                         SizedBox(
                             height: 500,
-                            child: Image.network(
-                                'http://${'${Config.apiURL}\\$imageUrl'}'
-                                    .replaceAll('\\', '/')))
+                            child: Image.network(Config.imageUrl(imageUrl: imageUrl)))
                       ] else ...[
                         Container()
                       ],
@@ -194,75 +211,4 @@ class _AddForumScreenState extends State<AddForumScreen> {
     }
   }
 
-  Widget _takeImage(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      elevation: 0.0,
-      backgroundColor: Colors.transparent,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    final pickedFile = await ImagePicker()
-                        .getImage(source: ImageSource.camera);
-                    print(pickedFile!.path);
-                    setState(() {
-                      imagePath = pickedFile.path;
-                    });
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        Icon(Icons.camera_alt),
-                        SizedBox(width: 8),
-                        Text("Take a picture"),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16),
-                InkWell(
-                  onTap: () async {
-                    final pickedFile = await ImagePicker()
-                        .getImage(source: ImageSource.gallery);
-                    print(pickedFile!.path);
-
-                    setState(() {
-                      imagePath = pickedFile.path;
-                    });
-
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        Icon(Icons.photo_library),
-                        SizedBox(width: 8),
-                        Text("Choose from gallery"),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

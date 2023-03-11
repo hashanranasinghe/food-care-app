@@ -11,7 +11,7 @@ class Food {
   String pickupTimes;
   String listDays;
   Location location;
-  List<dynamic> imageUrls;
+  List<String> imageUrls;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -44,7 +44,7 @@ class Food {
         location: json["location"] is List
             ? Location.fromJson(json["location"][0])
             : Location.fromJson(json["location"]),
-        imageUrls: json["imageUrls"],
+        imageUrls:  (json["imageUrls"] as List).cast<String>(),
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );

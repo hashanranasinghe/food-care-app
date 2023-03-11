@@ -6,7 +6,7 @@ import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/userViewModel.dart';
 import 'package:food_care/screens/comment_screen.dart';
-import 'package:food_care/widgets/popup_dialog.dart';
+import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
 import '../services/date.dart';
 import '../utils/config.dart';
@@ -101,77 +101,19 @@ class _ForumPostState extends State<ForumPost> {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          color: Colors.white,
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    final getForum =
-                                                        await ForumApiServices
-                                                            .getOwnForum(
-                                                                forumId: forum
-                                                                    .id
-                                                                    .toString());
-                                                    openUpdateForum(
-                                                        context, getForum);
-                                                  },
-                                                  child: const Text(
-                                                    'Update Forum',
-                                                    style: TextStyle(
-                                                      color: kPrimaryColordark,
-                                                      fontSize: 16.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Divider(
-                                                  thickness: 2,
-                                                ),
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    PopupDialog.showPopupWarning(
-                                                        context,
-                                                        "Do you want to delete this post?",
-                                                        "description",
-                                                        () async {
-                                                      await ForumApiServices
-                                                          .deleteForum(forum.id
-                                                              .toString());
-                                                      Provider.of<ForumListViewModel>(
-                                                              context,
-                                                              listen: false)
-                                                          .getOwnAllForums();
-                                                      Navigator.pop(context);
-                                                    });
-                                                  },
-                                                  child: const Text(
-                                                    'Delete  Forum',
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontSize: 16.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
+                                    return UpdateNDelete(update: () async {
+                                      final getForum =
+                                          await ForumApiServices.getOwnForum(
+                                              forumId: forum.id.toString());
+                                      openUpdateForum(context, getForum);
+                                    }, delete: () async {
+                                      await ForumApiServices.deleteForum(
+                                          forum.id.toString());
+                                      Provider.of<ForumListViewModel>(context,
+                                              listen: false)
+                                          .getOwnAllForums();
+                                      Navigator.pop(context);
+                                    });
                                   },
                                 );
                               },

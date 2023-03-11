@@ -1,19 +1,12 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
-
-
 import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_model.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
 import 'package:food_care/view%20models/userViewModel.dart';
-
-
 import 'package:food_care/widgets/divider.dart';
 import 'package:food_care/widgets/quantity_row.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../models/foodPostModel.dart';
 import '../services/validate_handeler.dart';
 import '../widgets/Gtextformfiled.dart';
@@ -21,7 +14,8 @@ import '../widgets/buttons.dart';
 import '../widgets/show_images.dart';
 
 class AddFoodPostScreen extends StatefulWidget {
-  const AddFoodPostScreen({Key? key}) : super(key: key);
+  final Food? food;
+  const AddFoodPostScreen({Key? key, this.food}) : super(key: key);
 
   @override
   State<AddFoodPostScreen> createState() => _AddFoodPostScreenState();
@@ -35,6 +29,17 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(widget.food != null){
+      titleController.text = widget.food!.title;
+      descriptionController.text = widget.food!.description;
+      otherController.text = widget.food!.other!;
+      pickUptimesController.text = widget.food!.pickupTimes;
+      _selectedDay = widget.food!.listDays;
+      imagePaths = widget.food!.imageUrls;
+
+
+    }
+
     _foodPostAddViewModel =
         Provider.of<FoodPostAddViewModel>(context, listen: false);
     _foodPostListViewModel =

@@ -6,9 +6,10 @@ class Config {
   static const String loginUserAPI = "/api/users/login";
   static const String registerUserAPI = "/api/users/register";
   static const String currentUserAPI = "/api/users/current";
+  static const String users = "/api/users/users";
 
   static String getUser(String id) {
-    String path = "api/users/user/:$id";
+    String path = "api/users/user/$id";
     return path;
   }
 
@@ -33,6 +34,12 @@ class Config {
 
   //food
   static const String getFoodPosts = "/api/food";
+  static const String getOwnFoods = "api/food/ownfood";
+
+  static String getOwnFoodPost({required String id}) {
+    String path = "api/food/ownfood/$id";
+    return path;
+  }
 
   //image
   static String imageUrl({required String imageUrl}) {

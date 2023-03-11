@@ -1,18 +1,18 @@
-
-
 class User {
   String? id;
   String name;
   String email;
   String phone;
-  // String imageUrl;
+  String? address;
+  String? imageUrl;
   String password;
   User({
     this.id,
     required this.name,
     required this.email,
     required this.phone,
-    // required this.imageUrl,
+    this.address,
+    this.imageUrl,
     required this.password,
   });
 
@@ -21,7 +21,8 @@ class User {
         name: json["name"],
         email: json["email"],
         phone: json["phone"],
-        // imageUrl: json["imageUrl"],
+        address: json["address"],
+        imageUrl: json["imageUrl"],
         password: json["password"],
       );
 
@@ -30,7 +31,8 @@ class User {
         "name": name,
         "email": email,
         "phone": phone,
-        // "imageUrl": imageUrl,
+        "address": address,
+        "imageUrl": imageUrl,
         "password": password,
       };
 }

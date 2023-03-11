@@ -3,7 +3,6 @@ import 'package:food_care/services/api%20services/user_api_services.dart';
 
 import '../models/userModel.dart';
 
-
 class UserViewModel extends ChangeNotifier {
   User? _user;
 
@@ -15,7 +14,7 @@ class UserViewModel extends ChangeNotifier {
       _user = user;
       notifyListeners();
     } catch (e) {
-      // Handle the error
+
     }
   }
 }

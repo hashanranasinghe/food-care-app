@@ -18,11 +18,11 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int index = 0;
   final screens = [
-    const HomeScreen(),
+    const HomeScreen(food: true,),
     const ForumScreen(forum: true),
-    const HomeScreen(),
+    const HomeScreen(food: true,),
     const ChatScreen(),
-    const HomeScreen()
+    const HomeScreen(food: true,)
   ];
   late final List<Widget> items;
 

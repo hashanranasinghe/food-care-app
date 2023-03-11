@@ -58,4 +58,69 @@ class FoodApiServices {
       print('Error: $error');
     }
   }
+
+  //get own foods
+  static Future<List<Food>> getOwnFoodPosts() async {
+    String? token = await StoreToken.getToken();
+    final response = await client.get(
+      Uri.http(Config.apiURL, Config.getOwnFoods),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonList = json.decode(response.body) as List<dynamic>;
+      return jsonList.map((json) => Food.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to get foods: ${response.statusCode}');
+    }
+  }
+
+  //get a own food
+  static Future<Food> getOwnFoodPost({required String foodId}) async {
+    String? token = await StoreToken.getToken();
+    final response = await client.get(
+      Uri.http(Config.apiURL, Config.getOwnFoodPost(id: foodId)),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Forum found
+      final foodJson = jsonDecode(response.body);
+      final food = Food.fromJson(foodJson);
+      return food;
+    } else if (response.statusCode == 404) {
+      // Forum not found
+      throw Exception('Food post not found');
+    } else {
+      // Other error
+      throw Exception('Failed to get food post');
+    }
+  }
+
+  //delete food
+  static Future<void> deleteFoodPost({required String foodId}) async {
+    // Get the JWT token from secure storage
+    String? token = await StoreToken.getToken();
+
+    final response = await client.delete(
+      Uri.http(Config.apiURL, Config.getOwnFoodPost(id: foodId)),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Forum deleted successfully
+      print('Forum deleted successfully');
+    } else {
+      // Forum not found or other error
+      print('Failed to delete forum');
+    }
+  }
+
 }

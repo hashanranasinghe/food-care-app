@@ -37,7 +37,7 @@ class _ForumScreenState extends State<ForumScreen> {
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       final vm = Provider.of<ForumListViewModel>(context);
-      print(userViewModel.user!.id);
+      print(userViewModel.user!.name);
       return AppBarWidget(
         text: "Forum",
         widget: _updateUi(vm, userViewModel),

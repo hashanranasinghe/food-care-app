@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 
 class ChatListCard extends StatelessWidget {
@@ -9,6 +10,9 @@ class ChatListCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
       child: ListTile(
+        onTap: (){
+          openMessaging(context);
+        },
         leading: CircleAvatar(
           backgroundColor: kPrimaryColorlight,
           child: Image.asset(icon),

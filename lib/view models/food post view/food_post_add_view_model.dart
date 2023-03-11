@@ -14,7 +14,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
   late String pickupTimes;
   late String listDays;
   late Location location;
-  late List<dynamic> imageUrls;
+  late List<String> imageUrls;
   late DateTime createdAt;
   late DateTime updatedAt;
 
