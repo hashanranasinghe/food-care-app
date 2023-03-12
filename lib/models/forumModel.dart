@@ -1,5 +1,7 @@
 
 
+
+
 import 'commentModel.dart';
 
 class Forum {
@@ -9,12 +11,14 @@ class Forum {
   String description;
   String author;
   String? imageUrl;
+
   List<dynamic> likes;
   List<Comment> comments;
   DateTime createdAt;
   DateTime updatedAt;
 
   Forum({
+
     this.id,
     this.userId,
     required this.title,

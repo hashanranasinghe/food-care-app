@@ -6,8 +6,8 @@ import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_mo
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_add_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_list-view_model.dart';
-import 'package:food_care/view%20models/userViewModel.dart';
-
+import 'package:food_care/view%20models/user%20view/userViewModel.dart';
+import 'package:food_care/view%20models/user%20view/user_list_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -19,6 +19,7 @@ void main() {
     ChangeNotifierProvider(create: (_) => CommentAddViewModel()),
     ChangeNotifierProvider(create: (_) => FoodPostListViewModel()),
     ChangeNotifierProvider(create: (_) => FoodPostAddViewModel()),
+    ChangeNotifierProvider(create: (_)=> UserListViewModel()),
   ], child: const MyApp()));
 }
 

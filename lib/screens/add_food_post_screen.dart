@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_model.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
-import 'package:food_care/view%20models/userViewModel.dart';
+import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/widgets/divider.dart';
 import 'package:food_care/widgets/quantity_row.dart';
 import 'package:image_picker/image_picker.dart';

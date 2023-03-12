@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_care/services/store_token.dart';
 import 'package:food_care/services/api%20services/user_api_services.dart';
-import 'package:food_care/view%20models/userViewModel.dart';
+import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/widgets/popup_dialog.dart';
 import 'package:provider/provider.dart';
 

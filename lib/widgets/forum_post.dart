@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:food_care/services/api%20services/forum_api_services.dart';
 import 'package:food_care/services/api%20services/forums_comment_api_services.dart';
+
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
-import 'package:food_care/view%20models/userViewModel.dart';
+import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/screens/comment_screen.dart';
+import 'package:food_care/widgets/get_user_image.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
+
 import '../services/date.dart';
 import '../utils/config.dart';
 import '../view models/forum view/forum_list-view_model.dart';
@@ -19,6 +23,7 @@ class ForumPost extends StatefulWidget {
   final Function comment;
   final UserViewModel user;
   final bool? own;
+
   const ForumPost(
       {Key? key,
       required this.forums,
@@ -32,7 +37,9 @@ class ForumPost extends StatefulWidget {
 }
 
 class _ForumPostState extends State<ForumPost> {
+  late String imageUrl = "";
   late ForumListViewModel _forumListViewModel;
+  late bool load = false;
 
   @override
   void initState() {
@@ -49,6 +56,7 @@ class _ForumPostState extends State<ForumPost> {
         itemCount: widget.forums.length,
         itemBuilder: (context, index) {
           final forum = widget.forums[index];
+
           return Card(
             color: Colors.white,
             elevation: 10,
@@ -67,10 +75,7 @@ class _ForumPostState extends State<ForumPost> {
                       children: [
                         Row(
                           children: [
-                            CircleAvatar(
-                              child: Image.asset("assets/images/icon.png"),
-                              backgroundColor: kPrimaryColorlight,
-                            ),
+                            GetUserImage(id: forum.userId.toString()),
                             Padding(
                               padding: const EdgeInsets.only(left: 15),
                               child: Column(

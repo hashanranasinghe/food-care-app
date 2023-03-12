@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/comment%20view%20model/comment_add_view_model.dart';
-import 'package:food_care/view%20models/userViewModel.dart';
+import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../view models/comment view model/comment_list_view_model.dart';

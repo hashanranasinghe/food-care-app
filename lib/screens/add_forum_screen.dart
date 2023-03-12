@@ -6,7 +6,7 @@ import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/forum%20view/forum_add_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_list-view_model.dart';
-import 'package:food_care/view%20models/userViewModel.dart';
+import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/widgets/Gtextformfiled.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -205,8 +205,8 @@ class _AddForumScreenState extends State<AddForumScreen> {
         });
 
         await _addForumViewModel.saveForum();
-        await _forumListViewModel.getAllForums();
-        openForums(context);
+        await _forumListViewModel.getOwnAllForums();
+        openOwnForums(context);
       }
     }
   }

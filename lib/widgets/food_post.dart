@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_care/models/foodPostModel.dart';
-import 'package:food_care/services/api%20services/user_api_services.dart';
-import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
+import 'package:food_care/widgets/get_user_image.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
 import '../models/userModel.dart';
@@ -125,12 +123,7 @@ class _FoodPostState extends State<FoodPost> {
                                   CircleAvatar(
                                     radius: 10.0,
                                     backgroundColor: Colors.transparent,
-                                    child: CircleAvatar(
-                                      radius: 18.0,
-                                      backgroundColor: kPrimaryColorlight,
-                                      backgroundImage:
-                                          AssetImage('assets/images/food.jpg'),
-                                    ),
+                                    child: GetUserImage(id: food.userId.toString())
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(left: 10),
