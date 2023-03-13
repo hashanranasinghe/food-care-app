@@ -9,6 +9,7 @@ import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/screens/comment_screen.dart';
 import 'package:food_care/widgets/get_user_image.dart';
+import 'package:food_care/widgets/show_time_ago_row.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
 
@@ -85,16 +86,7 @@ class _ForumPostState extends State<ForumPost> {
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15)),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.av_timer_outlined,
-                                        size: 20,
-                                      ),
-                                      Text(
-                                          "${Date.getStringdatetime(forum.updatedAt)} ago"),
-                                    ],
-                                  ),
+                                  ShowTimeAgoRow(time: forum.updatedAt),
                                 ],
                               ),
                             )

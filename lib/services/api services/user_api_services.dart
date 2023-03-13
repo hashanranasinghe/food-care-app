@@ -9,30 +9,6 @@ import '../../models/userModel.dart';
 import '../../utils/config.dart';
 
 class UserAPiServices {
-  // static var client = http.Client();
-  // static Future<User> loginUser(String email, String password) async {
-  //   final response = await client.post(
-  //     Uri.http(Config.apiURL, Config.loginUserAPI),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode(<String, String>{
-  //       'email': email,
-  //       'password': password,
-  //     }),
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     final json = jsonDecode(response.body) as Map<String, dynamic>;
-  //     final userJson = json['user'] as Map<String, dynamic>;
-  //     final user = User.fromJson(userJson);
-  //     print(user);
-  //     return user;
-  //   } else {
-  //     throw Exception('Failed to login');
-  //   }
-  // }
-
   static var client = http.Client();
   // Function to get the login user from the API
   static Future<Map<String, dynamic>> loginUser(

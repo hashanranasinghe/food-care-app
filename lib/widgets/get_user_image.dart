@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import '../models/userModel.dart';
@@ -7,7 +9,8 @@ import '../utils/constraints.dart';
 
 class GetUserImage extends StatelessWidget {
   final String id;
-  const GetUserImage({Key? key, required this.id}) : super(key: key);
+  final double radius ;
+  const GetUserImage({Key? key, required this.id, this.radius = 20.0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class GetUserImage extends StatelessWidget {
           if (snapshot.hasData) {
             final user = snapshot.data!;
             return CircleAvatar(
-
+              radius: radius,
               backgroundColor: kPrimaryColorlight,
               backgroundImage: user.imageUrl == ""
                   ? AssetImage(icon.toString())

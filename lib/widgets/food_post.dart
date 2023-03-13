@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
 import 'package:food_care/widgets/get_user_image.dart';
+import 'package:food_care/widgets/show_time_ago_row.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
+import '../models/foodPostModel.dart';
 import '../models/userModel.dart';
 import '../services/api services/food_api_services.dart';
 import '../services/date.dart';
@@ -27,7 +30,7 @@ class _FoodPostState extends State<FoodPost> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+
     _foodPostListViewModel =
         Provider.of<FoodPostListViewModel>(context, listen: false);
   }
@@ -87,16 +90,13 @@ class _FoodPostState extends State<FoodPost> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 5),
+                                          horizontal: 2),
                                       child: Icon(
                                         Icons.circle,
-                                        size: 8,
+                                        size: 5,
                                       ),
                                     ),
-                                    Text(
-                                      "${Date.getStringdatetime(food.createdAt)} ago",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
+                                    ShowTimeAgoRow(time: food.updatedAt),
                                   ],
                                 )
                               ],
@@ -121,10 +121,10 @@ class _FoodPostState extends State<FoodPost> {
                               Row(
                                 children: [
                                   CircleAvatar(
-                                    radius: 10.0,
-                                    backgroundColor: Colors.transparent,
-                                    child: GetUserImage(id: food.userId.toString())
-                                  ),
+                                      radius: 10.0,
+                                      backgroundColor: Colors.transparent,
+                                      child: GetUserImage(
+                                          id: food.userId.toString())),
                                   Padding(
                                     padding: EdgeInsets.only(left: 10),
                                     child: Text(
@@ -194,11 +194,11 @@ class _FoodPostState extends State<FoodPost> {
                                     children: [
                                       if (widget.food == true) ...[
                                         IconButton(
-                                            onPressed: () async{
+                                            onPressed: () async {
                                               print("ok");
-
-                                              print(user.id);
-
+                                              final Food foodPost = await FoodApiServices.getFoodPost(foodId: food.id.toString());
+                                              print(foodPost.author);
+                                              openDisplayFoodPost(context,foodPost);
                                             },
                                             icon: Icon(Icons
                                                 .arrow_circle_right_outlined))
@@ -211,16 +211,20 @@ class _FoodPostState extends State<FoodPost> {
                                                     (BuildContext context) {
                                                   return UpdateNDelete(
                                                       update: () async {
-                                                    final getForum =
+                                                    final getFood =
                                                         await FoodApiServices
                                                             .getOwnFoodPost(
                                                                 foodId: food.id
                                                                     .toString());
-                                                    print(getForum.id);
+                                                    print(getFood.listDays);
+                                                    openUpdateFoodPost(context, getFood);
+                                                    openUpdateFoodPost(context, getFood);
                                                   }, delete: () async {
-                                                        print("ok");
+                                                    print("ok");
                                                     await FoodApiServices
-                                                        .deleteFoodPost(foodId: food.id.toString());
+                                                        .deleteFoodPost(
+                                                            foodId: food.id
+                                                                .toString());
                                                     Provider.of<FoodPostListViewModel>(
                                                             context,
                                                             listen: false)

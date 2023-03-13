@@ -9,8 +9,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../models/foodPostModel.dart';
 import '../services/validate_handeler.dart';
+import '../utils/config.dart';
 import '../widgets/Gtextformfiled.dart';
 import '../widgets/buttons.dart';
+import '../widgets/showServerImages.dart';
 import '../widgets/show_images.dart';
 
 class AddFoodPostScreen extends StatefulWidget {
@@ -29,15 +31,13 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.food != null){
+    if (widget.food != null) {
       titleController.text = widget.food!.title;
       descriptionController.text = widget.food!.description;
       otherController.text = widget.food!.other!;
       pickUptimesController.text = widget.food!.pickupTimes;
       _selectedDay = widget.food!.listDays;
-      imagePaths = widget.food!.imageUrls;
-
-
+      imageUrls = widget.food!.imageUrls;
     }
 
     _foodPostAddViewModel =
@@ -51,6 +51,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   String other = "";
   String pickUpTimes = "";
   List<String> imagePaths = [];
+  List<String> imageUrls = [];
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -78,6 +79,12 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
 
   final _form = GlobalKey<FormState>();
 
+  List<String> _convertToLinks() {
+    imageUrls =
+        imageUrls.map((image) => Config.imageUrl(imageUrl: image)).toList();
+    return imageUrls;
+  }
+
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<FoodPostAddViewModel>(context);
@@ -103,34 +110,65 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ShowImages(
-                        imagePaths: imagePaths,
-                        galleryOnPress: () async {
-                          final pickedFiles =
-                              await ImagePicker().pickMultiImage(
-                            maxWidth: 800,
-                            imageQuality: 80,
-                          );
-                          if (pickedFiles != null) {
-                            setState(() {
-                              imagePaths.addAll(pickedFiles
-                                  .map((file) => file.path)
-                                  .toList());
-                            });
-                            print(imagePaths);
-                            Navigator.pop(context);
-                          }
-                        },
-                        cameraOnPress: () async {
-                          final pickedFile = await ImagePicker()
-                              .getImage(source: ImageSource.camera);
-                          if (pickedFile != null) {
-                            setState(() {
-                              imagePaths.add(pickedFile.path);
-                            });
-                            Navigator.pop(context);
-                          }
-                        }),
+                    if (imageUrls.length == 0) ...[
+                      ShowImages(
+                          imagePaths: imagePaths,
+                          galleryOnPress: () async {
+                            final pickedFiles =
+                                await ImagePicker().pickMultiImage(
+                              maxWidth: 800,
+                              imageQuality: 80,
+                            );
+                            if (pickedFiles != null) {
+                              setState(() {
+                                imagePaths.addAll(pickedFiles
+                                    .map((file) => file.path)
+                                    .toList());
+                              });
+                              print(imagePaths);
+                              Navigator.pop(context);
+                            }
+                          },
+                          cameraOnPress: () async {
+                            final pickedFile = await ImagePicker()
+                                .pickImage(source: ImageSource.camera);
+                            if (pickedFile != null) {
+                              setState(() {
+                                imagePaths.add(pickedFile.path);
+                              });
+                              Navigator.pop(context);
+                            }
+                          })
+                    ] else ...[
+                      ShowServerImages(
+                          imageUrls: _convertToLinks(),
+                          galleryOnPress: () async {
+                            final pickedFiles =
+                                await ImagePicker().pickMultiImage(
+                              maxWidth: 800,
+                              imageQuality: 80,
+                            );
+                            if (pickedFiles != null) {
+                              setState(() {
+                                imagePaths.addAll(pickedFiles
+                                    .map((file) => file.path)
+                                    .toList());
+                              });
+                              print(imagePaths);
+                              Navigator.pop(context);
+                            }
+                          },
+                          cameraOnPress: () async {
+                            final pickedFile = await ImagePicker()
+                                .pickImage(source: ImageSource.camera);
+                            if (pickedFile != null) {
+                              setState(() {
+                                imagePaths.add(pickedFile.path);
+                              });
+                              Navigator.pop(context);
+                            }
+                          })
+                    ],
                     const DividerWidget(),
                     Gtextformfiled(
                         label: "Title",

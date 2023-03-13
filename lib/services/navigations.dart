@@ -3,6 +3,7 @@ import 'package:food_care/models/forumModel.dart';
 import 'package:food_care/screens/add_food_post_screen.dart';
 import 'package:food_care/screens/add_forum_screen.dart';
 import 'package:food_care/screens/chat_screen.dart';
+import 'package:food_care/screens/food_post_display_screen.dart';
 import 'package:food_care/screens/forum_screen.dart';
 import 'package:food_care/screens/home_screen.dart';
 import 'package:food_care/screens/login_screen.dart';
@@ -83,4 +84,9 @@ void openMessaging(BuildContext context) async {
 void openOwnFoodPosts(BuildContext context) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => const HomeScreen(food: false)));
+}
+
+void openDisplayFoodPost(BuildContext context,Food foodPost) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => FoodPostDisplayScreen(foodPost: foodPost)));
 }

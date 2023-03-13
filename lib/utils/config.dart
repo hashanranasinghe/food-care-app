@@ -40,6 +40,10 @@ class Config {
     String path = "api/food/ownfood/$id";
     return path;
   }
+  static String getFoodPost({required String id}) {
+    String path = "api/food/$id";
+    return path;
+  }
 
   //image
   static String imageUrl({required String imageUrl}) {
