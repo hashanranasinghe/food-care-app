@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import '../models/foodPostModel.dart';
 import '../models/userModel.dart';
 import '../services/api services/food_api_services.dart';
-import '../services/date.dart';
 import '../utils/config.dart';
 import '../view models/food post view/food_post_view_model.dart';
 
@@ -62,8 +61,9 @@ class _FoodPostState extends State<FoodPost> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 50, bottom: 10),
+                              padding: const EdgeInsets.only(
+                                top: 60,
+                              ),
                               child: Text(
                                 food.title,
                                 style: TextStyle(
@@ -75,31 +75,28 @@ class _FoodPostState extends State<FoodPost> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_on_rounded,
-                                      size: 15,
-                                    ),
-                                    Text(
-                                      "4 km",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 2),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 5,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15, top: 5),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_on_rounded,
+                                        size: 15,
                                       ),
-                                    ),
-                                    ShowTimeAgoRow(time: food.updatedAt),
-                                  ],
-                                )
-                              ],
+                                      Text(
+                                        "4 km",
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  ShowTimeAgoRow(time: food.updatedAt),
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -196,9 +193,14 @@ class _FoodPostState extends State<FoodPost> {
                                         IconButton(
                                             onPressed: () async {
                                               print("ok");
-                                              final Food foodPost = await FoodApiServices.getFoodPost(foodId: food.id.toString());
+                                              final Food foodPost =
+                                                  await FoodApiServices
+                                                      .getFoodPost(
+                                                          foodId: food.id
+                                                              .toString());
                                               print(foodPost.author);
-                                              openDisplayFoodPost(context,foodPost);
+                                              openDisplayFoodPost(
+                                                  context, foodPost);
                                             },
                                             icon: Icon(Icons
                                                 .arrow_circle_right_outlined))
@@ -217,8 +219,10 @@ class _FoodPostState extends State<FoodPost> {
                                                                 foodId: food.id
                                                                     .toString());
                                                     print(getFood.listDays);
-                                                    openUpdateFoodPost(context, getFood);
-                                                    openUpdateFoodPost(context, getFood);
+                                                    openUpdateFoodPost(
+                                                        context, getFood);
+                                                    openUpdateFoodPost(
+                                                        context, getFood);
                                                   }, delete: () async {
                                                     print("ok");
                                                     await FoodApiServices

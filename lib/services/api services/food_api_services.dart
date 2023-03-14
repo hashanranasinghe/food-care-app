@@ -65,14 +65,50 @@ class FoodApiServices {
       request.fields['listDays'] = food.listDays;
       request.fields['location[lan]'] = food.location.lan.toString();
       request.fields['location[lon]'] = food.location.lon.toString();
+
       for (var file in food.imageUrls) {
         request.files.add(await http.MultipartFile.fromPath('imageUrls', file));
       }
+
       var response = await request.send();
       if (response.statusCode == 200) {
         print('Food post uploaded.');
       } else {
         print('Failed to upload food post.');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
+  static Future<void> updateFoodPost({required Food food}) async {
+    try {
+      var request = http.MultipartRequest(
+          'PUT',
+          Uri.http(
+              Config.apiURL, Config.getOwnFoodPost(id: food.id.toString())));
+      String? token = await StoreToken.getToken();
+      request.headers.addAll({'Authorization': 'Bearer $token'});
+      request.fields['title'] = food.title;
+      request.fields['author'] = food.author.toString();
+      request.fields['description'] = food.description;
+      request.fields['quantity'] = food.quantity.toString();
+      request.fields['other'] = food.other.toString();
+      request.fields['pickupTimes'] = food.pickupTimes;
+      request.fields['listDays'] = food.listDays;
+      request.fields['location[lan]'] = food.location.lan.toString();
+      request.fields['location[lon]'] = food.location.lon.toString();
+
+      for (var file in food.imageUrls) {
+        request.files.add(await http.MultipartFile.fromPath('imageUrls', file));
+      }
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Food post updated.');
+      } else {
+        print('Failed to update food post.');
       }
     } catch (error) {
       print('Error: $error');

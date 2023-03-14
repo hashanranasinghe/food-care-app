@@ -12,7 +12,7 @@ class ShowImages extends StatelessWidget {
       {Key? key,
       required this.imagePaths,
       required this.galleryOnPress,
-      required this.cameraOnPress})
+      required this.cameraOnPress,})
       : super(key: key);
 
   @override
@@ -74,7 +74,7 @@ class ShowImages extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
-                      image: FileImage(File(image)), fit: BoxFit.cover)),
+                      image: image.contains("http")? NetworkImage(image) as ImageProvider<Object>: FileImage(File(image)), fit: BoxFit.cover)),
             ),
           );
         },

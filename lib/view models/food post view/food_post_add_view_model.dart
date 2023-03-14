@@ -24,6 +24,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
         title: title,
         description: description,
         quantity: quantity,
+        other: other,
         pickupTimes: pickupTimes,
         listDays: listDays,
         location: location,
@@ -31,7 +32,29 @@ class FoodPostAddViewModel extends ChangeNotifier {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now());
     await FoodApiServices.createFoodPost(food: foodPost);
-    print(foodPost);
+    notifyListeners();
+  }
+
+  Future<void> updateFoodPost() async {
+    imageUrls = imageUrls
+        .where((element) => element.contains('com.example.food_care'))
+        .toList();
+    final foodPost = Food(
+        id: id,
+        author: author,
+        title: title,
+        description: description,
+        quantity: quantity,
+        other: other,
+        pickupTimes: pickupTimes,
+        listDays: listDays,
+        location: location,
+        imageUrls: imageUrls,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now());
+
+    await FoodApiServices.updateFoodPost(food: foodPost);
+    print(foodPost.imageUrls);
     notifyListeners();
   }
 }

@@ -79,8 +79,10 @@ class ForumApiServices {
     var request = http.MultipartRequest(
         'POST', Uri.http(Config.apiURL, Config.getApostForums));
     request.headers['Authorization'] = 'Bearer $token';
+
     request.files.add(await http.MultipartFile.fromPath(
         'imageUrl', forum.imageUrl.toString()));
+
     request.fields['title'] = forum.title;
     request.fields['description'] = forum.description;
     request.fields['author'] = forum.author;
@@ -156,7 +158,6 @@ class ForumApiServices {
 
     return responseString;
   }
-
 
   //delete forum
   static Future<void> deleteForum(String forumId) async {
