@@ -21,6 +21,10 @@ class Config {
     String path = "/api/forums/ownforums/$id";
     return path;
   }
+  static String deleteOwnForumImage({required String id}) {
+    String path = "/api/forums/ownforums/$id/image";
+    return path;
+  }
 
   static String likeForum({required String id}) {
     String path = "/api/forums/$id/like";
@@ -40,6 +44,12 @@ class Config {
     String path = "api/food/ownfood/$id";
     return path;
   }
+
+  static String getOwnFoodPostImages({required String id}) {
+    String path = "api/food/ownfood/$id/images";
+    return path;
+  }
+
   static String getFoodPost({required String id}) {
     String path = "api/food/$id";
     return path;

@@ -42,7 +42,8 @@ class AddForumViewModel extends ChangeNotifier {
         createdAt: createdAt = DateTime.now(),
         updatedAt: updatedAt = DateTime.now());
     await ForumApiServices.updateForum(forum: forum);
-
+    print("==========================================");
+print(imageUrl);
     notifyListeners();
   }
 }

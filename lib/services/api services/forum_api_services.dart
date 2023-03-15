@@ -134,7 +134,7 @@ class ForumApiServices {
       'Authorization': 'Bearer $token',
     });
 
-    if (forum.imageUrl != null) {
+    if (forum.imageUrl != "" && forum.imageUrl != null) {
       print('Adding image to request...');
       request.files.add(await http.MultipartFile.fromPath(
         'imageUrl',
@@ -179,4 +179,25 @@ class ForumApiServices {
       print('Failed to delete forum');
     }
   }
+  //delete image forum
+  static Future<void> deleteImageForum(String forumId) async {
+    // Get the JWT token from secure storage
+    String? token = await StoreToken.getToken();
+    final response = await client.delete(
+      Uri.http(Config.apiURL, Config.deleteOwnForumImage(id: forumId)),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Forum deleted successfully
+      print('Forum deleted successfully');
+    } else {
+      // Forum not found or other error
+      print('Failed to delete forum');
+    }
+  }
+
 }

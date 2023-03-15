@@ -1,7 +1,7 @@
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_care/models/forumModel.dart';
+import 'package:food_care/services/api%20services/forum_api_services.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/forum%20view/forum_add_view_model.dart';
@@ -55,127 +55,191 @@ class _AddForumScreenState extends State<AddForumScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
-        iconTheme: IconThemeData(
-            color: Colors.black
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Text(
+          "Forum",
+          style: TextStyle(color: Colors.black),
         ),
-        title: Text("Forum",style: TextStyle(
-            color: Colors.black
-        ),),
       ),
       body: Consumer<UserViewModel>(
-            builder: (context, userViewModel, child) {
-              if (userViewModel.user == null) {
-                userViewModel.getCurrentUser();
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8, bottom: 8, left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        builder: (context, userViewModel, child) {
+          if (userViewModel.user == null) {
+            userViewModel.getCurrentUser();
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8, bottom: 8, left: 10, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: kPrimaryColorlight,
-                                  child: Image.asset(icon),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(userViewModel.user!.name),
-                                )
-                              ],
+                            CircleAvatar(
+                              backgroundColor: kPrimaryColorlight,
+                              child: Image.asset(icon),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return TakeImages(galleryOnPress: () async {
-                                        final pickedFile = await ImagePicker()
-                                            .getImage(source: ImageSource.gallery);
-                                        print(pickedFile!.path);
-
-                                        setState(() {
-                                          imagePath = pickedFile.path;
-                                        });
-
-                                        Navigator.pop(context);
-                                      }, cameraOnPress: () async {
-                                        final pickedFile = await ImagePicker()
-                                            .getImage(source: ImageSource.camera);
-                                        print(pickedFile!.path);
-                                        setState(() {
-                                          imagePath = pickedFile.path;
-                                        });
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                  );
-                                },
-                                icon: Icon(Icons.camera_alt_outlined))
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(userViewModel.user!.name),
+                            )
                           ],
                         ),
-                      ),
-                      if (imagePath != "") ...[
-                        SizedBox(height: 200, child: Image.file(File(imagePath)))
-                      ] else if (imageUrl != "") ...[
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return TakeImages(galleryOnPress: () async {
+                                    final pickedFile = await ImagePicker()
+                                        .pickImage(source: ImageSource.gallery);
+                                    print(pickedFile!.path);
+
+                                    setState(() {
+                                      imagePath = pickedFile.path;
+                                    });
+
+                                    Navigator.pop(context);
+                                  }, cameraOnPress: () async {
+                                    final pickedFile = await ImagePicker()
+                                        .pickImage(source: ImageSource.camera);
+                                    print(pickedFile!.path);
+                                    setState(() {
+                                      imagePath = pickedFile.path;
+                                    });
+                                    Navigator.pop(context);
+                                  });
+                                },
+                              );
+                            },
+                            icon: Icon(Icons.camera_alt_outlined))
+                      ],
+                    ),
+                  ),
+                  if (imagePath != "") ...[
+                    Stack(
+                      children: [
+                        SizedBox(
+                          height: 200,
+                          child: Image.file(File(imagePath)),
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: Container(
+                            width: 26,
+                            height: 26,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.50),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.close,
+                                size: 11,
+                              ),
+                              color: Colors.black,
+                              onPressed: () {
+                                setState(() {
+                                  imagePath = "";
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ] else if (imageUrl != "" &&
+                      widget.forum!.imageUrl != null) ...[
+                    Stack(
+                      children: [
                         SizedBox(
                             height: 500,
-                            child: Image.network(Config.imageUrl(imageUrl: imageUrl)))
-                      ] else ...[
-                        Container()
-                      ],
-                      Form(
-                        key: _form,
-                        child: Column(
-                          children: [
-                            Gtextformfiled(
-                                label: "Title",
-                                onchange: (text) {
-                                  vm.title = text;
-                                },
-                                valid: (text) {
-                                  return Validater.genaralvalid(text!);
-                                },
-                                save: (text) {
-                                  vm.title = text!;
-                                },
-                                controller: titleController),
-                            Gtextformfiled(
-                                keybordtype: TextInputType.multiline,
-                                label: "Description",
-                                onchange: (text) {
-                                  vm.description = text;
-                                },
-                                valid: (text) {
-                                  return Validater.genaralvalid(text!);
-                                },
-                                save: (text) {
-                                  description = text!;
-                                },
-                                controller: descriptionController),
-                          ],
+                            child: Image.network(
+                                Config.imageUrl(imageUrl: imageUrl))),
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: Container(
+                            width: 26,
+                            height: 26,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.50),
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.close,
+                                size: 11,
+                              ),
+                              color: Colors.black,
+                              onPressed: () async {
+                                print(Config.imageUrl(imageUrl: imageUrl));
+                                await ForumApiServices.deleteImageForum(
+                                    widget.forum!.id.toString());
+                                setState(() {
+                                  imageUrl = "";
+                                });
+                                print(imageUrl);
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                      Genaralbutton(
-                        pleft: 100,
-                        pright: 100,
-                        onpress: () {
-                          uploadForum(context, author: userViewModel.user!.name);
-                        },
-                        text: "Upload",
-                      ),
-                    ],
+                      ],
+                    )
+                  ] else ...[
+                    Container()
+                  ],
+                  Form(
+                    key: _form,
+                    child: Column(
+                      children: [
+                        Gtextformfiled(
+                            label: "Title",
+                            onchange: (text) {
+                              vm.title = text;
+                            },
+                            valid: (text) {
+                              return Validater.genaralvalid(text!);
+                            },
+                            save: (text) {
+                              vm.title = text!;
+                            },
+                            controller: titleController),
+                        Gtextformfiled(
+                            keybordtype: TextInputType.multiline,
+                            label: "Description",
+                            onchange: (text) {
+                              vm.description = text;
+                            },
+                            valid: (text) {
+                              return Validater.genaralvalid(text!);
+                            },
+                            save: (text) {
+                              description = text!;
+                            },
+                            controller: descriptionController),
+                      ],
+                    ),
                   ),
-                );
-              }
-            },
-          ),
+                  Genaralbutton(
+                    pleft: 100,
+                    pright: 100,
+                    onpress: () {
+                      uploadForum(context, author: userViewModel.user!.name);
+                    },
+                    text: "Upload",
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -190,8 +254,10 @@ class _AddForumScreenState extends State<AddForumScreen> {
           if (imagePath != "") {
             print('Image path: $imagePath');
             _addForumViewModel.imageUrl = imagePath.toString();
+          } else if (imagePath == "" && imageUrl == "") {
+            _addForumViewModel.imageUrl = "";
           } else {
-            print('Image path is null');
+            print('Image path is null ${_addForumViewModel.imageUrl}');
           }
         });
         await _addForumViewModel.updateForum();
@@ -210,5 +276,4 @@ class _AddForumScreenState extends State<AddForumScreen> {
       }
     }
   }
-
 }

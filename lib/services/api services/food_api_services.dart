@@ -172,10 +172,25 @@ class FoodApiServices {
 
     if (response.statusCode == 200) {
       // Forum deleted successfully
-      print('Forum deleted successfully');
+      print('Food post deleted successfully');
     } else {
       // Forum not found or other error
-      print('Failed to delete forum');
+      print('Failed to delete food post');
+    }
+  }
+
+  //delete food images
+  static Future<void> deleteFoodPostImages({required String foodId}) async {
+    String? token = await StoreToken.getToken();
+    final headers = {'Authorization': 'Bearer $token'};
+    final response = await http.delete(
+        Uri.http(Config.apiURL, Config.getOwnFoodPostImages(id: foodId)),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      print('Food post images deleted successfully');
+    } else {
+      throw Exception('Failed to delete food post images: ${response.body}');
     }
   }
 }
