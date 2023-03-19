@@ -4,7 +4,7 @@ import 'package:food_care/widgets/forum_post.dart';
 import 'package:provider/provider.dart';
 import '../view models/forum view/forum_list-view_model.dart';
 import '../view models/user view/userViewModel.dart';
-import '../view models/user view/user_list_view_model.dart';
+
 
 class ForumScreen extends StatefulWidget {
   final bool forum;
@@ -23,7 +23,7 @@ class _ForumScreenState extends State<ForumScreen> {
     super.initState();
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    Provider.of<UserListViewModel>(context, listen: false).getAllUsers();
+    // Provider.of<UserListViewModel>(context, listen: false).getAllUsers();
     _populateAllForums();
   }
 
@@ -40,8 +40,8 @@ class _ForumScreenState extends State<ForumScreen> {
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       final vm = Provider.of<ForumListViewModel>(context);
-      final um = Provider.of<UserListViewModel>(context);
-      print(um.users);
+      // final um = Provider.of<UserListViewModel>(context);
+      // print(um.users);
       return AppBarWidget(
         text: "Forum",
         widget: _updateUi(vm, userViewModel),

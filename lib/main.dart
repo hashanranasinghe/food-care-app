@@ -7,7 +7,7 @@ import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_m
 import 'package:food_care/view%20models/forum%20view/forum_add_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_list-view_model.dart';
 import 'package:food_care/view%20models/user%20view/userViewModel.dart';
-import 'package:food_care/view%20models/user%20view/user_list_view_model.dart';
+import 'package:food_care/view%20models/user%20view/user_update_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -19,7 +19,8 @@ void main() {
     ChangeNotifierProvider(create: (_) => CommentAddViewModel()),
     ChangeNotifierProvider(create: (_) => FoodPostListViewModel()),
     ChangeNotifierProvider(create: (_) => FoodPostAddViewModel()),
-    ChangeNotifierProvider(create: (_)=> UserListViewModel()),
+    // ChangeNotifierProvider(create: (_) => UserListViewModel()),
+    ChangeNotifierProvider(create: (_) => UserUpdateViewModel()),
   ], child: const MyApp()));
 }
 
@@ -29,7 +30,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: "Poppins",),
+      theme: ThemeData(
+        fontFamily: "Poppins",
+      ),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );

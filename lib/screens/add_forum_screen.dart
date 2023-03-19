@@ -30,12 +30,14 @@ class _AddForumScreenState extends State<AddForumScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _addForumViewModel = Provider.of<AddForumViewModel>(context, listen: false);
     if (widget.forum != null) {
       titleController.text = widget.forum!.title;
       descriptionController.text = widget.forum!.description;
       imageUrl = widget.forum!.imageUrl.toString();
+      _addForumViewModel.imageUrl = widget.forum!.imageUrl.toString();
     }
-    _addForumViewModel = Provider.of<AddForumViewModel>(context, listen: false);
+
     _forumListViewModel =
         Provider.of<ForumListViewModel>(context, listen: false);
   }
@@ -257,7 +259,7 @@ class _AddForumScreenState extends State<AddForumScreen> {
           } else if (imagePath == "" && imageUrl == "") {
             _addForumViewModel.imageUrl = "";
           } else {
-            print('Image path is null ${_addForumViewModel.imageUrl}');
+            print('Image path is null');
           }
         });
         await _addForumViewModel.updateForum();

@@ -134,7 +134,7 @@ class ForumApiServices {
       'Authorization': 'Bearer $token',
     });
 
-    if (forum.imageUrl != "" && forum.imageUrl != null) {
+    if (forum.imageUrl != "" && forum.imageUrl != null && !forum.imageUrl.toString().contains("uploads")) {
       print('Adding image to request...');
       request.files.add(await http.MultipartFile.fromPath(
         'imageUrl',

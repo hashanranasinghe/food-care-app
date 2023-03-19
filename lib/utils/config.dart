@@ -8,6 +8,11 @@ class Config {
   static const String currentUserAPI = "/api/users/current";
   static const String users = "/api/users/users";
 
+  static String updateUser({required String id}) {
+    String path = "api/users/update/$id";
+    return path;
+  }
+
   static String getUser(String id) {
     String path = "api/users/user/$id";
     return path;

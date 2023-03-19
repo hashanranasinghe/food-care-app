@@ -13,7 +13,6 @@ class UserViewModel extends ChangeNotifier {
       final user = await UserAPiServices.getCurrentUser();
       _user = user;
       notifyListeners();
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }

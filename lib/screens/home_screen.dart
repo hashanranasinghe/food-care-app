@@ -38,7 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<FoodPostListViewModel>(context);
-    return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
+    return Consumer<UserViewModel>(
+        builder: (context, userViewModel, child) {
       if (userViewModel.user == null) {
         userViewModel.getCurrentUser();
         return const Center(child: CircularProgressIndicator());

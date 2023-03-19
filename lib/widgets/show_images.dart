@@ -34,7 +34,7 @@ class _ShowImagesState extends State<ShowImages> {
           ] else ...[
             _showImages(imagePaths: widget.imagePaths)
           ],
-          Padding(
+          if(widget.imagePaths.length<5)...[Padding(
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             child: GestureDetector(
               onTap: () {
@@ -58,7 +58,9 @@ class _ShowImagesState extends State<ShowImages> {
               ),
             ),
           ),
-          Text("Add upto 5 images"),
+          Text("Add upto 5 images"),]else...[
+            Container(),
+          ]
         ],
       ),
     );

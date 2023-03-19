@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
@@ -33,7 +32,7 @@ class GetUserImage extends StatelessWidget {
             return Text('User not found');
           }
         } else {
-          return CircularProgressIndicator();
+          return Icon(Icons.face,color: kPrimaryColordark,);
         }
       },
     );

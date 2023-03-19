@@ -52,7 +52,7 @@ class UserAPiServices {
     request.fields['email'] = user.email;
     request.fields['phone'] = user.phone;
     request.fields['address'] = user.address!;
-    request.fields['password'] = user.password;
+    request.fields['password'] = user.password!;
 
     // Add the user's image to the request
     if (user.imageUrl != null) {
@@ -95,6 +95,77 @@ class UserAPiServices {
       throw Exception('Failed to get current user');
     }
   }
+
+  // static Future<void> updateUser({required User user}) async {
+  //
+  //   String? token = await StoreToken.getToken();
+  //   // Create a new multipart request
+  //   var request = http.MultipartRequest(
+  //     'PUT',
+  //     Uri.http(Config.apiURL, Config.updateUser(id: user.id.toString())),
+  //   );
+  //
+  //   // Add the user data to the request
+  //   request.fields['name'] = user.name;
+  //   request.fields['email'] = user.email;
+  //   request.fields['phone'] = user.phone;
+  //   request.fields['address'] = user.address.toString();
+  //   request.fields['password'] = user.password.toString();
+  //
+  //   // Add the user's image to the request
+  //   if (user.imageUrl != "" &&
+  //       user.imageUrl != null &&
+  //       !user.imageUrl.toString().contains("profiles")) {
+  //     final file = await http.MultipartFile.fromPath(
+  //       'imageUrl',
+  //       user.imageUrl.toString(),
+  //     );
+  //     request.files.add(file);
+  //   }
+  //
+  //   // Set the JWT token in the request headers
+  //   request.headers['Authorization'] = 'Bearer $token';
+  //   print(request.fields);
+  //   // Send the request
+  //   final response = await request.send();
+  //
+  //   // Check the response status code
+  //   if (response.statusCode == 200) {
+  //     // Update successful
+  //     print('User updated successfully.');
+  //   } else {
+  //     // Update failed
+  //     print('Update failed with status code ${response.statusCode}.');
+  //   }
+  // }
+  //Todo can't update profile picture
+  static Future<void> updateUser({required User user}) async {
+    String? token = await StoreToken.getToken();
+    // Encode the user data as JSON
+    final userData = jsonEncode({
+      'name': user.name,
+      'email': user.email,
+      'phone': user.phone,
+      'address': user.address,
+      'password': user.password,
+    });
+
+    // Create a new HTTP request
+    final url = Uri.http(Config.apiURL, Config.updateUser(id: user.id.toString()));
+    final headers = {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'};
+    final response = await http.put(url, headers: headers, body: userData);
+
+    // Check the response status code
+    if (response.statusCode == 200) {
+      // Update successful
+      print('User updated successfully.');
+    } else {
+      // Update failed
+      print('Update failed with status code ${response.statusCode}.');
+    }
+  }
+
+
 
   static Future<User> getUser(String id) async {
     print(id);

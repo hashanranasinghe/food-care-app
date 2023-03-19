@@ -114,7 +114,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ShowImages(
-                      foodId: widget.food?.id.toString(),
+                        foodId: widget.food?.id.toString(),
                         imagePaths: imagePaths,
                         galleryOnPress: () async {
                           final pickedFiles =

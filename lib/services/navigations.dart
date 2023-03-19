@@ -8,10 +8,13 @@ import 'package:food_care/screens/forum_screen.dart';
 import 'package:food_care/screens/home_screen.dart';
 import 'package:food_care/screens/login_screen.dart';
 import 'package:food_care/screens/messaging_screen.dart';
+import 'package:food_care/screens/profile_screen.dart';
+import 'package:food_care/screens/settings_screen.dart';
 import 'package:food_care/screens/signup_screen.dart';
 import 'package:food_care/widgets/bottom_navigationbar.dart';
 
 import '../models/foodPostModel.dart';
+import '../models/userModel.dart';
 
 void openUserSignUp(BuildContext context) async {
   Navigator.push(
@@ -89,4 +92,13 @@ void openOwnFoodPosts(BuildContext context) async {
 void openDisplayFoodPost(BuildContext context,Food foodPost) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => FoodPostDisplayScreen(foodPost: foodPost)));
+}
+void openSettings(BuildContext context) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const SettingsScreen()));
+}
+
+void openMyProfile(BuildContext context,User user) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => ProfileScreen(user: user,)));
 }

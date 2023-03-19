@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:food_care/services/date.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/get_user_image.dart';
@@ -23,6 +22,7 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
     return Scaffold(
 
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: kPrimaryColordark,
         title: Center(child: Text(widget.foodPost!.title)),
       ),
