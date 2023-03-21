@@ -6,8 +6,8 @@ import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/food_post.dart';
 import 'package:provider/provider.dart';
-import '../view models/food post view/food_post_list_view_model.dart';
-import '../view models/user view/userViewModel.dart';
+import '../../view models/food post view/food_post_list_view_model.dart';
+import '../../view models/user view/userViewModel.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool food;

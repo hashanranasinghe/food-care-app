@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_care/screens/splash_screen.dart';
+import 'package:food_care/screens/intro/splash_screen.dart';
+import 'package:food_care/view%20models/chat%20view/conversation/conversation_list_view_model.dart';
+import 'package:food_care/view%20models/chat%20view/message/message_list_view_model.dart';
+import 'package:food_care/view%20models/chat%20view/message/send_message_view_model.dart';
 import 'package:food_care/view%20models/comment%20view%20model/comment_add_view_model.dart';
 import 'package:food_care/view%20models/comment%20view%20model/comment_list_view_model.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_model.dart';
@@ -7,6 +10,7 @@ import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_m
 import 'package:food_care/view%20models/forum%20view/forum_add_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_list-view_model.dart';
 import 'package:food_care/view%20models/user%20view/userViewModel.dart';
+import 'package:food_care/view%20models/user%20view/user_list_view_model.dart';
 import 'package:food_care/view%20models/user%20view/user_update_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +23,11 @@ void main() {
     ChangeNotifierProvider(create: (_) => CommentAddViewModel()),
     ChangeNotifierProvider(create: (_) => FoodPostListViewModel()),
     ChangeNotifierProvider(create: (_) => FoodPostAddViewModel()),
-    // ChangeNotifierProvider(create: (_) => UserListViewModel()),
+    ChangeNotifierProvider(create: (_) => UserListViewModel()),
     ChangeNotifierProvider(create: (_) => UserUpdateViewModel()),
+    ChangeNotifierProvider(create: (_) => ChatListViewModel()),
+    ChangeNotifierProvider(create: (_) => MessageListViewModel()),
+    ChangeNotifierProvider(create: (_) => SendMessageViewModel()),
   ], child: const MyApp()));
 }
 

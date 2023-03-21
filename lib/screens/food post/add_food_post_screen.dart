@@ -6,12 +6,12 @@ import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/widgets/divider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../models/foodPostModel.dart';
-import '../services/validate_handeler.dart';
-import '../utils/config.dart';
-import '../widgets/Gtextformfiled.dart';
-import '../widgets/buttons.dart';
-import '../widgets/show_images.dart';
+import '../../models/foodPostModel.dart';
+import '../../services/validate_handeler.dart';
+import '../../utils/config.dart';
+import '../../widgets/Gtextformfiled.dart';
+import '../../widgets/buttons.dart';
+import '../../widgets/show_images.dart';
 
 class AddFoodPostScreen extends StatefulWidget {
   final Food? food;

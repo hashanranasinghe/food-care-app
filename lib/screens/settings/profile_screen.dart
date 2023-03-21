@@ -7,12 +7,12 @@ import 'package:food_care/view%20models/user%20view/user_update_view_model.dart'
 import 'package:food_care/widgets/app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../services/validate_handeler.dart';
-import '../utils/config.dart';
-import '../utils/constraints.dart';
-import '../widgets/Gtextformfiled.dart';
-import '../widgets/buttons.dart';
-import '../widgets/take_images.dart';
+import '../../services/validate_handeler.dart';
+import '../../utils/config.dart';
+import '../../utils/constraints.dart';
+import '../../widgets/Gtextformfiled.dart';
+import '../../widgets/buttons.dart';
+import '../../widgets/take_images.dart';
 
 class ProfileScreen extends StatefulWidget {
   final User user;

@@ -7,7 +7,7 @@ import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/setting_tile.dart';
 import 'package:provider/provider.dart';
 
-import '../models/userModel.dart';
+import '../../models/userModel.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);

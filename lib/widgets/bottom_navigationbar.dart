@@ -1,8 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:food_care/screens/chat_screen.dart';
-import 'package:food_care/screens/forum_screen.dart';
-import 'package:food_care/screens/home_screen.dart';
+import 'package:food_care/screens/chat/chat_screen.dart';
+import 'package:food_care/screens/forum/forum_screen.dart';
+import 'package:food_care/screens/food%20post/home_screen.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/add_post_row.dart';

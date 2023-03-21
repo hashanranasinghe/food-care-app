@@ -9,9 +9,9 @@ import 'package:food_care/widgets/Gtextformfiled.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../services/api services/user_api_services.dart';
-import '../services/validate_handeler.dart';
-import '../widgets/take_images.dart';
+import '../../services/api services/user_api_services.dart';
+import '../../services/validate_handeler.dart';
+import '../../widgets/take_images.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -137,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 builder: (BuildContext context) {
                                   return TakeImages(galleryOnPress: () async {
                                     final pickedFile = await ImagePicker()
-                                        .getImage(source: ImageSource.gallery);
+                                        .pickImage(source: ImageSource.gallery);
                                     print(pickedFile!.path);
 
                                     setState(() {
@@ -147,7 +147,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Navigator.pop(context);
                                   }, cameraOnPress: () async {
                                     final pickedFile = await ImagePicker()
-                                        .getImage(source: ImageSource.camera);
+                                        .pickImage(source: ImageSource.camera);
                                     print(pickedFile!.path);
                                     setState(() {
                                       imagePath = pickedFile.path;

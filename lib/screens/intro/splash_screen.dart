@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
 
-import '../services/store_token.dart';
+import '../../services/store_token.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routName = 'splash-screen';

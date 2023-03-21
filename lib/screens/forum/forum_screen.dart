@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/forum_post.dart';
 import 'package:provider/provider.dart';
-import '../view models/forum view/forum_list-view_model.dart';
-import '../view models/user view/userViewModel.dart';
+import '../../view models/forum view/forum_list-view_model.dart';
+import '../../view models/user view/userViewModel.dart';
 
 
 class ForumScreen extends StatefulWidget {

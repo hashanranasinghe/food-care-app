@@ -109,8 +109,10 @@ class MenuDrawer extends StatelessWidget {
                         color: kPrimaryColordark,
                       ),
                       title: const Text('Message'),
-                      onTap: () {
-                        openChats(context);
+                      onTap: () async {
+                        openChats(context,userViewModel.user!.id.toString());
+                        // print(await ChatApiServices.getConversationsListOfUser(
+                        //     userId: userViewModel.user!.id.toString()));
                       }),
                 ),
                 Card(

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_care/services/store_token.dart';
 import 'package:food_care/utils/constraints.dart';
-import '../services/api services/user_api_services.dart';
-import '../services/navigations.dart';
-import '../services/validate_handeler.dart';
-import '../widgets/Gtextformfiled.dart';
-import '../widgets/buttons.dart';
+import '../../services/api services/user_api_services.dart';
+import '../../services/navigations.dart';
+import '../../services/validate_handeler.dart';
+import '../../widgets/Gtextformfiled.dart';
+import '../../widgets/buttons.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

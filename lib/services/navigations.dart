@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:food_care/models/forumModel.dart';
-import 'package:food_care/screens/add_food_post_screen.dart';
-import 'package:food_care/screens/add_forum_screen.dart';
-import 'package:food_care/screens/chat_screen.dart';
-import 'package:food_care/screens/food_post_display_screen.dart';
-import 'package:food_care/screens/forum_screen.dart';
-import 'package:food_care/screens/home_screen.dart';
-import 'package:food_care/screens/login_screen.dart';
-import 'package:food_care/screens/messaging_screen.dart';
-import 'package:food_care/screens/profile_screen.dart';
-import 'package:food_care/screens/settings_screen.dart';
-import 'package:food_care/screens/signup_screen.dart';
+import 'package:food_care/screens/food%20post/add_food_post_screen.dart';
+import 'package:food_care/screens/forum/add_forum_screen.dart';
+import 'package:food_care/screens/chat/chat_screen.dart';
+import 'package:food_care/screens/food%20post/food_post_display_screen.dart';
+import 'package:food_care/screens/forum/forum_screen.dart';
+import 'package:food_care/screens/food%20post/home_screen.dart';
+import 'package:food_care/screens/login%20&%20register/login_screen.dart';
+import 'package:food_care/screens/chat/messaging_screen.dart';
+import 'package:food_care/screens/settings/profile_screen.dart';
+import 'package:food_care/screens/settings/settings_screen.dart';
+import 'package:food_care/screens/login%20&%20register/signup_screen.dart';
 import 'package:food_care/widgets/bottom_navigationbar.dart';
 
 import '../models/foodPostModel.dart';
@@ -47,17 +47,21 @@ void openAddFoodPost(BuildContext context) async {
           builder: (context) => const AddFoodPostScreen()));
 }
 
-void openUpdateFoodPost(BuildContext context,Food food) async {
+void openUpdateFoodPost(BuildContext context, Food food) async {
   Navigator.push(
       context,
       MaterialPageRoute(
           fullscreenDialog: true,
-          builder: (context) =>  AddFoodPostScreen(food: food)));
+          builder: (context) => AddFoodPostScreen(food: food)));
 }
 
-void openChats(BuildContext context) async {
+void openChats(BuildContext context, String id) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const ChatScreen()));
+      context,
+      MaterialPageRoute(
+          builder: (context) => ChatScreen(
+                id: id,
+              )));
 }
 
 void openOwnForums(BuildContext context) async {
@@ -79,9 +83,15 @@ void openUpdateForum(BuildContext context, Forum forum) async {
               )));
 }
 
-void openMessaging(BuildContext context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const MessagingScreen()));
+void openMessaging(
+    BuildContext context, String receiverName, String conversationId) async {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => MessagingScreen(
+                receiverName: receiverName,
+                conversationId: conversationId,
+              )));
 }
 
 void openOwnFoodPosts(BuildContext context) async {
@@ -89,16 +99,23 @@ void openOwnFoodPosts(BuildContext context) async {
       MaterialPageRoute(builder: (context) => const HomeScreen(food: false)));
 }
 
-void openDisplayFoodPost(BuildContext context,Food foodPost) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => FoodPostDisplayScreen(foodPost: foodPost)));
-}
-void openSettings(BuildContext context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const SettingsScreen()));
+void openDisplayFoodPost(BuildContext context, Food foodPost) async {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => FoodPostDisplayScreen(foodPost: foodPost)));
 }
 
-void openMyProfile(BuildContext context,User user) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => ProfileScreen(user: user,)));
+void openSettings(BuildContext context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
+}
+
+void openMyProfile(BuildContext context, User user) async {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ProfileScreen(
+                user: user,
+              )));
 }

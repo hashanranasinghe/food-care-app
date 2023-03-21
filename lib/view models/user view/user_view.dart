@@ -6,8 +6,8 @@ class UserView {
   final User user;
   UserView({required this.user});
 
-  String? get id {
-    return user.id;
+  String? get uid {
+    return user.uid;
   }
 
   String get name {

@@ -5,8 +5,8 @@ import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/get_user_image.dart';
 import 'package:food_care/widgets/show_time_ago_row.dart';
 
-import '../models/foodPostModel.dart';
-import '../utils/config.dart';
+import '../../models/foodPostModel.dart';
+import '../../utils/config.dart';
 
 class FoodPostDisplayScreen extends StatefulWidget {
   final Food? foodPost;

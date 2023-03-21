@@ -26,6 +26,7 @@ class Config {
     String path = "/api/forums/ownforums/$id";
     return path;
   }
+
   static String deleteOwnForumImage({required String id}) {
     String path = "/api/forums/ownforums/$id/image";
     return path;
@@ -59,6 +60,19 @@ class Config {
     String path = "api/food/$id";
     return path;
   }
+
+  //chat- conversation
+  static String getConversationsOfUser({required String id}) {
+    String path = "api/conversation/chats/$id";
+    return path;
+  }
+
+  //chat- message
+  static String getMessages({required String id}) {
+    String path = "api/message/$id";
+    return path;
+  }
+  static const String sendMessage = "/api/message";
 
   //image
   static String imageUrl({required String imageUrl}) {
