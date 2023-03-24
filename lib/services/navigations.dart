@@ -11,6 +11,7 @@ import 'package:food_care/screens/chat/messaging_screen.dart';
 import 'package:food_care/screens/settings/profile_screen.dart';
 import 'package:food_care/screens/settings/settings_screen.dart';
 import 'package:food_care/screens/login%20&%20register/signup_screen.dart';
+import 'package:food_care/view%20models/chat%20view/conversation/conversation_view_model.dart';
 import 'package:food_care/widgets/bottom_navigationbar.dart';
 
 import '../models/foodPostModel.dart';
@@ -83,14 +84,15 @@ void openUpdateForum(BuildContext context, Forum forum) async {
               )));
 }
 
-void openMessaging(
-    BuildContext context, String receiverName, String conversationId) async {
+void openMessaging(BuildContext context, String receiverName,
+    String conversationId, ConversationViewModel conversationViewModel,String id) async {
   Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => MessagingScreen(
                 receiverName: receiverName,
                 conversationId: conversationId,
+                conversationViewModel: conversationViewModel, id: id,
               )));
 }
 

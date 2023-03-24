@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 const Color kPrimaryColorlight = Color.fromARGB(255, 212, 241, 254);
 const Color kPrimaryColordark = Color(0xFF286B8C);
@@ -33,5 +34,10 @@ const kGradientGreen = LinearGradient(begin: Alignment.topCenter, colors: [
   Color.fromARGB(255, 39, 102, 56),
 ]);
 
+class Convert {
+  static String convertTimeFormat({required DateTime dateTime}) {
+    return DateFormat('hh:mm a').format(dateTime);
+  }
+}
 
 const icon = "assets/images/icon.png";

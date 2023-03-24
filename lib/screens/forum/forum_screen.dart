@@ -66,7 +66,7 @@ class _ForumScreenState extends State<ForumScreen> {
       case Status.empty:
         return Align(
           alignment: Alignment.center,
-          child: Text("No foru found...."),
+          child: Text("No forum found...."),
         );
     }
   }

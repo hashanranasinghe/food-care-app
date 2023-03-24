@@ -34,6 +34,28 @@ class ChatApiServices {
     }
   }
 
+  //get a conversation
+  static Future<Conversation> getConversation({required String conversationId}) async {
+    String? token = await StoreToken.getToken();
+    final response = await client.get(
+      Uri.http(Config.apiURL, Config.getConversation(id: conversationId)),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final conversationJson = jsonDecode(response.body);
+      final conversation = Conversation.fromJson(conversationJson);
+      return conversation;
+    } else if (response.statusCode == 404) {
+      throw Exception('conversation not found');
+    } else {
+      throw Exception('Failed to get conversation');
+    }
+  }
+
   //get all messages of conversation
   static Future<List<dynamic>> getMessageList(
       {required String conversationId}) async {
@@ -84,4 +106,5 @@ class ChatApiServices {
       print('Sending failed with status code ${response.statusCode}.');
     }
   }
+
 }
