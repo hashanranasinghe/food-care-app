@@ -1,4 +1,5 @@
 import 'package:food_care/models/conversationModel.dart';
+import 'package:food_care/view%20models/chat%20view/conversation/conversation_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -16,7 +17,7 @@ class ChatApiServices {
     String? token = await StoreToken.getToken();
 
     final response = await client.get(
-      Uri.http(Config.apiURL, Config.getConversationsOfUser(id: userId)),
+      Uri.http(Config.apiURL, Config.getConversationsOfUser),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -35,10 +36,10 @@ class ChatApiServices {
   }
 
   //get a conversation
-  static Future<Conversation> getConversation({required String conversationId}) async {
+  static Future<ConversationViewModel> getConversation({required String senderId,required String receiverId}) async {
     String? token = await StoreToken.getToken();
     final response = await client.get(
-      Uri.http(Config.apiURL, Config.getConversation(id: conversationId)),
+      Uri.http(Config.apiURL, Config.getConversation(senderId: senderId, receiverId: receiverId)),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -48,13 +49,40 @@ class ChatApiServices {
     if (response.statusCode == 200) {
       final conversationJson = jsonDecode(response.body);
       final conversation = Conversation.fromJson(conversationJson);
-      return conversation;
+      final vm  = ConversationViewModel(conversation: conversation);
+      return vm;
     } else if (response.statusCode == 404) {
       throw Exception('conversation not found');
     } else {
       throw Exception('Failed to get conversation');
     }
   }
+
+  //create a conversation
+  static Future<void> createConversation({required Conversation conversation})async{
+    print(conversation.members);
+    String? token = await StoreToken.getToken();
+    final conversationData = jsonEncode({
+      'senderId': conversation.members[0],
+      'receiverId':conversation.members[1],
+    });
+
+    final url = Uri.http(Config.apiURL, Config.createConversation);
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    final response = await http.post(url, headers: headers, body: conversationData);
+    // Check the response status code
+    if (response.statusCode == 200) {
+      // Update successful
+      print('create conversation successfully.');
+    } else {
+      // Update failed
+      print('creating failed with status code ${response.statusCode}.');
+    }
+  }
+
 
   //get all messages of conversation
   static Future<List<dynamic>> getMessageList(

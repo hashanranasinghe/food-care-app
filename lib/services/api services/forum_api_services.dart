@@ -179,6 +179,7 @@ class ForumApiServices {
       print('Failed to delete forum');
     }
   }
+
   //delete image forum
   static Future<void> deleteImageForum(String forumId) async {
     // Get the JWT token from secure storage

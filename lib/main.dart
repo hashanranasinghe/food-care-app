@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_care/screens/intro/splash_screen.dart';
+import 'package:food_care/view%20models/chat%20view/conversation/conversastion_add_view_model.dart';
 import 'package:food_care/view%20models/chat%20view/conversation/conversation_list_view_model.dart';
 import 'package:food_care/view%20models/chat%20view/message/message_list_view_model.dart';
 import 'package:food_care/view%20models/chat%20view/message/send_message_view_model.dart';
@@ -28,6 +29,7 @@ void main() {
     ChangeNotifierProvider(create: (_) => ChatListViewModel()),
     ChangeNotifierProvider(create: (_) => MessageListViewModel()),
     ChangeNotifierProvider(create: (_) => SendMessageViewModel()),
+    ChangeNotifierProvider(create: (_) => ConversationAddViewModel()),
   ], child: const MyApp()));
 }
 

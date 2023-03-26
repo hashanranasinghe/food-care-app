@@ -41,8 +41,8 @@ class MenuDrawer extends StatelessWidget {
                     ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Colors.white,
-                      backgroundImage: userViewModel.user!.imageUrl == null
-                          ? AssetImage('assets/images/food.jpg')
+                      backgroundImage: userViewModel.user!.imageUrl == ""
+                          ? AssetImage(icon)
                           : NetworkImage(Config.imageUrl(
                               imageUrl: userViewModel.user!.imageUrl
                                   .toString())) as ImageProvider<Object>,

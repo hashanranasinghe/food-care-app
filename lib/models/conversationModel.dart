@@ -5,7 +5,7 @@ class Conversation {
   DateTime updatedAt;
 
   Conversation(
-      {required this.id,
+      {this.id,
       required this.members,
       required this.createdAt,
       required this.updatedAt});

@@ -8,6 +8,7 @@ import 'package:food_care/widgets/food_post.dart';
 import 'package:provider/provider.dart';
 import '../../view models/food post view/food_post_list_view_model.dart';
 import '../../view models/user view/userViewModel.dart';
+import '../../view models/user view/user_list_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool food;
@@ -29,97 +30,101 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _populateAllFoodPosts() {
     if (widget.food == true) {
-      Provider.of<FoodPostListViewModel>(context, listen: false).getAllFoodPosts();
+      Provider.of<FoodPostListViewModel>(context, listen: false)
+          .getAllFoodPosts();
     } else {
-      Provider.of<FoodPostListViewModel>(context, listen: false).getAllOwnFoodPosts();
+      Provider.of<FoodPostListViewModel>(context, listen: false)
+          .getAllOwnFoodPosts();
     }
+    Provider.of<UserListViewModel>(context, listen: false).getAllUsers();
   }
 
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<FoodPostListViewModel>(context);
-    return Consumer<UserViewModel>(
-        builder: (context, userViewModel, child) {
+    final um = Provider.of<UserListViewModel>(context);
+    return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       if (userViewModel.user == null) {
         userViewModel.getCurrentUser();
         return const Center(child: CircularProgressIndicator());
       } else {
         print(userViewModel.user!.name);
         return AppBarWidget(
-            text: "Hi ${userViewModel.user!.name}",
-            icon: Icons.notifications_none,
-            widget: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 300, child: _buildSearchBar()),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: IconButton(
-                        onPressed: () {
-                          _showAddModal(context);
-                        },
-                        icon: Icon(
-                          Icons.filter_alt_outlined,
-                          size: 35,
-                        ),
+          text: "Hi ${userViewModel.user!.name}",
+          icon: Icons.notifications_none,
+          widget: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(width: 300, child: _buildSearchBar()),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: IconButton(
+                      onPressed: () {
+                        _showAddModal(context);
+                      },
+                      icon: Icon(
+                        Icons.filter_alt_outlined,
+                        size: 35,
                       ),
                     ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ColorChangeButton(
+                            onpress: () async {
+                              await FoodApiServices.getFoodPosts();
+                            },
+                            pleft: 30,
+                            pright: 30,
+                            pbottom: 15,
+                            ptop: 15,
+                            text: "Nearby",
+                            fontsize: 20,
+                          ),
+                          ColorChangeButton(
+                            onpress: () {},
+                            pleft: 30,
+                            pright: 30,
+                            pbottom: 15,
+                            ptop: 15,
+                            text: "Top Rated",
+                            fontsize: 20,
+                          ),
+                          ColorChangeButton(
+                            onpress: () {},
+                            pleft: 30,
+                            pright: 30,
+                            pbottom: 15,
+                            ptop: 15,
+                            text: "Quick",
+                            fontsize: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(child: _updateUi(vm, userViewModel,um)),
                   ],
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ColorChangeButton(
-                              onpress: () async {
-                                await FoodApiServices.getFoodPosts();
-                              },
-                              pleft: 30,
-                              pright: 30,
-                              pbottom: 15,
-                              ptop: 15,
-                              text: "Nearby",
-                              fontsize: 20,
-                            ),
-                            ColorChangeButton(
-                              onpress: () {},
-                              pleft: 30,
-                              pright: 30,
-                              pbottom: 15,
-                              ptop: 15,
-                              text: "Top Rated",
-                              fontsize: 20,
-                            ),
-                            ColorChangeButton(
-                              onpress: () {},
-                              pleft: 30,
-                              pright: 30,
-                              pbottom: 15,
-                              ptop: 15,
-                              text: "Quick",
-                              fontsize: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(child: _updateUi(vm, userViewModel)),
-                    ],
-                  ),
-                ),
-              ],
-            ),);
+              ),
+            ],
+          ),
+        );
       }
     });
   }
 
-  Widget _updateUi(FoodPostListViewModel vm, user) {
+  Widget _updateUi(FoodPostListViewModel vm, UserViewModel userViewModel,UserListViewModel um) {
     switch (vm.status) {
       case Status.loading:
         return Align(
@@ -127,7 +132,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: CircularProgressIndicator(),
         );
       case Status.success:
-        return FoodPost(foods: vm.foods,food: widget.food,);
+        return FoodPost(
+          foods: vm.foods,
+          food: widget.food,
+          userId: userViewModel.user!.id.toString(), users: um.users,
+        );
       case Status.empty:
         return Align(
           alignment: Alignment.center,
@@ -175,9 +184,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      IconButton(onPressed: () {
-                        Navigator.pop(context);
-                      }, icon: Icon(Icons.close))
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(Icons.close))
                     ],
                   ),
                   Divider(

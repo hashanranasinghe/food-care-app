@@ -101,11 +101,11 @@ void openOwnFoodPosts(BuildContext context) async {
       MaterialPageRoute(builder: (context) => const HomeScreen(food: false)));
 }
 
-void openDisplayFoodPost(BuildContext context, Food foodPost) async {
+void openDisplayFoodPost(BuildContext context, Food foodPost,String id) async {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => FoodPostDisplayScreen(foodPost: foodPost)));
+          builder: (context) => FoodPostDisplayScreen(foodPost: foodPost,id: id,)));
 }
 
 void openSettings(BuildContext context) async {

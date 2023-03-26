@@ -63,15 +63,14 @@ class Config {
   }
 
   //chat- conversation
-  static String getConversationsOfUser({required String id}) {
-    String path = "api/conversation/chats/$id";
+  static String getConversationsOfUser = "api/conversation/chats";
+
+  static String getConversation({required String senderId,required String receiverId}) {
+    String path = "api/conversation/$senderId/$receiverId";
     return path;
   }
 
-  static String getConversation({required String id}) {
-    String path = "api/conversation/$id";
-    return path;
-  }
+  static const String createConversation = "api/conversation";
 
   //chat- message
   static String getMessages({required String id}) {

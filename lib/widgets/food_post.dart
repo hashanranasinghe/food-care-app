@@ -2,38 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
-import 'package:food_care/widgets/get_user_image.dart';
+
 import 'package:food_care/widgets/show_time_ago_row.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
 import '../models/foodPostModel.dart';
-import '../models/userModel.dart';
+
 import '../services/api services/food_api_services.dart';
 import '../utils/config.dart';
 import '../view models/food post view/food_post_view_model.dart';
+import '../view models/user view/user_view.dart';
 
 class FoodPost extends StatefulWidget {
   final bool? food;
   final List<FoodPostViewModel> foods;
-  const FoodPost({Key? key, required this.foods, this.food}) : super(key: key);
+  final String userId;
+  final List<UserView> users;
+  const FoodPost(
+      {Key? key,
+      required this.foods,
+      this.food,
+      required this.userId,
+      required this.users})
+      : super(key: key);
 
   @override
   State<FoodPost> createState() => _FoodPostState();
 }
 
 class _FoodPostState extends State<FoodPost> {
-  late FoodPostListViewModel _foodPostListViewModel;
-  late User user;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    _foodPostListViewModel =
-        Provider.of<FoodPostListViewModel>(context, listen: false);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,6 +40,8 @@ class _FoodPostState extends State<FoodPost> {
           itemCount: widget.foods.length,
           itemBuilder: (context, index) {
             final food = widget.foods[index];
+            final user =
+                widget.users.firstWhere((user) => user.uid == food.userId);
             return Padding(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
               child: Stack(children: [
@@ -118,10 +117,15 @@ class _FoodPostState extends State<FoodPost> {
                               Row(
                                 children: [
                                   CircleAvatar(
-                                      radius: 10.0,
-                                      backgroundColor: Colors.transparent,
-                                      child: GetUserImage(
-                                          id: food.userId.toString())),
+                                    backgroundColor: kPrimaryColorlight,
+                                    radius: 10,
+                                    backgroundImage: user.imageUrl == ""
+                                        ? AssetImage(icon.toString())
+                                        : NetworkImage(Config.imageUrl(
+                                                imageUrl:
+                                                    user.imageUrl.toString()))
+                                            as ImageProvider<Object>,
+                                  ),
                                   Padding(
                                     padding: EdgeInsets.only(left: 10),
                                     child: Text(
@@ -199,8 +203,8 @@ class _FoodPostState extends State<FoodPost> {
                                                           foodId: food.id
                                                               .toString());
                                               print(foodPost.author);
-                                              openDisplayFoodPost(
-                                                  context, foodPost);
+                                              openDisplayFoodPost(context,
+                                                  foodPost, widget.userId);
                                             },
                                             icon: Icon(Icons
                                                 .arrow_circle_right_outlined))

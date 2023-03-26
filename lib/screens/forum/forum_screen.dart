@@ -4,6 +4,7 @@ import 'package:food_care/widgets/forum_post.dart';
 import 'package:provider/provider.dart';
 import '../../view models/forum view/forum_list-view_model.dart';
 import '../../view models/user view/userViewModel.dart';
+import '../../view models/user view/user_list_view_model.dart';
 
 
 class ForumScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ForumScreenState extends State<ForumScreen> {
     super.initState();
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _userViewModel = Provider.of<UserViewModel>(context, listen: false);
-    // Provider.of<UserListViewModel>(context, listen: false).getAllUsers();
+
     _populateAllForums();
   }
 
@@ -33,6 +34,7 @@ class _ForumScreenState extends State<ForumScreen> {
     } else {
       Provider.of<ForumListViewModel>(context, listen: false).getOwnAllForums();
     }
+    Provider.of<UserListViewModel>(context, listen: false).getAllUsers();
 
   }
 
@@ -40,16 +42,16 @@ class _ForumScreenState extends State<ForumScreen> {
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       final vm = Provider.of<ForumListViewModel>(context);
-      // final um = Provider.of<UserListViewModel>(context);
+      final um = Provider.of<UserListViewModel>(context);
       // print(um.users);
       return AppBarWidget(
         text: "Forum",
-        widget: _updateUi(vm, userViewModel),
+        widget: _updateUi(vm, userViewModel,um),
       );
     });
   }
 
-  Widget _updateUi(ForumListViewModel vm, user) {
+  Widget _updateUi(ForumListViewModel vm, user,UserListViewModel um) {
     switch (vm.status) {
       case Status.loading:
         return Align(
@@ -61,7 +63,7 @@ class _ForumScreenState extends State<ForumScreen> {
           forums: vm.forums,
           comment: () {},
           user: user,
-          own: widget.forum,
+          own: widget.forum, userList: um.users,
         );
       case Status.empty:
         return Align(

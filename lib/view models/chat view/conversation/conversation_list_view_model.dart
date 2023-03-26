@@ -22,5 +22,4 @@ class ChatListViewModel extends ChangeNotifier {
 
     notifyListeners();
   }
-
 }

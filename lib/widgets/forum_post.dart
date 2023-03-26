@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:food_care/services/api%20services/forum_api_services.dart';
 import 'package:food_care/services/api%20services/forums_comment_api_services.dart';
@@ -8,7 +7,7 @@ import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/screens/forum/comment_screen.dart';
-import 'package:food_care/widgets/get_user_image.dart';
+import 'package:food_care/view%20models/user%20view/user_view.dart';
 import 'package:food_care/widgets/show_time_ago_row.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +21,7 @@ class ForumPost extends StatefulWidget {
   final List<ForumViewModel> forums;
   final Function comment;
   final UserViewModel user;
+  final List<UserView> userList;
   final bool? own;
 
   const ForumPost(
@@ -29,7 +29,8 @@ class ForumPost extends StatefulWidget {
       required this.forums,
       required this.comment,
       required this.user,
-      this.own})
+      this.own,
+      required this.userList})
       : super(key: key);
 
   @override
@@ -56,7 +57,8 @@ class _ForumPostState extends State<ForumPost> {
         itemCount: widget.forums.length,
         itemBuilder: (context, index) {
           final forum = widget.forums[index];
-
+          final user =
+          widget.userList.firstWhere((user) => user.uid == forum.userId);
           return Card(
             color: Colors.white,
             elevation: 10,
@@ -75,7 +77,16 @@ class _ForumPostState extends State<ForumPost> {
                       children: [
                         Row(
                           children: [
-                            GetUserImage(id: forum.userId.toString()),
+                            CircleAvatar(
+                              backgroundColor: kPrimaryColorlight,
+                              radius: 10,
+                              backgroundImage: user.imageUrl == ""
+                                  ? AssetImage(icon.toString())
+                                  : NetworkImage(Config.imageUrl(
+                                  imageUrl:
+                                  user.imageUrl.toString()))
+                              as ImageProvider<Object>,
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(left: 15),
                               child: Column(
