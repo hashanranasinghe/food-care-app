@@ -13,6 +13,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
   late String other;
   late String pickupTimes;
   late String listDays;
+  late bool isShared;
   late Location location;
   late List<String> imageUrls;
   late DateTime createdAt;
@@ -27,6 +28,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
         other: other,
         pickupTimes: pickupTimes,
         listDays: listDays,
+        isShared: isShared,
         location: location,
         imageUrls: imageUrls,
         createdAt: DateTime.now(),
@@ -48,6 +50,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
         other: other,
         pickupTimes: pickupTimes,
         listDays: listDays,
+        isShared: isShared,
         location: location,
         imageUrls: imageUrls,
         createdAt: DateTime.now(),

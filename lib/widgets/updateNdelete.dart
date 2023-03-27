@@ -4,10 +4,19 @@ import 'package:food_care/widgets/popup_dialog.dart';
 import '../utils/constraints.dart';
 
 class UpdateNDelete extends StatelessWidget {
+  final Function? share;
+  final String? shareText;
+  final bool? isShared;
   final Function update;
   final Function delete;
-  const UpdateNDelete({Key? key, required this.update, required this.delete})
-      : super(key: key);
+  const UpdateNDelete({
+    Key? key,
+    required this.update,
+    required this.delete,
+    this.share,
+    this.shareText,
+    this.isShared = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,30 +35,56 @@ class UpdateNDelete extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                TextButton(
-                  onPressed: () async {
-                    update();
-                  },
-                  child: const Text(
-                    'Update Forum',
-                    style: TextStyle(
-                      color: kPrimaryColordark,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ),
-                Divider(
-                  thickness: 2,
-                ),
+                shareText != "" && isShared == false
+                    ? Column(
+                        children: [
+                          TextButton(
+                            onPressed: () async {
+                              share!();
+                            },
+                            child: Text(
+                              shareText.toString(),
+                              style: TextStyle(
+                                color: kPrimaryColordark,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            thickness: 2,
+                          ),
+                        ],
+                      )
+                    : Container(),
+                isShared == false
+                    ? Column(
+                        children: [
+                          TextButton(
+                            onPressed: () async {
+                              update();
+                            },
+                            child: const Text(
+                              'Update Forum',
+                              style: TextStyle(
+                                color: kPrimaryColordark,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            thickness: 2,
+                          ),
+                        ],
+                      )
+                    : Container(),
                 TextButton(
                   onPressed: () async {
                     PopupDialog.showPopupWarning(
                         context,
                         "Do you want to delete this post?",
-                        "description",
-                        () async {
-                          delete();
-                        });
+                        "description", () async {
+                      delete();
+                    });
                   },
                   child: const Text(
                     'Delete  Forum',

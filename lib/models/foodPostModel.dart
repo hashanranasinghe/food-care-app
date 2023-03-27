@@ -11,6 +11,7 @@ class Food {
   String pickupTimes;
   String listDays;
   Location location;
+  bool isShared;
   List<String> imageUrls;
   DateTime createdAt;
   DateTime updatedAt;
@@ -23,6 +24,7 @@ class Food {
     required this.description,
     required this.quantity,
     this.other,
+    required this.isShared,
     required this.pickupTimes,
     required this.listDays,
     required this.location,
@@ -41,10 +43,11 @@ class Food {
         other: json["other"],
         pickupTimes: json["pickupTimes"],
         listDays: json["listDays"],
+        isShared: json["isShared"],
         location: json["location"] is List
             ? Location.fromJson(json["location"][0])
             : Location.fromJson(json["location"]),
-        imageUrls:  (json["imageUrls"] as List).cast<String>(),
+        imageUrls: (json["imageUrls"] as List).cast<String>(),
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );
@@ -59,6 +62,7 @@ class Food {
         "other": other,
         "pickupTimes": pickupTimes,
         "listDays": listDays,
+        "isShared": isShared,
         "location": location.toJson(),
         "imageUrls": imageUrls,
         "createdAt": createdAt.toIso8601String(),

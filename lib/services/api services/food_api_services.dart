@@ -62,6 +62,7 @@ class FoodApiServices {
       request.fields['quantity'] = food.quantity.toString();
       request.fields['other'] = food.other.toString();
       request.fields['pickupTimes'] = food.pickupTimes;
+      request.fields['isShared'] = food.isShared.toString();
       request.fields['listDays'] = food.listDays;
       request.fields['location[lan]'] = food.location.lan.toString();
       request.fields['location[lon]'] = food.location.lon.toString();
@@ -96,6 +97,7 @@ class FoodApiServices {
       request.fields['other'] = food.other.toString();
       request.fields['pickupTimes'] = food.pickupTimes;
       request.fields['listDays'] = food.listDays;
+      request.fields['isShared'] = food.isShared.toString();
       request.fields['location[lan]'] = food.location.lan.toString();
       request.fields['location[lon]'] = food.location.lon.toString();
 

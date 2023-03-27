@@ -12,12 +12,15 @@ class FoodPostListViewModel extends ChangeNotifier {
     status = Status.loading;
     final results = await FoodApiServices.getFoodPosts();
     results.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    foods = results.map((food) => FoodPostViewModel(food: food)).toList();
+    foods = results
+        .where(
+            (food) => food.isShared == false) // filter for true elements only
+        .map((food) => FoodPostViewModel(food: food))
+        .toList();
     status = foods.isEmpty ? Status.empty : Status.success;
 
     notifyListeners();
   }
-
 
   Future<void> getAllOwnFoodPosts() async {
     status = Status.loading;

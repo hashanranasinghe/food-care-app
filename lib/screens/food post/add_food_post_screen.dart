@@ -301,6 +301,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
         vm.listDays = _selectedDay.toString();
         vm.imageUrls = imagePaths;
         vm.author = author;
+        vm.isShared = false;
         vm.location = Location(lan: '2', lon: '2');
       });
       await _foodPostAddViewModel.saveFoodPost();
@@ -319,6 +320,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
       _foodPostAddViewModel.other = otherController.text;
       _foodPostAddViewModel.pickupTimes = pickUptimesController.text;
       _foodPostAddViewModel.listDays = _selectedDay!;
+      _foodPostAddViewModel.isShared = false;
       _foodPostAddViewModel.location = Location(lan: "3", lon: "3");
 
       if (imagePaths.isNotEmpty) {

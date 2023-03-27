@@ -45,6 +45,9 @@ class FoodPostViewModel {
   String? get pickupTimes {
     return food.pickupTimes;
   }
+  bool get isShared{
+    return food.isShared;
+  }
 
   Location get location {
     return food.location;

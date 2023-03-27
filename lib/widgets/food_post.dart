@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
+import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_model.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
+import 'package:food_care/widgets/popup_dialog.dart';
 
 import 'package:food_care/widgets/show_time_ago_row.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
@@ -31,6 +33,17 @@ class FoodPost extends StatefulWidget {
 }
 
 class _FoodPostState extends State<FoodPost> {
+  late FoodPostListViewModel foodPostListViewModel;
+  late FoodPostAddViewModel foodPostAddViewModel;
+  @override
+  void initState() {
+    super.initState();
+    foodPostAddViewModel =
+        Provider.of<FoodPostAddViewModel>(context, listen: false);
+    foodPostListViewModel =
+        Provider.of<FoodPostListViewModel>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -209,41 +222,105 @@ class _FoodPostState extends State<FoodPost> {
                                             icon: Icon(Icons
                                                 .arrow_circle_right_outlined))
                                       ] else ...[
-                                        IconButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return UpdateNDelete(
-                                                      update: () async {
-                                                    final getFood =
-                                                        await FoodApiServices
-                                                            .getOwnFoodPost(
-                                                                foodId: food.id
-                                                                    .toString());
-                                                    print(getFood.listDays);
-                                                    openUpdateFoodPost(
-                                                        context, getFood);
-                                                    openUpdateFoodPost(
-                                                        context, getFood);
-                                                  }, delete: () async {
-                                                    print("ok");
-                                                    await FoodApiServices
-                                                        .deleteFoodPost(
-                                                            foodId: food.id
-                                                                .toString());
-                                                    Provider.of<FoodPostListViewModel>(
-                                                            context,
-                                                            listen: false)
-                                                        .getAllOwnFoodPosts();
-                                                    Navigator.pop(context);
-                                                  });
+                                        Row(
+                                          children: [
+                                            food.isShared
+                                                ? Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 5),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border: Border.all(
+                                                        color: Colors.black,
+                                                        width: 1,
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.circle,
+                                                          size: 10,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text("shared"),
+                                                      ],
+                                                    ),
+                                                  )
+                                                : Container(),
+                                            IconButton(
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return UpdateNDelete(
+                                                          isShared:
+                                                              food.isShared,
+                                                          shareText:
+                                                              "Share Food",
+                                                          share: () async {
+                                                            PopupDialog
+                                                                .showPopupDialog(
+                                                                    context,
+                                                                    "Cannot undo",
+                                                                    "",
+                                                                    () async {
+                                                              setState(() {
+                                                                foodPostAddViewModel
+                                                                        .isShared =
+                                                                    true;
+                                                              });
+                                                              await foodPostAddViewModel
+                                                                  .updateFoodPost();
+                                                              await foodPostListViewModel
+                                                                  .getAllOwnFoodPosts();
+                                                              Navigator.pop(
+                                                                  context);
+                                                            });
+                                                          },
+                                                          update: () async {
+                                                            final getFood = await FoodApiServices
+                                                                .getOwnFoodPost(
+                                                                    foodId: food
+                                                                        .id
+                                                                        .toString());
+                                                            print(getFood
+                                                                .listDays);
+                                                            openUpdateFoodPost(
+                                                                context,
+                                                                getFood);
+                                                            openUpdateFoodPost(
+                                                                context,
+                                                                getFood);
+                                                          },
+                                                          delete: () async {
+                                                            print("ok");
+                                                            await FoodApiServices
+                                                                .deleteFoodPost(
+                                                                    foodId: food
+                                                                        .id
+                                                                        .toString());
+                                                            Provider.of<FoodPostListViewModel>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .getAllOwnFoodPosts();
+                                                            Navigator.pop(
+                                                                context);
+                                                          });
+                                                    },
+                                                  );
                                                 },
-                                              );
-                                            },
-                                            icon: Icon(Icons
-                                                .arrow_circle_right_outlined))
+                                                icon: Icon(Icons
+                                                    .arrow_circle_right_outlined)),
+                                          ],
+                                        )
                                       ]
                                     ],
                                   )
