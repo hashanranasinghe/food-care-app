@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:food_care/screens/chat/chat_screen.dart';
 import 'package:food_care/screens/forum/forum_screen.dart';
 import 'package:food_care/screens/food%20post/home_screen.dart';
+import 'package:food_care/screens/settings/profile_screen.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/add_post_row.dart';
 
+import '../models/userModel.dart';
+
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
-  static const routName = 'bottom-nav-screen';
+  final User user;
+  const BottomNavigation({Key? key, required this.user}) : super(key: key);
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
@@ -17,18 +20,25 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int index = 0;
-  final screens = [
-    const HomeScreen(food: true,),
-    const ForumScreen(forum: true),
-    const HomeScreen(food: true,),
-    const ChatScreen(),
-    const HomeScreen(food: true,)
-  ];
-  late final List<Widget> items;
+  late List<Widget> items;
+  late List<StatefulWidget> screens;
 
   @override
   void initState() {
     super.initState();
+    screens = [
+      const HomeScreen(
+        food: true,
+      ),
+      const ForumScreen(forum: true),
+      const HomeScreen(
+        food: true,
+      ),
+      ChatScreen(
+        id: widget.user.id,
+      ),
+      ProfileScreen(user: widget.user)
+    ];
     items = [
       Icon(
         Icons.home_outlined,

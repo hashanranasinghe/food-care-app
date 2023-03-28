@@ -19,7 +19,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
   late DateTime createdAt;
   late DateTime updatedAt;
 
-  Future<void> saveFoodPost() async {
+  Future<int> saveFoodPost() async {
     final foodPost = Food(
         author: author,
         title: title,
@@ -33,11 +33,12 @@ class FoodPostAddViewModel extends ChangeNotifier {
         imageUrls: imageUrls,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now());
-    await FoodApiServices.createFoodPost(food: foodPost);
+    int res = await FoodApiServices.createFoodPost(food: foodPost);
     notifyListeners();
+    return res;
   }
 
-  Future<void> updateFoodPost() async {
+  Future<int> updateFoodPost() async {
     imageUrls = imageUrls
         .where((element) => element.contains('com.example.food_care'))
         .toList();
@@ -56,8 +57,8 @@ class FoodPostAddViewModel extends ChangeNotifier {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now());
 
-    await FoodApiServices.updateFoodPost(food: foodPost);
-    print(foodPost.imageUrls);
+    int res = await FoodApiServices.updateFoodPost(food: foodPost);
     notifyListeners();
+    return res;
   }
 }

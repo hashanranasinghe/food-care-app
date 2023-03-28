@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
+import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_model.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
 import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/widgets/divider.dart';
+import 'package:food_care/widgets/flutter_toast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../models/foodPostModel.dart';
+import '../../models/userModel.dart';
 import '../../services/validate_handeler.dart';
 import '../../utils/config.dart';
 import '../../widgets/Gtextformfiled.dart';
@@ -248,7 +251,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                           pleft: 100,
                           pright: 100,
                           onpress: () {
-                            update();
+                            update(user: userViewModel.user!);
                           },
                           text: "Update",
                         ),
@@ -261,7 +264,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                           pright: 100,
                           onpress: () {
                             uploadAPost(
-                                vm: vm, author: userViewModel.user!.name);
+                                vm: vm, user: userViewModel.user!);
                           },
                           text: "Upload",
                         ),
@@ -294,23 +297,29 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   }
 
   void uploadAPost(
-      {required FoodPostAddViewModel vm, required String author}) async {
+      {required FoodPostAddViewModel vm, required User user}) async {
     if (_form.currentState!.validate()) {
       setState(() {
         vm.quantity = _selectedValue.toString();
         vm.listDays = _selectedDay.toString();
         vm.imageUrls = imagePaths;
-        vm.author = author;
+        vm.author = user.name;
         vm.isShared = false;
         vm.location = Location(lan: '2', lon: '2');
       });
-      await _foodPostAddViewModel.saveFoodPost();
-      await _foodPostListViewModel.getAllFoodPosts();
-      openHome(context);
+      int res = await _foodPostAddViewModel.saveFoodPost();
+      if(res == resOk){
+        await _foodPostListViewModel.getAllFoodPosts();
+        openHome(context,user);
+        ToastWidget.toast(msg: "Food Post uploaded successfully");
+      }else{
+        ToastWidget.toast(msg: "Something went to wrong.");
+      }
+
     }
   }
 
-  void update() async {
+  void update({required User user}) async {
     setState(() {
       _foodPostAddViewModel.id = widget.food!.id.toString();
       _foodPostAddViewModel.author = widget.food!.author.toString();
@@ -331,9 +340,16 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
       }
     });
 
-    await _foodPostAddViewModel.updateFoodPost();
-    await _foodPostListViewModel.getAllFoodPosts();
-    openHome(context);
+    int res = await _foodPostAddViewModel.updateFoodPost();
+
+    if(res == resOk){
+      await _foodPostListViewModel.getAllFoodPosts();
+      openHome(context,user);
+      ToastWidget.toast(msg: "Food Post updated successfully");
+    }else{
+      ToastWidget.toast(msg: "Something went to wrong.");
+    }
+
   }
 
   List<Widget> _radioButtons() {

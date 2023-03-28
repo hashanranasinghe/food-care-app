@@ -59,7 +59,7 @@ class MenuDrawer extends StatelessWidget {
                     ),
                     title: const Text('Home'),
                     onTap: () async {
-                      openHome(context);
+                      openHome(context, userViewModel.user!);
                     },
                   ),
                 ),
@@ -110,7 +110,7 @@ class MenuDrawer extends StatelessWidget {
                       ),
                       title: const Text('Message'),
                       onTap: () async {
-                        openChats(context,userViewModel.user!.id.toString());
+                        openChats(context, userViewModel.user!.id.toString());
                         // print(await ChatApiServices.getConversationsListOfUser(
                         //     userId: userViewModel.user!.id.toString()));
                       }),

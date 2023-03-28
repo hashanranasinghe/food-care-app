@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:food_care/services/store_token.dart';
+import 'package:food_care/utils/constraints.dart';
 import 'package:http/http.dart' as http;
 import '../../models/foodPostModel.dart';
 import '../../utils/config.dart';
@@ -50,7 +51,8 @@ class FoodApiServices {
     }
   }
 
-  static Future<void> createFoodPost({required Food food}) async {
+  static Future<int> createFoodPost({required Food food}) async {
+    int res = resFail;
     try {
       var request = http.MultipartRequest(
           'POST', Uri.http(Config.apiURL, Config.getFoodPosts));
@@ -73,16 +75,21 @@ class FoodApiServices {
 
       var response = await request.send();
       if (response.statusCode == 200) {
+        res = resOk;
         print('Food post uploaded.');
+        return res;
       } else {
         print('Failed to upload food post.');
+        return res;
       }
     } catch (error) {
       print('Error: $error');
+      return res;
     }
   }
 
-  static Future<void> updateFoodPost({required Food food}) async {
+  static Future<int> updateFoodPost({required Food food}) async {
+    int res = resFail;
     try {
       var request = http.MultipartRequest(
           'PUT',
@@ -108,12 +115,16 @@ class FoodApiServices {
       var response = await request.send();
 
       if (response.statusCode == 200) {
+        res= resOk;
         print('Food post updated.');
+        return res;
       } else {
         print('Failed to update food post.');
+        return res;
       }
     } catch (error) {
       print('Error: $error');
+      return res;
     }
   }
 
@@ -160,7 +171,8 @@ class FoodApiServices {
   }
 
   //delete food
-  static Future<void> deleteFoodPost({required String foodId}) async {
+  static Future<int> deleteFoodPost({required String foodId}) async {
+    int res = resFail;
     // Get the JWT token from secure storage
     String? token = await StoreToken.getToken();
 
@@ -173,11 +185,15 @@ class FoodApiServices {
     );
 
     if (response.statusCode == 200) {
+
+      res = resOk;
       // Forum deleted successfully
       print('Food post deleted successfully');
+      return res;
     } else {
       // Forum not found or other error
       print('Failed to delete food post');
+      return res;
     }
   }
 

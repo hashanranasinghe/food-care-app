@@ -35,7 +35,7 @@ class UpdateNDelete extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                shareText != "" && isShared == false
+                shareText != null && isShared == false
                     ? Column(
                         children: [
                           TextButton(

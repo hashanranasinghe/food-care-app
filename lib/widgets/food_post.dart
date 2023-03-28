@@ -14,6 +14,7 @@ import '../services/api services/food_api_services.dart';
 import '../utils/config.dart';
 import '../view models/food post view/food_post_view_model.dart';
 import '../view models/user view/user_view.dart';
+import 'flutter_toast.dart';
 
 class FoodPost extends StatefulWidget {
   final bool? food;
@@ -209,7 +210,6 @@ class _FoodPostState extends State<FoodPost> {
                                       if (widget.food == true) ...[
                                         IconButton(
                                             onPressed: () async {
-                                              print("ok");
                                               final Food foodPost =
                                                   await FoodApiServices
                                                       .getFoodPost(
@@ -300,19 +300,25 @@ class _FoodPostState extends State<FoodPost> {
                                                                 getFood);
                                                           },
                                                           delete: () async {
-                                                            print("ok");
-                                                            await FoodApiServices
+
+                                                            int res = await FoodApiServices
                                                                 .deleteFoodPost(
                                                                     foodId: food
                                                                         .id
                                                                         .toString());
-                                                            Provider.of<FoodPostListViewModel>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .getAllOwnFoodPosts();
-                                                            Navigator.pop(
-                                                                context);
+                                                            if(res == resOk){
+                                                              Provider.of<FoodPostListViewModel>(
+                                                                  context,
+                                                                  listen:
+                                                                  false)
+                                                                  .getAllOwnFoodPosts();
+                                                              Navigator.pop(
+                                                                  context);
+                                                              ToastWidget.toast(msg: "Food Post deleted successfully");
+                                                            }else{
+                                                              ToastWidget.toast(msg: "Something went to wrong.");
+                                                            }
+
                                                           });
                                                     },
                                                   );

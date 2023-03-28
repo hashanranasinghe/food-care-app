@@ -1,10 +1,9 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
-
+import '../../services/api services/user_api_services.dart';
 import '../../services/store_token.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -34,14 +33,14 @@ class StartState extends State<SplashScreen> {
     return new Timer(duration, route);
   }
 
-  route() async{
+  route() async {
     var token = await StoreToken.getToken();
-    if(token != null){
-      openHome(context);
-    }else{
+    if (token != null) {
+      final user = await UserAPiServices.getCurrentUser();
+      openHome(context, user);
+    } else {
       openUserSignIn(context);
     }
-
   }
 
   initScreen(BuildContext context) {

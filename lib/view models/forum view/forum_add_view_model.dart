@@ -15,7 +15,7 @@ class AddForumViewModel extends ChangeNotifier {
   late DateTime createdAt;
   late DateTime updatedAt;
 
-  Future<void> saveForum() async {
+  Future<int> saveForum() async {
     final forum = Forum(
         imageUrl: imageUrl,
         title: title,
@@ -25,12 +25,13 @@ class AddForumViewModel extends ChangeNotifier {
         comments: comments = [],
         createdAt: createdAt = DateTime.now(),
         updatedAt: updatedAt = DateTime.now());
-    await ForumApiServices.createForum(forum: forum);
+    int res = await ForumApiServices.createForum(forum: forum);
 
     notifyListeners();
+    return res;
   }
 
-  Future<void> updateForum() async {
+  Future<int> updateForum() async {
     final forum = Forum(
         id: id,
         imageUrl: imageUrl,
@@ -41,9 +42,8 @@ class AddForumViewModel extends ChangeNotifier {
         comments: comments = [],
         createdAt: createdAt = DateTime.now(),
         updatedAt: updatedAt = DateTime.now());
-    await ForumApiServices.updateForum(forum: forum);
-    print("==========================================");
-print(imageUrl);
+    int res = await ForumApiServices.updateForum(forum: forum);
     notifyListeners();
+    return res ;
   }
 }

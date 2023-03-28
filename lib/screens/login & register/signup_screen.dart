@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../services/api services/user_api_services.dart';
 import '../../services/validate_handeler.dart';
+import '../../widgets/flutter_toast.dart';
 import '../../widgets/take_images.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -245,8 +246,14 @@ class _SignupScreenState extends State<SignupScreen> {
           address: address,
           imageUrl: imagePath,
           password: password);
-      await UserAPiServices.registerUser(user).whenComplete(() => openUserSignIn(context));
-      print("ok");
+      int res = await UserAPiServices.registerUser(user);
+      if(res == resOk){
+        openUserSignIn(context);
+        ToastWidget.toast(msg: "Register successfully adn login again");
+      }else{
+        ToastWidget.toast(msg: "Something went to wrong.");
+      }
+
     }
   }
 }

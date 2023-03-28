@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:food_care/services/navigations.dart';
 import 'package:food_care/services/store_token.dart';
+import 'package:food_care/utils/constraints.dart';
 import 'package:http/http.dart' as http;
 
 import '../../models/userModel.dart';
@@ -11,8 +11,9 @@ import '../../utils/config.dart';
 class UserAPiServices {
   static var client = http.Client();
   // Function to get the login user from the API
-  static Future<Map<String, dynamic>> loginUser(
+  static Future<int> loginUser(
       String email, String password, BuildContext context) async {
+    int res = resFail;
     final response = await client.post(
       Uri.http(Config.apiURL, Config.loginUserAPI),
       headers: <String, String>{
@@ -30,17 +31,20 @@ class UserAPiServices {
       final token = jsonResponse['accessToken'];
       await StoreToken.storeToken(token);
       final readToekn = await StoreToken.getToken();
-      openHome(context);
       print(readToekn);
-      return jsonResponse;
+      res = resOk;
+      return res;
     } else {
       // If the call was not successful, throw an error
-      throw Exception('Failed to login');
+      //throw Exception('Failed to login');
+      return res;
     }
   }
 
   // Function to get the register user from the API
-  static Future<void> registerUser(User user) async {
+  static Future<int> registerUser(User user) async {
+
+    int res = resFail;
     // Create a new multipart request
     var request = http.MultipartRequest(
       'POST',
@@ -67,10 +71,13 @@ class UserAPiServices {
     // Check the response status code
     if (response.statusCode == 200) {
       // Registration successful
+      res = resOk;
       print('User registered successfully.');
+      return res;
     } else {
       // Registration failed
       print('Registration failed with status code ${response.statusCode}.');
+      return res;
     }
   }
 
@@ -151,8 +158,12 @@ class UserAPiServices {
     });
 
     // Create a new HTTP request
-    final url = Uri.http(Config.apiURL, Config.updateUser(id: user.id.toString()));
-    final headers = {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'};
+    final url =
+        Uri.http(Config.apiURL, Config.updateUser(id: user.id.toString()));
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
     final response = await http.put(url, headers: headers, body: userData);
 
     // Check the response status code
@@ -164,8 +175,6 @@ class UserAPiServices {
       print('Update failed with status code ${response.statusCode}.');
     }
   }
-
-
 
   static Future<User> getUser(String id) async {
     print(id);

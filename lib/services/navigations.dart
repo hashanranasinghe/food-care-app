@@ -27,9 +27,9 @@ void openUserSignIn(BuildContext context) async {
       context, MaterialPageRoute(builder: (context) => const LoginScreen()));
 }
 
-void openHome(BuildContext context) async {
+void openHome(BuildContext context,User user) async {
   Navigator.push(context,
-      MaterialPageRoute(builder: (context) => const BottomNavigation()));
+      MaterialPageRoute(builder: (context) => BottomNavigation(user: user,)));
 }
 
 void openAddForum(BuildContext context) async {

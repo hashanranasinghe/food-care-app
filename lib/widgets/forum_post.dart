@@ -17,6 +17,8 @@ import '../view models/forum view/forum_list-view_model.dart';
 import '../view models/forum view/forum_view_model.dart';
 import 'package:expandable_text/expandable_text.dart';
 
+import 'flutter_toast.dart';
+
 class ForumPost extends StatefulWidget {
   final List<ForumViewModel> forums;
   final Function comment;
@@ -114,12 +116,19 @@ class _ForumPostState extends State<ForumPost> {
                                               forumId: forum.id.toString());
                                       openUpdateForum(context, getForum);
                                     }, delete: () async {
-                                      await ForumApiServices.deleteForum(
+                                      int res = await ForumApiServices.deleteForum(
                                           forum.id.toString());
-                                      Provider.of<ForumListViewModel>(context,
-                                              listen: false)
-                                          .getOwnAllForums();
-                                      Navigator.pop(context);
+                                      if(res == resOk){
+                                        Provider.of<ForumListViewModel>(context,
+                                            listen: false)
+                                            .getOwnAllForums();
+                                        Navigator.pop(context);
+                                        ToastWidget.toast(msg: "Forum deleted successfully");
+                                      }else{
+                                        ToastWidget.toast(msg: "Something went to wrong.");
+                                      }
+
+
                                     });
                                   },
                                 );

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:food_care/services/store_token.dart';
+import 'package:food_care/utils/constraints.dart';
 import 'package:http/http.dart' as http;
 
 import '../../models/forumModel.dart';
@@ -74,7 +75,8 @@ class ForumApiServices {
   }
 
   //create forum
-  static Future<String> createForum({required Forum forum}) async {
+  static Future<int> createForum({required Forum forum}) async {
+    int res = resFail;
     String? token = await StoreToken.getToken();
     var request = http.MultipartRequest(
         'POST', Uri.http(Config.apiURL, Config.getApostForums));
@@ -90,10 +92,11 @@ class ForumApiServices {
     var response = await request.send();
     if (response.statusCode == 200) {
       final json = jsonDecode(await response.stream.bytesToString());
-      print(json);
-      return json.toString();
+      res= resOk;
+      return res;
     } else {
-      throw Exception('Failed to create forum.');
+      //throw Exception('Failed to create forum.');
+      return res;
     }
   }
 
@@ -121,7 +124,8 @@ class ForumApiServices {
   }
 
   //update forum
-  static Future<String> updateForum({required Forum forum}) async {
+  static Future<int> updateForum({required Forum forum}) async {
+    int res = resOk;
     String? token = await StoreToken.getToken();
 
     final request = http.MultipartRequest(
@@ -151,16 +155,19 @@ class ForumApiServices {
     final response = await request.send();
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to update forum');
+      res = resFail;
+      return res;
+      //throw Exception('Failed to update forum');
     }
 
     final responseString = await response.stream.bytesToString();
 
-    return responseString;
+    return res;
   }
 
   //delete forum
-  static Future<void> deleteForum(String forumId) async {
+  static Future<int> deleteForum(String forumId) async {
+    int res = resFail;
     // Get the JWT token from secure storage
     String? token = await StoreToken.getToken();
     final response = await client.delete(
@@ -173,10 +180,13 @@ class ForumApiServices {
 
     if (response.statusCode == 200) {
       // Forum deleted successfully
+      res= resOk;
       print('Forum deleted successfully');
+      return res;
     } else {
       // Forum not found or other error
       print('Failed to delete forum');
+      return res;
     }
   }
 

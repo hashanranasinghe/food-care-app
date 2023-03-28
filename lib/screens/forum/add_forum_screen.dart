@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../services/validate_handeler.dart';
 import '../../utils/config.dart';
 import '../../widgets/buttons.dart';
+import '../../widgets/flutter_toast.dart';
 import '../../widgets/take_images.dart';
 
 class AddForumScreen extends StatefulWidget {
@@ -262,19 +263,29 @@ class _AddForumScreenState extends State<AddForumScreen> {
             print('Image path is null');
           }
         });
-        await _addForumViewModel.updateForum();
-        await _forumListViewModel.getOwnAllForums();
-        openOwnForums(context);
-        print("ok");
+        int res = await _addForumViewModel.updateForum();
+
+        if(res == resOk){
+          await _forumListViewModel.getOwnAllForums();
+          openOwnForums(context);
+          ToastWidget.toast(msg: "Forum updated successfully");
+        } else {
+          ToastWidget.toast(msg: "Something went to wrong.");
+        }
       } else {
         setState(() {
           _addForumViewModel.author = author;
           _addForumViewModel.imageUrl = imagePath.toString();
         });
 
-        await _addForumViewModel.saveForum();
-        await _forumListViewModel.getOwnAllForums();
-        openOwnForums(context);
+        int res = await _addForumViewModel.saveForum();
+        if (res == resOk) {
+          await _forumListViewModel.getOwnAllForums();
+          openOwnForums(context);
+          ToastWidget.toast(msg: "Forum uploaded successfully");
+        } else {
+          ToastWidget.toast(msg: "Something went to wrong.");
+        }
       }
     }
   }
