@@ -1,14 +1,15 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
 import 'dart:async';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
 import '../../services/api services/user_api_services.dart';
 import '../../services/store_token.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const routName = 'splash-screen';
-  const SplashScreen({Key? key}) : super(key: key);
+  final PendingDynamicLinkData? initialLink;
+  const SplashScreen({Key? key, this.initialLink}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => StartState();
@@ -38,6 +39,9 @@ class StartState extends State<SplashScreen> {
     if (token != null) {
       final user = await UserAPiServices.getCurrentUser();
       openHome(context, user);
+    } else if (widget.initialLink != null) {
+      openReset(context,
+          widget.initialLink!.link.queryParameters['token'].toString());
     } else {
       openUserSignIn(context);
     }
@@ -52,6 +56,7 @@ class StartState extends State<SplashScreen> {
       height: size.height,
       decoration: BoxDecoration(color: Colors.white),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
             height: size.height * 0.2,

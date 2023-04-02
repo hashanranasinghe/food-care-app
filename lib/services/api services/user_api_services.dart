@@ -27,11 +27,19 @@ class UserAPiServices {
 
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON response
+
       final jsonResponse = jsonDecode(response.body);
+      final userJson = jsonResponse['user'] as Map<String, dynamic>;
+      final user = User.fromJson(userJson);
+      if (user.isVerify == false) {
+        res = resEmail;
+        return res;
+      }
       final token = jsonResponse['accessToken'];
       await StoreToken.storeToken(token);
-      final readToekn = await StoreToken.getToken();
-      print(readToekn);
+      final readToken = await StoreToken.getToken();
+      print(readToken);
+      print(user.isVerify);
       res = resOk;
       return res;
     } else {
@@ -43,7 +51,6 @@ class UserAPiServices {
 
   // Function to get the register user from the API
   static Future<int> registerUser(User user) async {
-
     int res = resFail;
     // Create a new multipart request
     var request = http.MultipartRequest(
@@ -55,7 +62,9 @@ class UserAPiServices {
     request.fields['name'] = user.name;
     request.fields['email'] = user.email;
     request.fields['phone'] = user.phone;
-    request.fields['address'] = user.address!;
+    request.fields['address'] = user.address.toString();
+    request.fields['isVerify'] = user.isVerify.toString();
+    request.fields['verificationToken'] = user.verificationToken.toString();
     request.fields['password'] = user.password!;
 
     // Add the user's image to the request
@@ -79,6 +88,57 @@ class UserAPiServices {
       print('Registration failed with status code ${response.statusCode}.');
       return res;
     }
+  }
+
+  static Future<String> forgetPassword({required String email}) async {
+    final response = await client.post(
+      Uri.http(Config.apiURL, Config.forgetPasswordApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON response
+
+      final jsonResponse = jsonDecode(response.body);
+      return jsonResponse;
+    } else {
+      return "Error";
+    }
+  }
+
+  static Future<int> resetPassword(
+      {required String password,
+      required String id,
+      required String token}) async {
+    int res = resFail;
+    final userData = jsonEncode({
+      'password': password,
+    });
+    final url =
+        Uri.http(Config.apiURL, Config.resetPassword(id: id, token: token));
+    final headers = {'Content-Type': 'application/json'};
+    final response = await http.put(url, headers: headers, body: userData);
+    // Check the response status code
+    if (response.statusCode == 200) {
+      // Update successful
+      print('User updated successfully.');
+      res = resOk;
+      return res;
+    } else if (response.statusCode == 401) {
+      // Update failed
+      res = 401;
+      return res;
+    } else if (response.statusCode == 404) {
+      res = 404;
+      return res;
+    }
+    return res;
+
   }
 
   // Function to get the current user from the API

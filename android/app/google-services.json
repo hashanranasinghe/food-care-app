@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "45009499649",
+    "project_id": "food-care-f4bd7",
+    "storage_bucket": "food-care-f4bd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45009499649:android:35f677f399b48c32687200",
+        "android_client_info": {
+          "package_name": "com.example.food_care"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45009499649-9et6fr19dj18vle8tubu8fepkuahgpu9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlBopeWoNT_eg87J3YuVkkpQK8gXYOJZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45009499649-9et6fr19dj18vle8tubu8fepkuahgpu9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

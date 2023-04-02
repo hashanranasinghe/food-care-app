@@ -81,7 +81,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontWeight: FontWeight.bold,
                     color: kPrimaryColordark),
               ),
-              onPressed: () {},
+              onPressed: () {
+                openForget(context);
+              },
             ),
           ),
           Genaralbutton(
@@ -89,15 +91,17 @@ class _LoginScreenState extends State<LoginScreen> {
             pright: 120,
             onpress: () async {
               if (_form.currentState!.validate()) {
-                final int res = await UserAPiServices.loginUser(email, password,context);
-                if(res==resOk){
+                final int res =
+                    await UserAPiServices.loginUser(email, password, context);
+                if (res == resOk) {
                   final user = await UserAPiServices.getCurrentUser();
                   openHome(context, user);
                   ToastWidget.toast(msg: "Login successfully");
-                }else{
+                } else if (res == resEmail) {
+                  ToastWidget.toast(msg: "Please verify your email.");
+                } else {
                   ToastWidget.toast(msg: "Email or Password is wrong.");
                 }
-
               }
             },
             text: "Sign In",

@@ -29,4 +29,11 @@ class UserView {
   String? get imageUrl {
     return user.imageUrl;
   }
+
+  String? get verificationToken{
+    return user.verificationToken;
+  }
+  bool get isVerify{
+    return user.isVerify;
+  }
 }

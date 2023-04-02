@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:food_care/models/userModel.dart';
+import 'package:food_care/services/api%20services/email_service.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/Gtextformfiled.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../services/api services/user_api_services.dart';
 import '../../services/validate_handeler.dart';
@@ -35,7 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-
+  var uuid = const Uuid();
   final _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -243,13 +245,16 @@ class _SignupScreenState extends State<SignupScreen> {
           name: name,
           email: email,
           phone: mobileNumber,
+          isVerify: false,
+          verificationToken: uuid.v4(),
           address: address,
           imageUrl: imagePath,
           password: password);
-      int res = await UserAPiServices.registerUser(user);
+     int res = await UserAPiServices.registerUser(user);
       if(res == resOk){
+        EmailService.sendEmail(email: email, verificationToken: user.verificationToken.toString());
         openUserSignIn(context);
-        ToastWidget.toast(msg: "Register successfully adn login again");
+        ToastWidget.toast(msg: "Verification Email is sent.");
       }else{
         ToastWidget.toast(msg: "Something went to wrong.");
       }
