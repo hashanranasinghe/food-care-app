@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:food_care/services/api%20services/user_api_services.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_model.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
+import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/popup_dialog.dart';
 
 import 'package:food_care/widgets/show_time_ago_row.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
 import 'package:provider/provider.dart';
-import '../models/foodPostModel.dart';
 
+import '../models/userModel.dart';
 import '../services/api services/food_api_services.dart';
 import '../utils/config.dart';
 import '../view models/food post view/food_post_view_model.dart';
@@ -210,20 +212,95 @@ class _FoodPostState extends State<FoodPost> {
                                       if (widget.food == true) ...[
                                         IconButton(
                                             onPressed: () async {
-                                              final Food foodPost =
-                                                  await FoodApiServices
-                                                      .getFoodPost(
-                                                          foodId: food.id
-                                                              .toString());
-                                              print(foodPost.author);
-                                              openDisplayFoodPost(context,
-                                                  foodPost, widget.userId);
+                                              openDisplayFoodPost(
+                                                  context,
+                                                  food.id.toString(),
+                                                  widget.userId);
                                             },
                                             icon: Icon(Icons
                                                 .arrow_circle_right_outlined))
                                       ] else ...[
                                         Row(
                                           children: [
+                                            food.requests.isNotEmpty
+                                                ? InkWell(
+                                                    onTap: () async {
+                                                      final User user =
+                                                          await UserAPiServices
+                                                              .getUser(food
+                                                                  .requests[0]);
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return Dialog(
+                                                              child: SizedBox(
+                                                                height: 500,
+                                                                child: Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Text(
+                                                                            "Name  :  "),
+                                                                        Text(user
+                                                                            .name),
+                                                                      ],
+                                                                    ),
+                                                                    Genaralbutton(
+                                                                        text:
+                                                                            "Accept",
+                                                                        onpress:
+                                                                            () {}),
+                                                                    Genaralbutton(
+                                                                        text:
+                                                                            "Reject",
+                                                                        onpress:
+                                                                            () {
+                                                                          FoodApiServices.requestFoodPost(
+                                                                              foodId: food.id.toString(),
+                                                                              requesterId: food.requests[0]);
+                                                                          foodPostListViewModel.getAllOwnFoodPosts();
+                                                                          Navigator.pop(context);
+                                                                        }),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 8,
+                                                              vertical: 5),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        border: Border.all(
+                                                          color: Colors.black,
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.circle,
+                                                            size: 10,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            "Requested",
+                                                            style: TextStyle(
+                                                                fontSize: 10),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(),
                                             food.isShared
                                                 ? Container(
                                                     padding:
@@ -300,25 +377,27 @@ class _FoodPostState extends State<FoodPost> {
                                                                 getFood);
                                                           },
                                                           delete: () async {
-
                                                             int res = await FoodApiServices
                                                                 .deleteFoodPost(
                                                                     foodId: food
                                                                         .id
                                                                         .toString());
-                                                            if(res == resOk){
+                                                            if (res == resOk) {
                                                               Provider.of<FoodPostListViewModel>(
-                                                                  context,
-                                                                  listen:
-                                                                  false)
+                                                                      context,
+                                                                      listen:
+                                                                          false)
                                                                   .getAllOwnFoodPosts();
                                                               Navigator.pop(
                                                                   context);
-                                                              ToastWidget.toast(msg: "Food Post deleted successfully");
-                                                            }else{
-                                                              ToastWidget.toast(msg: "Something went to wrong.");
+                                                              ToastWidget.toast(
+                                                                  msg:
+                                                                      "Food Post deleted successfully");
+                                                            } else {
+                                                              ToastWidget.toast(
+                                                                  msg:
+                                                                      "Something went to wrong.");
                                                             }
-
                                                           });
                                                     },
                                                   );

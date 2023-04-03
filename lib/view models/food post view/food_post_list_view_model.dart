@@ -14,7 +14,7 @@ class FoodPostListViewModel extends ChangeNotifier {
     results.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     foods = results
         .where(
-            (food) => food.isShared == false) // filter for true elements only
+            (food) => (food.isShared == false && food.requests.isEmpty)) // filter for true elements only
         .map((food) => FoodPostViewModel(food: food))
         .toList();
     status = foods.isEmpty ? Status.empty : Status.success;

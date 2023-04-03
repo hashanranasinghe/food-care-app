@@ -1,9 +1,9 @@
 class Config {
   //user
   static const String appName = "FoodCare App";
-  //static const String apiURL = "10.0.2.2:5001";
+  static const String apiURL = "10.0.2.2:5001";
   static const String socketUrl = "http://10.0.2.2:8900";
-  static const String apiURL = "192.168.0.101:5001";
+  //static const String apiURL = "192.168.0.101:5001";
   static const String loginUserAPI = "/api/users/login";
   static const String registerUserAPI = "/api/users/register";
   static const String currentUserAPI = "/api/users/current";
@@ -74,6 +74,11 @@ class Config {
 
   static String getFoodPost({required String id}) {
     String path = "api/food/$id";
+    return path;
+  }
+
+  static String requestFood({required String id}) {
+    String path = "api/food/$id/request";
     return path;
   }
 

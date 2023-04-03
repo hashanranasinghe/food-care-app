@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:food_care/services/api%20services/chat_api_services.dart';
+import 'package:food_care/services/api%20services/food_api_services.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/chat%20view/conversation/conversastion_add_view_model.dart';
@@ -8,16 +9,19 @@ import 'package:food_care/view%20models/chat%20view/conversation/conversation_vi
 import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/get_user_image.dart';
+import 'package:food_care/widgets/popup_dialog.dart';
 import 'package:food_care/widgets/show_time_ago_row.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/foodPostModel.dart';
 import '../../utils/config.dart';
+import '../../view models/food post view/food_post_list_view_model.dart';
 
 class FoodPostDisplayScreen extends StatefulWidget {
-  final Food? foodPost;
+  final String foodId;
   final String id;
-  const FoodPostDisplayScreen({Key? key, this.foodPost, required this.id})
+  const FoodPostDisplayScreen(
+      {Key? key, required this.foodId, required this.id})
       : super(key: key);
 
   @override
@@ -26,12 +30,20 @@ class FoodPostDisplayScreen extends StatefulWidget {
 
 class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
   late ConversationAddViewModel conversationAddViewModel;
+  late FoodPostListViewModel _foodPostListViewModel;
 
   @override
   void initState() {
     super.initState();
+    _getFood();
     conversationAddViewModel =
         Provider.of<ConversationAddViewModel>(context, listen: false);
+    _foodPostListViewModel =
+        Provider.of<FoodPostListViewModel>(context, listen: false);
+  }
+
+  Future<Food> _getFood() async {
+    return await FoodApiServices.getFoodPost(foodId: widget.foodId);
   }
 
   @override
@@ -42,182 +54,278 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
         return const Center(child: CircularProgressIndicator());
       } else {
         return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: kPrimaryColordark,
-            title: Center(child: Text(widget.foodPost!.title)),
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: CarouselSlider(
-                    items: widget.foodPost!.imageUrls.map((image) {
-                      return Image.network(Config.imageUrl(imageUrl: image));
-                    }).toList(),
-                    options: CarouselOptions(
-                      height: 300.0,
-                      enlargeCenterPage: true,
-                      autoPlay: true,
-                      aspectRatio: 16 / 9,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enableInfiniteScroll: true,
-                      autoPlayAnimationDuration: Duration(milliseconds: 800),
-                      viewportFraction: 0.8,
+          body: FutureBuilder<Food>(
+              future: _getFood(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  final Food foodPost = snapshot.data!;
+                  return Scaffold(
+                    appBar: AppBar(
+                      centerTitle: true,
+                      backgroundColor: kPrimaryColordark,
+                      title: Text(foodPost.title),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: kSecondColorDark,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    elevation: 8,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GetUserImage(
-                                id: widget.foodPost!.userId.toString(),
-                                radius: 30,
+                    body: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: CarouselSlider(
+                              items: foodPost.imageUrls.map((image) {
+                                return Image.network(
+                                    Config.imageUrl(imageUrl: image));
+                              }).toList(),
+                              options: CarouselOptions(
+                                height: 300.0,
+                                enlargeCenterPage: true,
+                                autoPlay: true,
+                                aspectRatio: 16 / 9,
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                enableInfiniteScroll: true,
+                                autoPlayAnimationDuration:
+                                    Duration(milliseconds: 800),
+                                viewportFraction: 0.8,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${widget.foodPost!.author} give away",
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                          Text(
-                                            widget.foodPost!.title,
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          ShowTimeAgoRow(
-                                              time: widget.foodPost!.updatedAt),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, top: 10, bottom: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${widget.foodPost!.description}",
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(fontSize: 20),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              color: kSecondColorDark,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              elevation: 8,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        GetUserImage(
+                                          id: foodPost.userId.toString(),
+                                          radius: 30,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "${foodPost.author} give away",
+                                                      style: TextStyle(
+                                                          fontSize: 15),
+                                                    ),
+                                                    Text(
+                                                      foodPost.title,
+                                                      style: TextStyle(
+                                                          fontSize: 25,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    ShowTimeAgoRow(
+                                                        time:
+                                                            foodPost.updatedAt),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, top: 10, bottom: 10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${foodPost.description}",
+                                          textAlign: TextAlign.justify,
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Listing for",
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10),
+                                                child:
+                                                    Icon(Icons.label_important),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 15),
+                                                child: Text(
+                                                    "${foodPost.listDays}"),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Pickup times",
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10),
+                                                child:
+                                                    Icon(Icons.label_important),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 15),
+                                                child: Text(
+                                                    "${foodPost.pickupTimes}"),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Listing for",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Icon(Icons.label_important),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child:
-                                          Text("${widget.foodPost!.listDays}"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Pickup times",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Icon(Icons.label_important),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: Text(
-                                          "${widget.foodPost!.pickupTimes}"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        )
-                      ],
+                          if (foodPost.userId != userViewModel.user!.id) ...[
+                            Column(
+                              children: [
+                                if (foodPost.requests
+                                    .contains(userViewModel.user!.id)) ...[
+                                  Genaralbutton(
+                                    pleft: 60,
+                                    pright: 60,
+                                    ptop: 15,
+                                    pbottom: 15,
+                                    onpress: () async {
+                                      PopupDialog.showPopupDialog(
+                                          context,
+                                          "Cancel Request",
+                                          "Do you want to cancel request?",
+                                          () async {
+                                        int res = await FoodApiServices
+                                            .requestFoodPost(
+                                                foodId: foodPost.id.toString(), requesterId: '');
+                                        _foodPostListViewModel.getAllFoodPosts();
+                                        setState(() {
+
+                                        });
+                                      });
+                                    },
+                                    text: "Cancel Request",
+                                  ),
+                                ] else ...[
+                                  Genaralbutton(
+                                    pleft: 60,
+                                    pright: 60,
+                                    ptop: 15,
+                                    pbottom: 15,
+                                    onpress: () async {
+                                      PopupDialog.showPopupDialog(
+                                          context,
+                                          "Request For Food",
+                                          "Do you want to request this food?",
+                                          () async{
+                                            int res = await  FoodApiServices.requestFoodPost(
+                                            foodId: foodPost.id.toString(), requesterId: '');
+                                            _foodPostListViewModel.getAllFoodPosts();
+                                        setState(() {
+
+                                        });
+                                      });
+                                    },
+                                    text: "Request for Food",
+                                  ),
+                                ],
+                                Genaralbutton(
+                                  onpress: () async {
+                                    try {
+                                      final ConversationViewModel vm =
+                                          await ChatApiServices.getConversation(
+                                              senderId: userViewModel.user!.id
+                                                  .toString(),
+                                              receiverId: widget.id);
+                                      openMessaging(
+                                          context,
+                                          foodPost.author.toString(),
+                                          vm.id.toString(),
+                                          vm,
+                                          widget.id);
+                                    } catch (e) {
+                                      conversationAddViewModel.members
+                                          .add(userViewModel.user!.id);
+                                      conversationAddViewModel.members
+                                          .add(foodPost.userId);
+                                      conversationAddViewModel.createdAt =
+                                          DateTime.now();
+                                      conversationAddViewModel.updatedAt =
+                                          DateTime.now();
+                                      await conversationAddViewModel
+                                          .createConversation();
+                                      final ConversationViewModel vm =
+                                          await ChatApiServices.getConversation(
+                                              senderId: userViewModel.user!.id
+                                                  .toString(),
+                                              receiverId: widget.id);
+                                      openMessaging(
+                                          context,
+                                          foodPost.author.toString(),
+                                          vm.id.toString(),
+                                          vm,
+                                          widget.id);
+                                    }
+                                  },
+                                  text: "Contact",
+                                  pleft: 60,
+                                  pright: 60,
+                                  ptop: 15,
+                                  pbottom: 15,
+                                ),
+                              ],
+                            ),
+                          ] else ...[
+                            Container()
+                          ]
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-                if (widget.foodPost!.userId != userViewModel.user!.id) ...[
-                  Genaralbutton(
-                    onpress: () async {
-                      try{
-                        final ConversationViewModel vm =
-                        await ChatApiServices.getConversation(
-                            senderId: userViewModel.user!.id.toString(),
-                            receiverId: widget.id);
-                        openMessaging(context, widget.foodPost!.author.toString(),vm.id.toString(), vm, widget.id);
-                      }catch(e){
-                        conversationAddViewModel.members
-                            .add(userViewModel.user!.id);
-                        conversationAddViewModel.members
-                            .add(widget.foodPost!.userId);
-                        conversationAddViewModel.createdAt = DateTime.now();
-                        conversationAddViewModel.updatedAt = DateTime.now();
-                        await conversationAddViewModel.createConversation();
-                        final ConversationViewModel vm =
-                        await ChatApiServices.getConversation(
-                            senderId: userViewModel.user!.id.toString(),
-                            receiverId: widget.id);
-                        openMessaging(context, widget.foodPost!.author.toString(),vm.id.toString(), vm, widget.id);
-                      }
-                    },
-                    text: "Request for Food",
-                    pleft: 60,
-                    pright: 60,
-                    ptop: 15,
-                    pbottom: 15,
-                  ),
-                ] else ...[
-                  Container()
-                ]
-              ],
-            ),
-          ),
+                  );
+                }
+              }),
         );
       }
     });

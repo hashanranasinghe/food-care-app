@@ -7,13 +7,16 @@ class PopupDialog {
   static showPopupDialog(BuildContext context, String titel, String description,
       Function actionFun) {
     AwesomeDialog(
+      desc: description,
             title: titel,
             context: context,
             dialogType: DialogType.question,
             animType: AnimType.scale,
             btnCancelText: "Cancel",
             btnOkText: "Ok",
-            btnCancelOnPress: () {},
+            btnCancelOnPress: () {
+              Navigator.pop(context);
+            },
             btnOkOnPress: () {
               actionFun();
             },

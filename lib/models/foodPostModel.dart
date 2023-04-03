@@ -1,5 +1,3 @@
-
-
 class Food {
   String? id;
   String? userId;
@@ -13,6 +11,7 @@ class Food {
   Location location;
   bool isShared;
   List<String> imageUrls;
+  List<dynamic> requests;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -29,6 +28,7 @@ class Food {
     required this.listDays,
     required this.location,
     required this.imageUrls,
+    required this.requests,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -44,6 +44,7 @@ class Food {
         pickupTimes: json["pickupTimes"],
         listDays: json["listDays"],
         isShared: json["isShared"],
+        requests: List<dynamic>.from(json["requests"].map((x) => x)),
         location: json["location"] is List
             ? Location.fromJson(json["location"][0])
             : Location.fromJson(json["location"]),
@@ -65,6 +66,7 @@ class Food {
         "isShared": isShared,
         "location": location.toJson(),
         "imageUrls": imageUrls,
+        "requests": List<dynamic>.from(requests.map((x) => x)),
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
       };

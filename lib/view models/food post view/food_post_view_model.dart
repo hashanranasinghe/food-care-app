@@ -49,6 +49,9 @@ class FoodPostViewModel {
     return food.isShared;
   }
 
+  List<dynamic> get requests {
+    return food.requests;
+  }
   Location get location {
     return food.location;
   }

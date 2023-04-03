@@ -115,7 +115,7 @@ class FoodApiServices {
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        res= resOk;
+        res = resOk;
         print('Food post updated.');
         return res;
       } else {
@@ -125,6 +125,36 @@ class FoodApiServices {
     } catch (error) {
       print('Error: $error');
       return res;
+    }
+  }
+
+  static Future<int> requestFoodPost({required String foodId,required String requesterId}) async {
+    int res = resFail;
+    // Get the JWT token from secure storage
+    String? token = await StoreToken.getToken();
+
+    // Send a PUT request to the API with the token in the Authorization header
+    final userData = jsonEncode({
+      'requesterId': requesterId,
+    });
+    final response = await client.put(
+      Uri.http(Config.apiURL, Config.requestFood(id: foodId)),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: userData
+    );
+
+    // Check if the response was successful
+    if (response.statusCode == 200) {
+      final message = json.decode(response.body);
+      print("ok");
+      res = resOk;
+      return res;
+    } else {
+      return res;
+      // throw Exception('Failed to like forum');
     }
   }
 
@@ -185,7 +215,6 @@ class FoodApiServices {
     );
 
     if (response.statusCode == 200) {
-
       res = resOk;
       // Forum deleted successfully
       print('Food post deleted successfully');

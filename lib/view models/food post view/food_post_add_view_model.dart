@@ -15,6 +15,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
   late String listDays;
   late bool isShared;
   late Location location;
+  late List<dynamic> requests;
   late List<String> imageUrls;
   late DateTime createdAt;
   late DateTime updatedAt;
@@ -29,6 +30,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
         pickupTimes: pickupTimes,
         listDays: listDays,
         isShared: isShared,
+        requests: requests = [],
         location: location,
         imageUrls: imageUrls,
         createdAt: DateTime.now(),
@@ -52,6 +54,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
         pickupTimes: pickupTimes,
         listDays: listDays,
         isShared: isShared,
+        requests: requests,
         location: location,
         imageUrls: imageUrls,
         createdAt: DateTime.now(),
