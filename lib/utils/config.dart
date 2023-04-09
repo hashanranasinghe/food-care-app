@@ -10,7 +10,7 @@ class Config {
   static const String users = "/api/users/users";
   static const String emailUrl = "http://localhost:5001";
   static const String emailApi =
-      "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";
+      "remove-api";
 
   static String verifyUser({required String verificationToken}) {
     String path = "/api/users/verify/$verificationToken";
