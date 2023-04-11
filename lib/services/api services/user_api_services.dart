@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:food_care/services/store_token.dart';
 import 'package:food_care/utils/constraints.dart';
@@ -13,6 +14,7 @@ class UserAPiServices {
   // Function to get the login user from the API
   static Future<int> loginUser(
       String email, String password, BuildContext context) async {
+    String? deviceToken = await FirebaseMessaging.instance.getToken();
     int res = resFail;
     final response = await client.post(
       Uri.http(Config.apiURL, Config.loginUserAPI),
@@ -22,6 +24,7 @@ class UserAPiServices {
       body: jsonEncode(<String, String>{
         'email': email,
         'password': password,
+        'deviceToken': deviceToken.toString(),
       }),
     );
 
@@ -39,7 +42,6 @@ class UserAPiServices {
       await StoreToken.storeToken(token);
       final readToken = await StoreToken.getToken();
       print(readToken);
-      print(user.isVerify);
       res = resOk;
       return res;
     } else {
@@ -65,6 +67,7 @@ class UserAPiServices {
     request.fields['address'] = user.address.toString();
     request.fields['isVerify'] = user.isVerify.toString();
     request.fields['verificationToken'] = user.verificationToken.toString();
+    request.fields['deviceToken'] = user.deviceToken.join(',');
     request.fields['password'] = user.password!;
 
     // Add the user's image to the request
@@ -138,7 +141,6 @@ class UserAPiServices {
       return res;
     }
     return res;
-
   }
 
   // Function to get the current user from the API

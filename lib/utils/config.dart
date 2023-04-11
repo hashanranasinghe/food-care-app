@@ -1,21 +1,15 @@
 class Config {
   //user
   static const String appName = "FoodCare App";
-  static const String apiURL = "10.0.2.2:5001";
-  static const String socketUrl = "http://10.0.2.2:8900";
-  //static const String apiURL = "192.168.0.101:5001";
+  // static const String apiURL = "10.0.2.2:5001";
+  // static const String socketUrl = "http://10.0.2.2:8900";
+  static const String socketUrl = "http://192.168.0.100:8900";
+  static const String apiURL = "192.168.0.100:5001";
   static const String loginUserAPI = "/api/users/login";
   static const String registerUserAPI = "/api/users/register";
   static const String currentUserAPI = "/api/users/current";
   static const String users = "/api/users/users";
   static const String emailUrl = "http://localhost:5001";
-  static const String emailApi =
-      "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";
-
-  static String verifyUser({required String verificationToken}) {
-    String path = "/api/users/verify/$verificationToken";
-    return path;
-  }
 
   static String resetPassword({required String id, required String token}) {
     String path = "/api/users/resetpassword/$id/$token";

@@ -2,10 +2,15 @@
 
 import 'dart:async';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:food_care/services/navigations.dart';
+import '../../services/api services/chat_api_services.dart';
 import '../../services/api services/user_api_services.dart';
 import '../../services/store_token.dart';
+import '../../view models/chat view/conversation/conversation_view_model.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class SplashScreen extends StatefulWidget {
   final PendingDynamicLinkData? initialLink;
@@ -21,11 +26,59 @@ class StartState extends State<SplashScreen> {
     return initScreen(context);
   }
 
+  // It is assumed that all messages contain a data field with the key 'type'
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    } else {
+      startTimer();
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  _handleMessage(RemoteMessage message) {
+    var duration = Duration(seconds: 3);
+
+    new Timer(duration, () {
+      routeNew(message);
+    });
+  }
+
+  routeNew(RemoteMessage message) async {
+    var token = await StoreToken.getToken();
+    if (token != null) {
+      if (message.data["type"] == "chat") {
+        final ConversationViewModel vm = await ChatApiServices.getConversation(
+            senderId: message.data["userId"],
+            receiverId: message.data["receiverId"]);
+        openMessaging(
+            context: context,
+            receiverName: message.data["receiverName"],
+            conversationId: message.data["conversationId"],
+            conversationViewModel: vm,
+            id: message.data["userId"]);
+      } else {
+        openSettings(context);
+      }
+    } else {
+      openUserSignIn(context);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
-    startTimer();
+    setupInteractedMessage();
   }
 
   startTimer() async {

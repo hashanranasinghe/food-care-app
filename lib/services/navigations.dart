@@ -28,9 +28,13 @@ void openUserSignIn(BuildContext context) async {
       context, MaterialPageRoute(builder: (context) => const LoginScreen()));
 }
 
-void openHome(BuildContext context,User user) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => BottomNavigation(user: user,)));
+void openHome(BuildContext context, User user) async {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BottomNavigation(
+                user: user,
+              )));
 }
 
 void openAddForum(BuildContext context) async {
@@ -85,15 +89,20 @@ void openUpdateForum(BuildContext context, Forum forum) async {
               )));
 }
 
-void openMessaging(BuildContext context, String receiverName,
-    String conversationId, ConversationViewModel conversationViewModel,String id) async {
+void openMessaging(
+    {required BuildContext context,
+    required String receiverName,
+    required String conversationId,
+    required ConversationViewModel conversationViewModel,
+    required String id}) async {
   Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => MessagingScreen(
                 receiverName: receiverName,
                 conversationId: conversationId,
-                conversationViewModel: conversationViewModel, id: id,
+                conversationViewModel: conversationViewModel,
+                id: id,
               )));
 }
 
@@ -102,11 +111,14 @@ void openOwnFoodPosts(BuildContext context) async {
       MaterialPageRoute(builder: (context) => const HomeScreen(food: false)));
 }
 
-void openDisplayFoodPost(BuildContext context, String foodId,String id) async {
+void openDisplayFoodPost(BuildContext context, String foodId, String id) async {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => FoodPostDisplayScreen(foodId: foodId,id: id,)));
+          builder: (context) => FoodPostDisplayScreen(
+                foodId: foodId,
+                id: id,
+              )));
 }
 
 void openSettings(BuildContext context) async {
@@ -124,11 +136,15 @@ void openMyProfile(BuildContext context, User user) async {
 }
 
 void openForget(BuildContext context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const ForgetPasswordScreen()));
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => const ForgetPasswordScreen()));
 }
 
-void openReset(BuildContext context,String token) async {
+void openReset(BuildContext context, String token) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => ResetPasswordScreen(token: token,)));
+      context,
+      MaterialPageRoute(
+          builder: (context) => ResetPasswordScreen(
+                token: token,
+              )));
 }

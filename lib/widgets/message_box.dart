@@ -30,8 +30,6 @@ class _MsgFieldState extends State<MsgField> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
@@ -86,7 +84,8 @@ class _MsgFieldState extends State<MsgField> {
                                         Convert.convertTimeFormat(
                                             dateTime: message.createdAt),
                                         style: TextStyle(
-                                            color: Colors.white.withOpacity(0.6),
+                                            color:
+                                                Colors.white.withOpacity(0.6),
                                             fontSize: 11),
                                       ),
                                     ],

@@ -1,9 +1,8 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:food_care/models/userModel.dart';
-import 'package:food_care/services/api%20services/email_service.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/Gtextformfiled.dart';
@@ -28,7 +27,7 @@ class _SignupScreenState extends State<SignupScreen> {
   String mobileNumber = '';
   String address = '';
   String email = '';
-  String imagePath ='';
+  String imagePath = '';
   String password = '';
   String confirmPassword = '';
   TextEditingController nameController = TextEditingController();
@@ -123,7 +122,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         },
                         controller: emailController),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:25 ),
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,33 +133,37 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 25),
-                            child: IconButton(onPressed: (){
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return TakeImages(galleryOnPress: () async {
-                                    final pickedFile = await ImagePicker()
-                                        .pickImage(source: ImageSource.gallery);
-                                    print(pickedFile!.path);
+                            child: IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return TakeImages(
+                                          galleryOnPress: () async {
+                                        final pickedFile = await ImagePicker()
+                                            .pickImage(
+                                                source: ImageSource.gallery);
+                                        print(pickedFile!.path);
 
-                                    setState(() {
-                                      imagePath = pickedFile.path;
-                                    });
+                                        setState(() {
+                                          imagePath = pickedFile.path;
+                                        });
 
-                                    Navigator.pop(context);
-                                  }, cameraOnPress: () async {
-                                    final pickedFile = await ImagePicker()
-                                        .pickImage(source: ImageSource.camera);
-                                    print(pickedFile!.path);
-                                    setState(() {
-                                      imagePath = pickedFile.path;
-                                    });
-                                    Navigator.pop(context);
-                                  });
+                                        Navigator.pop(context);
+                                      }, cameraOnPress: () async {
+                                        final pickedFile = await ImagePicker()
+                                            .pickImage(
+                                                source: ImageSource.camera);
+                                        print(pickedFile!.path);
+                                        setState(() {
+                                          imagePath = pickedFile.path;
+                                        });
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                  );
                                 },
-                              );
-                            }
-                            , icon: Icon(Icons.camera_alt_outlined)),
+                                icon: Icon(Icons.camera_alt_outlined)),
                           )
                         ],
                       ),
@@ -241,6 +244,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void userRegistration() async {
     if (_form.currentState!.validate()) {
+      String? deviceToken = await FirebaseMessaging.instance.getToken();
       User user = User(
           name: name,
           email: email,
@@ -249,16 +253,16 @@ class _SignupScreenState extends State<SignupScreen> {
           verificationToken: uuid.v4(),
           address: address,
           imageUrl: imagePath,
+          deviceToken: [deviceToken],
           password: password);
-     int res = await UserAPiServices.registerUser(user);
-      if(res == resOk){
-        EmailService.sendEmail(email: email, verificationToken: user.verificationToken.toString());
+      int res = await UserAPiServices.registerUser(user);
+      print(res);
+      if (res == resOk) {
         openUserSignIn(context);
         ToastWidget.toast(msg: "Verification Email is sent.");
-      }else{
+      } else {
         ToastWidget.toast(msg: "Something went to wrong.");
       }
-
     }
   }
 }

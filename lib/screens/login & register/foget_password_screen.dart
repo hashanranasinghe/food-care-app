@@ -43,14 +43,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               onpress: () async {
                 String token = await UserAPiServices.forgetPassword(
                     email: emailController.text);
-                String deepLink =
-                    await FirebaseDynamicLinkService.createDynamicLink(
-                        token, emailController.text);
 
                 ToastWidget.toast(msg: "Email is sent.");
                 emailController.clear();
-
-                print(deepLink);
               }),
         ],
       ),

@@ -239,11 +239,11 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                           () async {
                                         int res = await FoodApiServices
                                             .requestFoodPost(
-                                                foodId: foodPost.id.toString(), requesterId: '');
-                                        _foodPostListViewModel.getAllFoodPosts();
-                                        setState(() {
-
-                                        });
+                                                foodId: foodPost.id.toString(),
+                                                requesterId: '');
+                                        _foodPostListViewModel
+                                            .getAllFoodPosts();
+                                        setState(() {});
                                       });
                                     },
                                     text: "Cancel Request",
@@ -259,13 +259,14 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                           context,
                                           "Request For Food",
                                           "Do you want to request this food?",
-                                          () async{
-                                            int res = await  FoodApiServices.requestFoodPost(
-                                            foodId: foodPost.id.toString(), requesterId: '');
-                                            _foodPostListViewModel.getAllFoodPosts();
-                                        setState(() {
-
-                                        });
+                                          () async {
+                                        int res = await FoodApiServices
+                                            .requestFoodPost(
+                                                foodId: foodPost.id.toString(),
+                                                requesterId: '');
+                                        _foodPostListViewModel
+                                            .getAllFoodPosts();
+                                        setState(() {});
                                       });
                                     },
                                     text: "Request for Food",
@@ -280,11 +281,13 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                                   .toString(),
                                               receiverId: widget.id);
                                       openMessaging(
-                                          context,
-                                          foodPost.author.toString(),
-                                          vm.id.toString(),
-                                          vm,
-                                          widget.id);
+                                        context: context,
+                                        conversationViewModel: vm,
+                                        receiverName:
+                                            foodPost.author.toString(),
+                                        conversationId: vm.id.toString(),
+                                        id: widget.id,
+                                      );
                                     } catch (e) {
                                       conversationAddViewModel.members
                                           .add(userViewModel.user!.id);
@@ -302,11 +305,13 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                                   .toString(),
                                               receiverId: widget.id);
                                       openMessaging(
-                                          context,
-                                          foodPost.author.toString(),
-                                          vm.id.toString(),
-                                          vm,
-                                          widget.id);
+                                        context: context,
+                                        conversationViewModel: vm,
+                                        receiverName:
+                                            foodPost.author.toString(),
+                                        conversationId: vm.id.toString(),
+                                        id: widget.id,
+                                      );
                                     }
                                   },
                                   text: "Contact",

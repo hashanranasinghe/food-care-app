@@ -1,3 +1,4 @@
+
 import 'package:food_care/models/conversationModel.dart';
 import 'package:food_care/view%20models/chat%20view/conversation/conversation_view_model.dart';
 import 'package:http/http.dart' as http;
@@ -108,14 +109,17 @@ class ChatApiServices {
   }
 
   //send message
-  static Future<void> sendMessage({required Chat chat}) async {
+  static Future<void> sendMessage({required Chat chat,required String receiverId}) async {
     String? token = await StoreToken.getToken();
     // Encode the user data as JSON
     final userData = jsonEncode({
+      'receiverId':receiverId,
       'conversationId': chat.conversationId,
       'sender_id': chat.senderId,
       'message': chat.message,
     });
+    print(receiverId);
+    print(chat.senderId);
 
     // Create a new HTTP request
     final url = Uri.http(Config.apiURL, Config.sendMessage);

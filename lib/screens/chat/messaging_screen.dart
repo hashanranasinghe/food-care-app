@@ -79,7 +79,6 @@ class _MessagingScreenState extends State<MessagingScreen> {
         _messageListViewModel.notifyListeners();
       }
 
-      print(chat.message);
     });
   }
 
@@ -119,7 +118,6 @@ class _MessagingScreenState extends State<MessagingScreen> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<MessageListViewModel>(context);
-    print(vm.messages);
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       if (userViewModel.user == null) {
         userViewModel.getCurrentUser();
@@ -144,7 +142,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                       child: Form(
                         key: _form,
                         child: TextFormField(
-                         textCapitalization: TextCapitalization.sentences,
+                          textCapitalization: TextCapitalization.sentences,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return;
@@ -204,7 +202,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
         _sendMessageViewModel.senderId = id;
         _sendMessageViewModel.conversationId = widget.conversationId;
       });
-      await _sendMessageViewModel.sendMessage();
+      String receiverId = (id==widget.conversationViewModel.members[0]?widget.conversationViewModel.members[1]:widget.conversationViewModel.members[0]);
+      await _sendMessageViewModel.sendMessage(receiverId: receiverId);
       if (usersOfSocket.length == 1) {
         await _messageListViewModel.getMessages(widget.conversationId);
       }

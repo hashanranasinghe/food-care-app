@@ -9,7 +9,7 @@ class SendMessageViewModel extends ChangeNotifier {
   late DateTime createdAt;
   late DateTime updatedAt;
 
-  Future<void> sendMessage() async {
+  Future<void> sendMessage({required String receiverId}) async {
     final chat = Chat(
         conversationId: conversationId,
         senderId: senderId,
@@ -17,7 +17,7 @@ class SendMessageViewModel extends ChangeNotifier {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now());
 
-    await ChatApiServices.sendMessage(chat: chat);
+    await ChatApiServices.sendMessage(chat: chat, receiverId: receiverId);
     notifyListeners();
   }
 }

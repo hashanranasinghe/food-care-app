@@ -49,11 +49,11 @@ class _ChatListCardState extends State<ChatListCard> {
                       return ListTile(
                         onTap: () async {
                           openMessaging(
-                              context,
-                              member.name,
-                              conversation.id.toString(),
-                              conversation,
-                              memberId);
+                              context: context,
+                              receiverName: member.name,
+                              conversationId: conversation.id.toString(),
+                              conversationViewModel: conversation,
+                              id: memberId);
                         },
                         leading: CircleAvatar(
                           backgroundColor: kPrimaryColorlight,

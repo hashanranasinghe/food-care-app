@@ -36,4 +36,7 @@ class UserView {
   bool get isVerify{
     return user.isVerify;
   }
+  List<dynamic> get deviceToken {
+    return user.deviceToken;
+  }
 }
