@@ -22,8 +22,8 @@ class GetUserImage extends StatelessWidget {
             return CircleAvatar(
               radius: radius,
               backgroundColor: kPrimaryColorlight,
-              backgroundImage: user.imageUrl == ""
-                  ? AssetImage(icon.toString())
+              backgroundImage: user.imageUrl == null ||user.imageUrl==""
+                  ? const AssetImage(icon)
                   : NetworkImage(
                           Config.imageUrl(imageUrl: user.imageUrl.toString()))
                       as ImageProvider<Object>,

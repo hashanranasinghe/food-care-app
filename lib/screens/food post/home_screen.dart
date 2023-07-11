@@ -5,6 +5,7 @@ import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/food_post.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import '../../view models/food post view/food_post_list_view_model.dart';
 import '../../view models/user view/userViewModel.dart';
@@ -20,12 +21,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late GlobalKey<ScaffoldState> _scaffoldKey;
-
+  String _locationMessage = '';
+  late Position position;
   @override
   void initState() {
     super.initState();
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _populateAllFoodPosts();
+    _getCurrentLocation();
   }
 
   void _populateAllFoodPosts() {
@@ -133,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       case Status.success:
         return FoodPost(
+          position: position,
           foods: vm.foods,
           food: widget.food,
           userId: userViewModel.user!.id.toString(), users: um.users,
@@ -140,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case Status.empty:
         return Align(
           alignment: Alignment.center,
-          child: Text("No foru found...."),
+          child: Text("No food post found...."),
         );
     }
   }
@@ -303,5 +307,25 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  Future<void> _getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+
+    if (permission == LocationPermission.denied) {
+      setState(() {
+        _locationMessage = 'Location permissions denied';
+      });
+    } else {
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+
+      setState(() {
+        _locationMessage =
+        'Latitude: ${position.latitude}, Longitude: ${position.longitude}';
+      });
+    }
+    print(_locationMessage);
+
   }
 }

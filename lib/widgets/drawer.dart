@@ -40,7 +40,7 @@ class MenuDrawer extends StatelessWidget {
                     ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Colors.white,
-                      backgroundImage: userViewModel.user!.imageUrl == ""
+                      backgroundImage: userViewModel.user!.imageUrl == null
                           ? AssetImage(icon)
                           : NetworkImage(Config.imageUrl(
                               imageUrl: userViewModel.user!.imageUrl
@@ -150,6 +150,7 @@ class MenuDrawer extends StatelessWidget {
                           context, "Logout", "Do you want to Logout ? ",
                           () async {
                         await StoreToken.removeToken();
+                        userViewModel.clearUser();
                         var token = await StoreToken.getToken();
                         if (token == null) {
                           openUserSignIn(context);

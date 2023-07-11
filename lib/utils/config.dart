@@ -1,15 +1,17 @@
 class Config {
   //user
   static const String appName = "FoodCare App";
-  // static const String apiURL = "10.0.2.2:5001";
-  // static const String socketUrl = "http://10.0.2.2:8900";
-  static const String socketUrl = "http://192.168.0.100:8900";
-  static const String apiURL = "192.168.0.100:5001";
+  static const String apiURL = "10.0.2.2:5001";
+  static const String socketUrl = "http://10.0.2.2:8900";
+  //static const String socketUrl = "http://192.168.156.156:8900";
+  //static const String apiURL = "192.168.156.156:5001";
   static const String loginUserAPI = "/api/users/login";
   static const String registerUserAPI = "/api/users/register";
   static const String currentUserAPI = "/api/users/current";
   static const String users = "/api/users/users";
+  static const String request = "/api/users/requestFood";
   static const String emailUrl = "http://localhost:5001";
+  static const String mapApi = "AIzaSyAGk8VdNEZK46Wjyj422bmjvxwucaSrLE8";
 
   static String resetPassword({required String id, required String token}) {
     String path = "/api/users/resetpassword/$id/$token";
@@ -73,6 +75,23 @@ class Config {
 
   static String requestFood({required String id}) {
     String path = "api/food/$id/request";
+    return path;
+  }
+
+  static String urlForFindPlace({required String place}) {
+    String path =
+        "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cplace_id%2Cname%2Crating%2Copening_hours%2Cgeometry&input=$place&language=en&inputtype=textquery&key=$mapApi";
+    return path;
+  }
+
+  static String urlForSearchPlace({required String searchPlace}) {
+    String path =
+        "https://maps.googleapis.com/maps/api/place/queryautocomplete/json?input=%20$searchPlace%20SiLanka%20&types=geocode&key=$mapApi";
+    return path;
+  }
+
+  static String getPlaceDetails({required String placeId}){
+    String path = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=name,geometry&key=$mapApi';
     return path;
   }
 

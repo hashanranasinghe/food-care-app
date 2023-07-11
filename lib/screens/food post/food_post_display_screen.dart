@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:food_care/services/api%20services/chat_api_services.dart';
 import 'package:food_care/services/api%20services/food_api_services.dart';
+import 'package:food_care/services/api%20services/map_services.dart';
+import 'package:food_care/services/api%20services/user_api_services.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/view%20models/chat%20view/conversation/conversastion_add_view_model.dart';
@@ -16,6 +18,7 @@ import 'package:provider/provider.dart';
 import '../../models/foodPostModel.dart';
 import '../../utils/config.dart';
 import '../../view models/food post view/food_post_list_view_model.dart';
+import '../../widgets/flutter_toast.dart';
 
 class FoodPostDisplayScreen extends StatefulWidget {
   final String foodId;
@@ -214,6 +217,26 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                             ],
                                           ),
                                         ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5),
+                                          child: Row(
+                                            children: [
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    MapServices.openMapApp(
+                                                        double.parse(foodPost
+                                                            .location.lan
+                                                            .toString()),
+                                                        double.parse(foodPost
+                                                            .location.lon
+                                                            .toString()));
+                                                  },
+                                                  child:
+                                                      Text("Go to direction"))
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   )
@@ -243,34 +266,63 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                                 requesterId: '');
                                         _foodPostListViewModel
                                             .getAllFoodPosts();
+                                        await UserAPiServices.foodRequest(
+                                            foodId: foodPost.id.toString(),
+                                            userId: userViewModel.user!.id
+                                                .toString());
                                         setState(() {});
                                       });
                                     },
                                     text: "Cancel Request",
                                   ),
                                 ] else ...[
-                                  Genaralbutton(
-                                    pleft: 60,
-                                    pright: 60,
-                                    ptop: 15,
-                                    pbottom: 15,
-                                    onpress: () async {
-                                      PopupDialog.showPopupDialog(
-                                          context,
-                                          "Request For Food",
-                                          "Do you want to request this food?",
-                                          () async {
-                                        int res = await FoodApiServices
-                                            .requestFoodPost(
-                                                foodId: foodPost.id.toString(),
-                                                requesterId: '');
-                                        _foodPostListViewModel
-                                            .getAllFoodPosts();
-                                        setState(() {});
-                                      });
-                                    },
-                                    text: "Request for Food",
-                                  ),
+                                  if (userViewModel.user!.dailyRequests !=
+                                          null &&
+                                      userViewModel
+                                              .user!.dailyRequests!.length <
+                                          4) ...[
+                                    Genaralbutton(
+                                      pleft: 60,
+                                      pright: 60,
+                                      ptop: 15,
+                                      pbottom: 15,
+                                      onpress: () async {
+                                        PopupDialog.showPopupDialog(
+                                            context,
+                                            "Request For Food",
+                                            "Do you want to request this food?",
+                                            () async {
+                                          int res = await FoodApiServices
+                                              .requestFoodPost(
+                                                  foodId:
+                                                      foodPost.id.toString(),
+                                                  requesterId: '');
+                                          _foodPostListViewModel
+                                              .getAllFoodPosts();
+                                          await UserAPiServices.foodRequest(
+                                              foodId: foodPost.id.toString(),
+                                              userId: userViewModel.user!.id
+                                                  .toString());
+                                          setState(() {});
+                                          await userViewModel.getCurrentUser();
+                                        });
+
+                                      },
+                                      text: "Request for Food",
+                                    )
+                                  ] else ...[
+                                    Genaralbutton(
+                                      isActive: false,
+                                      pleft: 60,
+                                      pright: 60,
+                                      ptop: 15,
+                                      pbottom: 15,
+                                      onpress: () async {
+                                        ToastWidget.toast(msg: "limit");
+                                      },
+                                      text: "Request for Food",
+                                    )
+                                  ]
                                 ],
                                 Genaralbutton(
                                   onpress: () async {
@@ -324,7 +376,11 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                             ),
                           ] else ...[
                             Container()
-                          ]
+                          ],
+                          ElevatedButton(onPressed: (){
+                            print(userViewModel.user!.dailyRequests!.length);
+                          }, child:Text("print"))
+
                         ],
                       ),
                     ),

@@ -63,6 +63,7 @@ class Genaralbutton extends StatelessWidget {
   final double pbottom;
   final Function onpress;
   final double fontsize;
+  final bool isActive;
   const Genaralbutton({
     this.color = kPrimaryColordark,
     this.textcolor = kPrimaryColorlight,
@@ -73,7 +74,7 @@ class Genaralbutton extends StatelessWidget {
     this.pbottom = 10,
     Key? key,
     required this.onpress,
-    this.fontsize = 20,
+    this.fontsize = 20, this.isActive =true,
   }) : super(key: key);
 
   @override
@@ -94,9 +95,8 @@ class Genaralbutton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-            ),
+            ), backgroundColor: isActive?color:color.withOpacity(0.5),
             elevation: 15.0,
-            primary: color,
             padding: EdgeInsets.only(
                 left: pleft, right: pright, top: ptop, bottom: pbottom)),
       ),

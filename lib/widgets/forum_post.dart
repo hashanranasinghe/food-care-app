@@ -82,7 +82,7 @@ class _ForumPostState extends State<ForumPost> {
                             CircleAvatar(
                               backgroundColor: kPrimaryColorlight,
                               radius: 10,
-                              backgroundImage: user.imageUrl == ""
+                              backgroundImage: user.imageUrl == null
                                   ? AssetImage(icon.toString())
                                   : NetworkImage(Config.imageUrl(
                                   imageUrl:
@@ -98,7 +98,7 @@ class _ForumPostState extends State<ForumPost> {
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15)),
-                                  ShowTimeAgoRow(time: forum.updatedAt),
+                                  ShowTimeAgoRow(time: forum.createdAt),
                                 ],
                               ),
                             )

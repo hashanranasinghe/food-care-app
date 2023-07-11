@@ -254,8 +254,11 @@ class _SignupScreenState extends State<SignupScreen> {
           address: address,
           imageUrl: imagePath,
           deviceToken: [deviceToken],
+          dailyRequests: [],
           password: password);
+
       int res = await UserAPiServices.registerUser(user);
+
       print(res);
       if (res == resOk) {
         openUserSignIn(context);

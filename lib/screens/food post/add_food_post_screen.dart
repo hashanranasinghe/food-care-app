@@ -18,7 +18,8 @@ import '../../widgets/show_images.dart';
 
 class AddFoodPostScreen extends StatefulWidget {
   final Food? food;
-  const AddFoodPostScreen({Key? key, this.food}) : super(key: key);
+  const AddFoodPostScreen({Key? key, this.food})
+      : super(key: key);
 
   @override
   State<AddFoodPostScreen> createState() => _AddFoodPostScreenState();
@@ -223,7 +224,9 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                             style: TextStyle(color: Colors.black),
                           ),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                          openMap(context);
+                              },
                               icon: Icon(Icons.arrow_forward_ios_rounded)),
                         ],
                       ),
@@ -263,8 +266,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                           pleft: 100,
                           pright: 100,
                           onpress: () {
-                            uploadAPost(
-                                vm: vm, user: userViewModel.user!);
+                            uploadAPost(vm: vm, user: userViewModel.user!);
                           },
                           text: "Upload",
                         ),
@@ -298,6 +300,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
 
   void uploadAPost(
       {required FoodPostAddViewModel vm, required User user}) async {
+
     if (_form.currentState!.validate()) {
       setState(() {
         vm.quantity = _selectedValue.toString();
@@ -305,17 +308,17 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
         vm.imageUrls = imagePaths;
         vm.author = user.name;
         vm.isShared = false;
-        vm.location = Location(lan: '2', lon: '2');
       });
+
+
       int res = await _foodPostAddViewModel.saveFoodPost();
-      if(res == resOk){
+      if (res == resOk) {
         await _foodPostListViewModel.getAllFoodPosts();
-        openHome(context,user);
+        openHome(context, user);
         ToastWidget.toast(msg: "Food Post uploaded successfully");
-      }else{
+      } else {
         ToastWidget.toast(msg: "Something went to wrong.");
       }
-
     }
   }
 
@@ -330,7 +333,9 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
       _foodPostAddViewModel.pickupTimes = pickUptimesController.text;
       _foodPostAddViewModel.listDays = _selectedDay!;
       _foodPostAddViewModel.isShared = false;
-      _foodPostAddViewModel.location = Location(lan: "3", lon: "3");
+      _foodPostAddViewModel.location = Location(
+          lan: "2",
+          lon: "5");
 
       if (imagePaths.isNotEmpty) {
         print('Image path: $imagePaths');
@@ -342,14 +347,13 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
 
     int res = await _foodPostAddViewModel.updateFoodPost();
 
-    if(res == resOk){
+    if (res == resOk) {
       await _foodPostListViewModel.getAllFoodPosts();
-      openHome(context,user);
+      openHome(context, user);
       ToastWidget.toast(msg: "Food Post updated successfully");
-    }else{
+    } else {
       ToastWidget.toast(msg: "Something went to wrong.");
     }
-
   }
 
   List<Widget> _radioButtons() {

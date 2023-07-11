@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_care/models/foodPostModel.dart';
 import 'package:food_care/services/api%20services/user_api_services.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
@@ -6,11 +7,10 @@ import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_mo
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
 import 'package:food_care/widgets/buttons.dart';
 import 'package:food_care/widgets/popup_dialog.dart';
-
 import 'package:food_care/widgets/show_time_ago_row.dart';
 import 'package:food_care/widgets/updateNdelete.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-
 import '../models/userModel.dart';
 import '../services/api services/food_api_services.dart';
 import '../utils/config.dart';
@@ -23,12 +23,14 @@ class FoodPost extends StatefulWidget {
   final List<FoodPostViewModel> foods;
   final String userId;
   final List<UserView> users;
+  final Position position;
   const FoodPost(
       {Key? key,
       required this.foods,
       this.food,
       required this.userId,
-      required this.users})
+      required this.users,
+      required this.position})
       : super(key: key);
 
   @override
@@ -101,7 +103,7 @@ class _FoodPostState extends State<FoodPost> {
                                         size: 15,
                                       ),
                                       Text(
-                                        "4 km",
+                                        "${getDifferenceLocation(widget.position, food.location).toString()} Km",
                                         style: TextStyle(fontSize: 12),
                                       ),
                                     ],
@@ -135,7 +137,7 @@ class _FoodPostState extends State<FoodPost> {
                                   CircleAvatar(
                                     backgroundColor: kPrimaryColorlight,
                                     radius: 10,
-                                    backgroundImage: user.imageUrl == ""
+                                    backgroundImage: user.imageUrl == null
                                         ? AssetImage(icon.toString())
                                         : NetworkImage(Config.imageUrl(
                                                 imageUrl:
@@ -259,8 +261,10 @@ class _FoodPostState extends State<FoodPost> {
                                                                           FoodApiServices.requestFoodPost(
                                                                               foodId: food.id.toString(),
                                                                               requesterId: food.requests[0]);
-                                                                          foodPostListViewModel.getAllOwnFoodPosts();
-                                                                          Navigator.pop(context);
+                                                                          foodPostListViewModel
+                                                                              .getAllOwnFoodPosts();
+                                                                          Navigator.pop(
+                                                                              context);
                                                                         }),
                                                                   ],
                                                                 ),
@@ -442,5 +446,20 @@ class _FoodPostState extends State<FoodPost> {
             );
           }),
     );
+  }
+
+  double getDifferenceLocation(
+      Position currentPosition, Location foodLocation) {
+    double distanceInMeters = Geolocator.distanceBetween(
+      currentPosition.latitude,
+      currentPosition.longitude,
+      double.parse(foodLocation.lan),
+      double.parse(foodLocation.lon),
+    );
+
+    double distanceInKilometers = distanceInMeters / 1000;
+    double roundedDistance =
+        double.parse(distanceInKilometers.toStringAsFixed(1));
+    return roundedDistance;
   }
 }

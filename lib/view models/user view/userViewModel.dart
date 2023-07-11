@@ -15,4 +15,8 @@ class UserViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {}
   }
+
+  void clearUser() {
+    _user = null;
+  }
 }

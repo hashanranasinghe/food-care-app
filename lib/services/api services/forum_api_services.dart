@@ -82,9 +82,11 @@ class ForumApiServices {
         'POST', Uri.http(Config.apiURL, Config.getApostForums));
     request.headers['Authorization'] = 'Bearer $token';
 
+    if(forum.imageUrl !=""){
     request.files.add(await http.MultipartFile.fromPath(
-        'imageUrl', forum.imageUrl.toString()));
+        'imageUrl', forum.imageUrl.toString()));}
 
+    print(forum.imageUrl.toString());
     request.fields['title'] = forum.title;
     request.fields['description'] = forum.description;
     request.fields['author'] = forum.author;

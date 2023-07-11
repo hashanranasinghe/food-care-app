@@ -39,4 +39,7 @@ class UserView {
   List<dynamic> get deviceToken {
     return user.deviceToken;
   }
+  List<dynamic>? get dailyRequest {
+    return user.dailyRequests;
+  }
 }

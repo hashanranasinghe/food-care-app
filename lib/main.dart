@@ -14,6 +14,7 @@ import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_mo
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_add_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_list-view_model.dart';
+import 'package:food_care/view%20models/map_view/place_list_view_model.dart';
 import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/view%20models/user%20view/user_list_view_model.dart';
 import 'package:food_care/view%20models/user%20view/user_update_view_model.dart';
@@ -67,6 +68,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => MessageListViewModel()),
         ChangeNotifierProvider(create: (_) => SendMessageViewModel()),
         ChangeNotifierProvider(create: (_) => ConversationAddViewModel()),
+        ChangeNotifierProvider(create: (_) => PlaceListViewModel()),
       ],
       child: MyApp(
         initialLink: initialLink,

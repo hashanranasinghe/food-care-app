@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../models/chatModel.dart';
+import '../../utils/config.dart';
 import '../../view models/chat view/message/message_view_model.dart';
 
 class MessagingScreen extends StatefulWidget {
@@ -50,7 +51,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
   }
 
   _socketConnect() {
-    socket = IO.io('http://10.0.2.2:8900', <String, dynamic>{
+    socket = IO.io(Config.socketUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });

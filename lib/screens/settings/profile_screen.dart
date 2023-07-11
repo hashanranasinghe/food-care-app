@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     emailController.text = widget.user.email;
     passwordController.text = widget.user.password!;
     imageUrl = widget.user.imageUrl.toString();
-    _userUpdateViewModel.imageUrl = widget.user.imageUrl!;
+    _userUpdateViewModel.imageUrl = (widget.user.imageUrl ?? "null");
   }
 
   String name = '';
@@ -203,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _getImage() {
-    if (imageUrl == "") {
+    if (imageUrl == "null") {
       return AssetImage(icon.toString());
     } else {
       if (imagePath == "") {

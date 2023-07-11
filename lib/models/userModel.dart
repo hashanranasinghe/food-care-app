@@ -10,6 +10,7 @@ class User {
   String? imageUrl;
   String? password;
   List<dynamic> deviceToken;
+  List<dynamic>? dailyRequests;
   User({
     this.id,
     this.uid,
@@ -20,6 +21,7 @@ class User {
     this.verificationToken,
     this.address,
     required this.deviceToken,
+    this.dailyRequests,
     this.imageUrl,
     this.password,
   });
@@ -34,6 +36,8 @@ class User {
         imageUrl: json["imageUrl"],
         isVerify: json['isVerify'],
         deviceToken: List<dynamic>.from(json["deviceToken"].map((x) => x)),
+        dailyRequests:
+            List<dynamic>.from(json["foodRequest"]?.map((x) => x) ?? []),
         verificationToken: json['verificationToken'],
         password: json["password"],
       );
@@ -49,6 +53,7 @@ class User {
         "verificationToken": verificationToken,
         "imageUrl": imageUrl,
         "password": password,
-        "deviceToken": List<dynamic>.from(deviceToken.map((x) => x))
+        "deviceToken": List<dynamic>.from(deviceToken.map((x) => x)),
+        "foodRequest": List<dynamic>.from(dailyRequests!.map((x) => x))
       };
 }

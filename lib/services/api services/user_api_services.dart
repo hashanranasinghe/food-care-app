@@ -68,10 +68,12 @@ class UserAPiServices {
     request.fields['isVerify'] = user.isVerify.toString();
     request.fields['verificationToken'] = user.verificationToken.toString();
     request.fields['deviceToken'] = user.deviceToken.join(',');
+    request.fields['foodRequest']= user.dailyRequests.toString();
     request.fields['password'] = user.password!;
 
     // Add the user's image to the request
-    if (user.imageUrl != null) {
+
+    if (user.imageUrl.toString() != "") {
       final file = await http.MultipartFile.fromPath(
           'imageUrl', user.imageUrl.toString());
       request.files.add(file);
@@ -158,7 +160,7 @@ class UserAPiServices {
     if (response.statusCode == 200) {
       final userJson = json.decode(response.body) as Map<String, dynamic>;
       final user = User.fromJson(userJson);
-      print("${user.name} hi ${user.id}");
+      print("${user.name} hi ${user.id}  ${user.dailyRequests!.length}");
       return user;
     } else {
       throw Exception('Failed to get current user');
@@ -269,6 +271,35 @@ class UserAPiServices {
       return userList;
     } else {
       throw Exception('Failed to get forums');
+    }
+  }
+
+
+  //food request
+  static Future<void> foodRequest({required String foodId,required String userId}) async {
+    // Get the JWT token from secure storage
+    String? token = await StoreToken.getToken();
+    final foodData = jsonEncode({
+      "foodId":foodId,
+      "userId":userId
+    });
+
+    // Send a PUT request to the API with the token in the Authorization header
+    final response = await client.put(
+      Uri.http(Config.apiURL, Config.request),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: foodData
+    );
+
+    // Check if the response was successful
+    if (response.statusCode == 200) {
+      final message = json.decode(response.body);
+      print("ok");
+    } else {
+      throw Exception('Failed to request');
     }
   }
 }

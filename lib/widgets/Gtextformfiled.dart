@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../services/validate_handeler.dart';
 import '../utils/constraints.dart';
 
 ////////////////// textfiled//////////////////////////////////
