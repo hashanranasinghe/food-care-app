@@ -13,7 +13,6 @@ class FoodPostViewModel {
     return food.author;
   }
 
-
   String? get userId {
     return food.userId;
   }
@@ -45,13 +44,15 @@ class FoodPostViewModel {
   String? get pickupTimes {
     return food.pickupTimes;
   }
-  bool get isShared{
+
+  bool get isShared {
     return food.isShared;
   }
 
   List<dynamic> get requests {
     return food.requests;
   }
+
   Location get location {
     return food.location;
   }

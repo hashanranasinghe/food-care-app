@@ -14,7 +14,8 @@ class ShowImages extends StatefulWidget {
     Key? key,
     required this.imagePaths,
     required this.galleryOnPress,
-    required this.cameraOnPress, this.foodId,
+    required this.cameraOnPress,
+    this.foodId,
   }) : super(key: key);
 
   @override
@@ -34,31 +35,33 @@ class _ShowImagesState extends State<ShowImages> {
           ] else ...[
             _showImages(imagePaths: widget.imagePaths)
           ],
-          if(widget.imagePaths.length<5)...[Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return TakeImages(galleryOnPress: () async {
-                      await widget.galleryOnPress();
-                    }, cameraOnPress: () async {
-                      await widget.cameraOnPress();
-                    });
-                  },
-                );
-              },
-              child: DashedSquare(
-                size: 120,
-                strokeWidth: 2.5,
-                borderRadius: 10,
-                icon: Icons.camera_alt_outlined,
-                iconSize: 60,
+          if (widget.imagePaths.length < 5) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return TakeImages(galleryOnPress: () async {
+                        await widget.galleryOnPress();
+                      }, cameraOnPress: () async {
+                        await widget.cameraOnPress();
+                      });
+                    },
+                  );
+                },
+                child: DashedSquare(
+                  size: 120,
+                  strokeWidth: 2.5,
+                  borderRadius: 10,
+                  icon: Icons.camera_alt_outlined,
+                  iconSize: 60,
+                ),
               ),
             ),
-          ),
-          Text("Add upto 5 images"),]else...[
+            Text("Add upto 5 images"),
+          ] else ...[
             Container(),
           ]
         ],
@@ -110,13 +113,13 @@ class _ShowImagesState extends State<ShowImages> {
                     color: Colors.black,
                     onPressed: () async {
                       setState(() {
-                        if(image.contains('http')){
-                          FoodApiServices.deleteFoodPostImages(foodId:widget.foodId.toString());
+                        if (image.contains('http')) {
+                          FoodApiServices.deleteFoodPostImages(
+                              foodId: widget.foodId.toString());
                           widget.imagePaths.removeAt(index);
-                        }else{
+                        } else {
                           widget.imagePaths.removeAt(index);
                         }
-
                       });
                     },
                   ),

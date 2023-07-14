@@ -56,6 +56,25 @@ class FoodPostListViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getAllRequestedFoodPosts({required String id}) async {
+    status = Status.loading;
+    final results = await FoodApiServices.getFoodPosts();
+
+    // Sort the food posts by creation time
+    results.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+    foods = results
+        .where((food) => food.requests.contains(id))
+        .map((food) => FoodPostViewModel(food: food))
+        .toList();
+
+    status = foods.isEmpty ? Status.empty : Status.success;
+
+    notifyListeners();
+  }
+
+
+
   Future<void> getAllOwnFoodPosts() async {
     status = Status.loading;
     final results = await FoodApiServices.getOwnFoodPosts();

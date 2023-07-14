@@ -7,10 +7,6 @@ import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/chat_list_card.dart';
 import 'package:provider/provider.dart';
 
-
-
-
-
 class ChatScreen extends StatefulWidget {
   final String? id;
   const ChatScreen({Key? key, this.id}) : super(key: key);
@@ -20,7 +16,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
   @override
   void initState() {
     // TODO: implement initState

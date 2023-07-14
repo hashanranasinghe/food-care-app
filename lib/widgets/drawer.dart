@@ -8,7 +8,7 @@ import '../utils/config.dart';
 import '../utils/constraints.dart';
 
 class MenuDrawer extends StatelessWidget {
-  MenuDrawer({
+  const MenuDrawer({
     Key? key,
   }) : super(key: key);
 
@@ -48,7 +48,6 @@ class MenuDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 Card(
                   elevation: 0,
                   child: ListTile(
@@ -62,20 +61,6 @@ class MenuDrawer extends StatelessWidget {
                     },
                   ),
                 ),
-
-                Card(
-                  elevation: 0,
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.filter_alt_outlined,
-                      color: kPrimaryColordark,
-                    ),
-                    title: const Text('Filter'),
-                    onTap: () async {},
-                  ),
-                ),
-                // : Container(),
-
                 Card(
                   elevation: 0,
                   child: ListTile(
@@ -86,6 +71,18 @@ class MenuDrawer extends StatelessWidget {
                       title: const Text('My Food Posts'),
                       onTap: () {
                         openOwnFoodPosts(context);
+                      }),
+                ),
+                Card(
+                  elevation: 0,
+                  child: ListTile(
+                      leading: const Icon(
+                        Icons.emoji_food_beverage_outlined,
+                        color: kPrimaryColordark,
+                      ),
+                      title: const Text('Requested food'),
+                      onTap: () {
+                        openRequestedFood(context,userViewModel.user!.id.toString());
                       }),
                 ),
                 Card(
@@ -110,8 +107,6 @@ class MenuDrawer extends StatelessWidget {
                       title: const Text('Message'),
                       onTap: () async {
                         openChats(context, userViewModel.user!.id.toString());
-                        // print(await ChatApiServices.getConversationsListOfUser(
-                        //     userId: userViewModel.user!.id.toString()));
                       }),
                 ),
                 Card(
@@ -136,7 +131,6 @@ class MenuDrawer extends StatelessWidget {
                         openSettings(context);
                       }),
                 ),
-
                 Card(
                   elevation: 0,
                   child: ListTile(

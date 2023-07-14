@@ -32,7 +32,6 @@ class Date {
     }
   }
 
-
   static DateTime convertDatetime(String date) {
     var datetime = DateFormat('d/M/yyyy').parse(date);
     print(datetime);

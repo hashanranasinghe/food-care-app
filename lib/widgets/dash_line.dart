@@ -9,7 +9,7 @@ class DashedSquare extends StatelessWidget {
   final double iconSize;
   final IconData icon;
   final double borderRadius;
-  DashedSquare(
+  const DashedSquare(
       {this.size = 50,
       this.color = Colors.grey,
       this.strokeWidth = 1,

@@ -7,7 +7,6 @@ import 'package:food_care/screens/settings/profile_screen.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/add_post_row.dart';
-
 import '../models/userModel.dart';
 
 class BottomNavigation extends StatefulWidget {

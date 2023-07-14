@@ -1,7 +1,3 @@
-
-
-
-
 import 'commentModel.dart';
 
 class Forum {
@@ -18,7 +14,6 @@ class Forum {
   DateTime updatedAt;
 
   Forum({
-
     this.id,
     this.userId,
     required this.title,

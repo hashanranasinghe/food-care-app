@@ -111,7 +111,7 @@ class _FoodPostState extends State<FoodPost> {
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  ShowTimeAgoRow(time: food.updatedAt),
+                                  ShowTimeAgoRow(time: food.createdAt),
                                 ],
                               ),
                             )

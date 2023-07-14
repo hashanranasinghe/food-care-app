@@ -141,7 +141,7 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                                     ),
                                                     ShowTimeAgoRow(
                                                         time:
-                                                            foodPost.updatedAt),
+                                                            foodPost.createdAt),
                                                   ],
                                                 ),
                                               ),

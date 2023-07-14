@@ -1,5 +1,3 @@
-
-
 import '../../models/map model/placeModel.dart';
 
 class PlaceViewModel {

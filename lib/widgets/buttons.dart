@@ -74,7 +74,8 @@ class Genaralbutton extends StatelessWidget {
     this.pbottom = 10,
     Key? key,
     required this.onpress,
-    this.fontsize = 20, this.isActive =true,
+    this.fontsize = 20,
+    this.isActive = true,
   }) : super(key: key);
 
   @override
@@ -95,7 +96,8 @@ class Genaralbutton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-            ), backgroundColor: isActive?color:color.withOpacity(0.5),
+            ),
+            backgroundColor: isActive ? color : color.withOpacity(0.5),
             elevation: 15.0,
             padding: EdgeInsets.only(
                 left: pleft, right: pright, top: ptop, bottom: pbottom)),
@@ -103,6 +105,7 @@ class Genaralbutton extends StatelessWidget {
     );
   }
 }
+
 // clcik and color change
 class ColorChangeButton extends StatefulWidget {
   final Color color;
@@ -137,7 +140,7 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 15,left: 10,bottom: 15,right: 10),
+      padding: const EdgeInsets.only(top: 15, left: 10, bottom: 15, right: 10),
       child: ElevatedButton(
         onPressed: () {
           widget.onpress();
@@ -152,12 +155,14 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
             elevation: 5.0,
             primary: _isButtonClicked ? kPrimaryColordark : kPrimaryColorlight,
             padding: EdgeInsets.only(
-                left: widget.pleft, right: widget.pright, top: widget.ptop, bottom: widget.pbottom)),
+                left: widget.pleft,
+                right: widget.pright,
+                top: widget.ptop,
+                bottom: widget.pbottom)),
         child: Text(
           widget.text,
           style: TextStyle(
-              color: _isButtonClicked ? kPrimaryColorlight
-                  : kPrimaryColordark,
+              color: _isButtonClicked ? kPrimaryColorlight : kPrimaryColordark,
               fontSize: widget.fontsize,
               fontWeight: FontWeight.bold),
         ),
@@ -165,7 +170,6 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
     );
   }
 }
-
 
 class RadioButton extends StatefulWidget {
   const RadioButton({Key? key}) : super(key: key);
@@ -175,7 +179,6 @@ class RadioButton extends StatefulWidget {
 }
 
 class _RadioButtonState extends State<RadioButton> {
-
   String? _selectedValue;
 
   void _handleRadioValueChange(String? value) {
@@ -184,6 +187,7 @@ class _RadioButtonState extends State<RadioButton> {
       print(value);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -204,4 +208,3 @@ class _RadioButtonState extends State<RadioButton> {
     );
   }
 }
-

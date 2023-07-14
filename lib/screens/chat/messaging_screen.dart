@@ -79,7 +79,6 @@ class _MessagingScreenState extends State<MessagingScreen> {
         _messageListViewModel.messages.add(newMessage);
         _messageListViewModel.notifyListeners();
       }
-
     });
   }
 
@@ -203,7 +202,9 @@ class _MessagingScreenState extends State<MessagingScreen> {
         _sendMessageViewModel.senderId = id;
         _sendMessageViewModel.conversationId = widget.conversationId;
       });
-      String receiverId = (id==widget.conversationViewModel.members[0]?widget.conversationViewModel.members[1]:widget.conversationViewModel.members[0]);
+      String receiverId = (id == widget.conversationViewModel.members[0]
+          ? widget.conversationViewModel.members[1]
+          : widget.conversationViewModel.members[0]);
       await _sendMessageViewModel.sendMessage(receiverId: receiverId);
       if (usersOfSocket.length == 1) {
         await _messageListViewModel.getMessages(widget.conversationId);

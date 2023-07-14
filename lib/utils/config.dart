@@ -90,8 +90,9 @@ class Config {
     return path;
   }
 
-  static String getPlaceDetails({required String placeId}){
-    String path = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=name,geometry&key=$mapApi';
+  static String getPlaceDetails({required String placeId}) {
+    String path =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=name,geometry&key=$mapApi';
     return path;
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_care/models/forumModel.dart';
 import 'package:food_care/screens/food%20post/add_food_post_screen.dart';
 import 'package:food_care/screens/food%20post/map_screen.dart';
+import 'package:food_care/screens/food%20post/requested_food_screen.dart';
 import 'package:food_care/screens/forum/add_forum_screen.dart';
 import 'package:food_care/screens/chat/chat_screen.dart';
 import 'package:food_care/screens/food%20post/food_post_display_screen.dart';
@@ -140,9 +141,12 @@ void openForget(BuildContext context) async {
   Navigator.push(context,
       MaterialPageRoute(builder: (context) => const ForgetPasswordScreen()));
 }
+
 void openMap(BuildContext context) async {
-  Navigator.push(context,
-      MaterialPageRoute(fullscreenDialog: true,builder: (context) => const MapScreen()));
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          fullscreenDialog: true, builder: (context) => const MapScreen()));
 }
 
 void openReset(BuildContext context, String token) async {
@@ -152,4 +156,8 @@ void openReset(BuildContext context, String token) async {
           builder: (context) => ResetPasswordScreen(
                 token: token,
               )));
+}
+
+void openRequestedFood(BuildContext context,String id) async{
+  Navigator.push(context, MaterialPageRoute(builder:(context)=>RequestedFoodScreen(id: id,)));
 }

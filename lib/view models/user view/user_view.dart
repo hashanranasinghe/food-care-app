@@ -1,5 +1,3 @@
-
-
 import '../../models/userModel.dart';
 
 class UserView {
@@ -30,15 +28,18 @@ class UserView {
     return user.imageUrl;
   }
 
-  String? get verificationToken{
+  String? get verificationToken {
     return user.verificationToken;
   }
-  bool get isVerify{
+
+  bool get isVerify {
     return user.isVerify;
   }
+
   List<dynamic> get deviceToken {
     return user.deviceToken;
   }
+
   List<dynamic>? get dailyRequest {
     return user.dailyRequests;
   }

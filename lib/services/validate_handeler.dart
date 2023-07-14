@@ -14,7 +14,8 @@ class Validater {
     }
     return null;
   }
-  static String? confirmPassword(String password,confirmPassword) {
+
+  static String? confirmPassword(String password, confirmPassword) {
     if (password != confirmPassword) {
       return "Password do not match.";
     }

@@ -7,7 +7,7 @@ class PopupDialog {
   static showPopupDialog(BuildContext context, String titel, String description,
       Function actionFun) {
     AwesomeDialog(
-      desc: description,
+            desc: description,
             title: titel,
             context: context,
             dialogType: DialogType.question,
@@ -115,30 +115,6 @@ class PopupDialog {
     ).show();
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*static Future<void> showMyDialog(BuildContext context, String titel,
       String description, Function actionFun) async {

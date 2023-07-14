@@ -8,14 +8,13 @@ class ShowTimeAgoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return           Row(
+    return Row(
       children: [
         const Icon(
           Icons.av_timer_outlined,
           size: 20,
         ),
-        Text(
-            "${Date.getStringdatetime(time)} ago"),
+        Text("${Date.getStringdatetime(time)} ago"),
       ],
     );
   }

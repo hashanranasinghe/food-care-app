@@ -60,7 +60,7 @@ class _ForumPostState extends State<ForumPost> {
         itemBuilder: (context, index) {
           final forum = widget.forums[index];
           final user =
-          widget.userList.firstWhere((user) => user.uid == forum.userId);
+              widget.userList.firstWhere((user) => user.uid == forum.userId);
           return Card(
             color: Colors.white,
             elevation: 10,
@@ -85,9 +85,8 @@ class _ForumPostState extends State<ForumPost> {
                               backgroundImage: user.imageUrl == null
                                   ? AssetImage(icon.toString())
                                   : NetworkImage(Config.imageUrl(
-                                  imageUrl:
-                                  user.imageUrl.toString()))
-                              as ImageProvider<Object>,
+                                          imageUrl: user.imageUrl.toString()))
+                                      as ImageProvider<Object>,
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 15),
@@ -116,19 +115,20 @@ class _ForumPostState extends State<ForumPost> {
                                               forumId: forum.id.toString());
                                       openUpdateForum(context, getForum);
                                     }, delete: () async {
-                                      int res = await ForumApiServices.deleteForum(
-                                          forum.id.toString());
-                                      if(res == resOk){
+                                      int res =
+                                          await ForumApiServices.deleteForum(
+                                              forum.id.toString());
+                                      if (res == resOk) {
                                         Provider.of<ForumListViewModel>(context,
-                                            listen: false)
+                                                listen: false)
                                             .getOwnAllForums();
                                         Navigator.pop(context);
-                                        ToastWidget.toast(msg: "Forum deleted successfully");
-                                      }else{
-                                        ToastWidget.toast(msg: "Something went to wrong.");
+                                        ToastWidget.toast(
+                                            msg: "Forum deleted successfully");
+                                      } else {
+                                        ToastWidget.toast(
+                                            msg: "Something went to wrong.");
                                       }
-
-
                                     });
                                   },
                                 );
