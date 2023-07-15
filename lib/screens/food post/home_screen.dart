@@ -23,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late GlobalKey<ScaffoldState> _scaffoldKey;
   String _locationMessage = '';
   late Position position;
+  TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -39,6 +40,13 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<FoodPostListViewModel>(context, listen: false)
           .getAllOwnFoodPosts();
     }
+    searchController.addListener(() {
+      setState(() {
+        Provider.of<FoodPostListViewModel>(context, listen: false)
+            .getSearchFood(query: searchController.text);
+      });
+    });
+
     Provider.of<UserListViewModel>(context, listen: false).getAllUsers();
   }
 
@@ -162,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(15),
         color: kSecondColorlight,
       ),
+      controller: searchController,
     );
   }
 

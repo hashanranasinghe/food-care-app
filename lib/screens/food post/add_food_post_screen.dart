@@ -28,7 +28,7 @@ class AddFoodPostScreen extends StatefulWidget {
 class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   late FoodPostAddViewModel _foodPostAddViewModel;
   late FoodPostListViewModel _foodPostListViewModel;
-
+  List request =[];
   @override
   void initState() {
     // TODO: implement initState
@@ -42,7 +42,12 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
       _selectedDay = widget.food!.listDays;
       imageUrls = widget.food!.imageUrls;
       _selectedValue = int.parse(widget.food!.quantity);
+      location =widget.food!.location;
+      request = widget.food!.requests;
+    }else{
+      location = Location(lan: "0.0", lon: "0.0");
     }
+
     imageUrls = _convertToLinks();
     _foodPostAddViewModel =
         Provider.of<FoodPostAddViewModel>(context, listen: false);
@@ -61,7 +66,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController otherController = TextEditingController();
   TextEditingController pickUptimesController = TextEditingController();
-
+  Location? location;
   String? _selectedDay;
   final List<String> _days = [
     'Until midnight',
@@ -225,7 +230,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                           ),
                           IconButton(
                               onPressed: () {
-                          openMap(context);
+                                openMap(context, location!);
                               },
                               icon: Icon(Icons.arrow_forward_ios_rounded)),
                         ],
@@ -255,6 +260,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                           pright: 100,
                           onpress: () {
                             update(user: userViewModel.user!);
+                            //print(_foodPostAddViewModel.location.lan);
                           },
                           text: "Update",
                         ),
@@ -271,7 +277,10 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                           text: "Upload",
                         ),
                       ),
-                    ]
+                    ],
+                    ElevatedButton(onPressed:(){
+                      print(location!.lan);
+                    }, child:Text("test"))
                   ],
                 ),
               );
@@ -333,10 +342,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
       _foodPostAddViewModel.pickupTimes = pickUptimesController.text;
       _foodPostAddViewModel.listDays = _selectedDay!;
       _foodPostAddViewModel.isShared = false;
-      _foodPostAddViewModel.location = Location(
-          lan: "2",
-          lon: "5");
-
+_foodPostAddViewModel.requests = request;
       if (imagePaths.isNotEmpty) {
         print('Image path: $imagePaths');
         _foodPostAddViewModel.imageUrls = imagePaths;

@@ -17,7 +17,8 @@ import '../../view models/food post view/food_post_add_view_model.dart';
 import '../../view models/map_view/place_view_model.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  Location? location;
+  MapScreen({Key? key,this.location}) : super(key: key);
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -84,7 +85,16 @@ class _MapScreenState extends State<MapScreen> {
         ),
       );
     }
-
+    if (widget.location!.lan != "0.0") {
+      markers.add(
+        Marker(
+          markerId: MarkerId('passed_location'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          infoWindow: InfoWindow(title: 'Passed Location'),
+          position: LatLng(double.parse(widget.location!.lan),double.parse(widget.location!.lon)),
+        ),
+      );
+    }
     return markers;
   }
 

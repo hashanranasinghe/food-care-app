@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       email = text;
                     },
                     valid: (text) {
-                      return Validater.vaildemail(text!);
+                      return Validater.validEmail(text!);
                     },
                     save: (text) {
                       email = text!;

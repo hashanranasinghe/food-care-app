@@ -85,7 +85,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           mobileNumber = text;
                         },
                         valid: (text) {
-                          return Validater.vaildmobile(text!);
+                          return Validater.validMobile(text!);
                         },
                         save: (text) {
                           mobileNumber = text!;
@@ -115,7 +115,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           email = text;
                         },
                         valid: (text) {
-                          return Validater.vaildemail(text!);
+                          return Validater.validEmail(text!);
                         },
                         save: (text) {
                           email = text!;

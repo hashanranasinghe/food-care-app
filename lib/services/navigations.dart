@@ -142,11 +142,11 @@ void openForget(BuildContext context) async {
       MaterialPageRoute(builder: (context) => const ForgetPasswordScreen()));
 }
 
-void openMap(BuildContext context) async {
+void openMap(BuildContext context,Location location) async {
   Navigator.push(
       context,
       MaterialPageRoute(
-          fullscreenDialog: true, builder: (context) => const MapScreen()));
+          fullscreenDialog: true, builder: (context) => MapScreen(location: location)));
 }
 
 void openReset(BuildContext context, String token) async {

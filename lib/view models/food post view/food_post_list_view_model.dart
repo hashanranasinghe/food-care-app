@@ -73,8 +73,6 @@ class FoodPostListViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
   Future<void> getAllOwnFoodPosts() async {
     status = Status.loading;
     final results = await FoodApiServices.getOwnFoodPosts();
@@ -82,6 +80,40 @@ class FoodPostListViewModel extends ChangeNotifier {
     foods = results.map((food) => FoodPostViewModel(food: food)).toList();
     status = foods.isEmpty ? Status.empty : Status.success;
 
+    notifyListeners();
+  }
+
+  Future<void> getSearchFood(
+      {required String query}) async {
+    status = Status.loading;
+    // Get the current location
+    Position currentPosition = await Geolocator.getCurrentPosition();
+
+    final results = await FoodApiServices.getFoodPosts();
+
+    // Sort the food posts by creation time
+    results.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+    foods = results
+        .where((food) {
+          // Calculate the distance between the current location and the food post's location
+          double distanceInMeters = Geolocator.distanceBetween(
+            currentPosition.latitude,
+            currentPosition.longitude,
+            double.parse(food.location.lan),
+            double.parse(food.location.lon),
+          );
+
+          // Filter for food posts within a certain radius (e.g., 25 kilometers)
+          double maxDistanceInMeters = 25000; // Adjust this value as needed
+          return distanceInMeters <= maxDistanceInMeters && !food.isShared;
+        })
+        .map((food) => FoodPostViewModel(food: food))
+        .toList();
+    foods = foods
+        .where((food) => food.title.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    status = foods.isEmpty ? Status.empty : Status.success;
     notifyListeners();
   }
 }

@@ -150,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mobileNumber = text;
                         },
                         valid: (text) {
-                          return Validater.vaildmobile(text!);
+                          return Validater.validMobile(text!);
                         },
                         save: (text) {
                           mobileNumber = text!;
@@ -180,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           email = text;
                         },
                         valid: (text) {
-                          return Validater.vaildemail(text!);
+                          return Validater.validEmail(text!);
                         },
                         save: (text) {
                           email = text!;
