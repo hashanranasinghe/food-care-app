@@ -153,7 +153,7 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
               borderRadius: BorderRadius.circular(10),
             ),
             elevation: 5.0,
-            primary: _isButtonClicked ? kPrimaryColordark : kPrimaryColorlight,
+            primary:  _isButtonClicked ? kPrimaryColordark : kPrimaryColorlight,
             padding: EdgeInsets.only(
                 left: widget.pleft,
                 right: widget.pright,
@@ -172,7 +172,11 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
 }
 
 class RadioButton extends StatefulWidget {
-  const RadioButton({Key? key}) : super(key: key);
+  final Function(String?) onValueChanged;
+  final String storeValue;
+  const RadioButton(
+      {Key? key, required this.onValueChanged, required this.storeValue})
+      : super(key: key);
 
   @override
   State<RadioButton> createState() => _RadioButtonState();
@@ -183,8 +187,15 @@ class _RadioButtonState extends State<RadioButton> {
 
   void _handleRadioValueChange(String? value) {
     setState(() {
-      _selectedValue = value;
-      print(value);
+      if (widget.storeValue == value) {
+        // If the selected value is the same as the stored value,
+        // set the selected value to null (deselect the radio button).
+        _selectedValue = null;
+        widget.onValueChanged(null);
+      } else {
+        _selectedValue = value;
+        widget.onValueChanged(value);
+      }
     });
   }
 
@@ -193,18 +204,29 @@ class _RadioButtonState extends State<RadioButton> {
     return Column(
       children: [
         RadioListTile(
-          value: 'Option 1',
-          groupValue: _selectedValue,
-          onChanged: _handleRadioValueChange,
-          title: Text('Newset'),
+          value: 'newest',
+          groupValue:
+          widget.storeValue != "" && widget.storeValue == "newest"
+              ? widget.storeValue
+              : _selectedValue,
+          onChanged: (value) {
+            _handleRadioValueChange(value.toString());
+          },
+          title: Text('Newest'),
         ),
         RadioListTile(
-          value: 'Option 2',
-          groupValue: _selectedValue,
-          onChanged: _handleRadioValueChange,
-          title: Text('Closet'),
+          value: 'closest',
+          groupValue:
+          widget.storeValue != "" && widget.storeValue == "closest"
+              ? widget.storeValue
+              : _selectedValue,
+          onChanged: (value) {
+            _handleRadioValueChange(value.toString());
+          },
+          title: Text('Closest'),
         ),
       ],
     );
   }
 }
+

@@ -10,6 +10,8 @@ import 'package:food_care/view%20models/chat%20view/message/message_list_view_mo
 import 'package:food_care/view%20models/chat%20view/message/send_message_view_model.dart';
 import 'package:food_care/view%20models/comment%20view%20model/comment_add_view_model.dart';
 import 'package:food_care/view%20models/comment%20view%20model/comment_list_view_model.dart';
+import 'package:food_care/view%20models/filter%20view/filter_provider.dart';
+
 import 'package:food_care/view%20models/food%20post%20view/food_post_add_view_model.dart';
 import 'package:food_care/view%20models/food%20post%20view/food_post_list_view_model.dart';
 import 'package:food_care/view%20models/forum%20view/forum_add_view_model.dart';
@@ -55,6 +57,7 @@ Future<void> main() async {
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => FilterProvider()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => ForumListViewModel()),
         ChangeNotifierProvider(create: (_) => AddForumViewModel()),

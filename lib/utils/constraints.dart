@@ -17,3 +17,4 @@ const int resOk = 1;
 const int resFail = 0;
 const int resEmail = 2;
 const icon = "assets/images/icon.png";
+const filter = "assets/images/filter.png";

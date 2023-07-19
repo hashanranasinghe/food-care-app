@@ -306,7 +306,6 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                           setState(() {});
                                           await userViewModel.getCurrentUser();
                                         });
-
                                       },
                                       text: "Request for Food",
                                     )
@@ -377,10 +376,12 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                           ] else ...[
                             Container()
                           ],
-                          ElevatedButton(onPressed: (){
-                            print(userViewModel.user!.dailyRequests!.length);
-                          }, child:Text("print"))
-
+                          ElevatedButton(
+                              onPressed: () {
+                                print(
+                                    userViewModel.user!.dailyRequests!.length);
+                              },
+                              child: Text("print"))
                         ],
                       ),
                     ),

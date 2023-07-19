@@ -4,9 +4,12 @@ import 'package:food_care/services/api%20services/food_api_services.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/app_bar.dart';
 import 'package:food_care/widgets/buttons.dart';
+import 'package:food_care/widgets/filter_food.dart';
 import 'package:food_care/widgets/food_post.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../view models/filter view/filter_provider.dart';
 import '../../view models/food post view/food_post_list_view_model.dart';
 import '../../view models/user view/userViewModel.dart';
 import '../../view models/user view/user_list_view_model.dart';
@@ -22,7 +25,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late GlobalKey<ScaffoldState> _scaffoldKey;
   String _locationMessage = '';
-  late Position position;
+  Position? position;
+  int filterCount = 0;
+  bool? sort;
   TextEditingController searchController = TextEditingController();
   @override
   void initState() {
@@ -30,12 +35,37 @@ class _HomeScreenState extends State<HomeScreen> {
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _populateAllFoodPosts();
     _getCurrentLocation();
+    _loadFilter();
+  }
+
+  Future<void> _loadFilter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool("sort") != null) {
+      setState(() {
+        sort = prefs.getBool('sort')!;
+      });
+    }
   }
 
   void _populateAllFoodPosts() {
+    final filterProvider = Provider.of<FilterProvider>(context,listen: false);
+    final filterFood = filterProvider.filter;
+    if(filterFood.sortByCloset != null || filterFood.sortByCloset ==false){
+      setState(() {
+        filterCount++;
+      });
+    }
+
+
     if (widget.food == true) {
-      Provider.of<FoodPostListViewModel>(context, listen: false)
-          .getAllFoodPosts();
+      if(filterCount!=0){
+        Provider.of<FoodPostListViewModel>(context, listen: false)
+            .getAllFilterFoodPosts(filterFood);
+      }else{
+        Provider.of<FoodPostListViewModel>(context, listen: false)
+            .getAllFoodPosts();
+      }
+
     } else {
       Provider.of<FoodPostListViewModel>(context, listen: false)
           .getAllOwnFoodPosts();
@@ -55,11 +85,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final vm = Provider.of<FoodPostListViewModel>(context);
     final um = Provider.of<UserListViewModel>(context);
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
-      if (userViewModel.user == null) {
+      if ((userViewModel.user == null) || (position == null)) {
         userViewModel.getCurrentUser();
         return const Center(child: CircularProgressIndicator());
       } else {
-        print(userViewModel.user!.name);
         return AppBarWidget(
           text: "Hi ${userViewModel.user!.name}",
           icon: Icons.notifications_none,
@@ -72,13 +101,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(width: 300, child: _buildSearchBar()),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: IconButton(
-                      onPressed: () {
-                        _showAddModal(context);
-                      },
-                      icon: Icon(
-                        Icons.filter_alt_outlined,
-                        size: 35,
+                    child: SizedBox(
+                      width: 50.0,
+                      height: 50.0,
+                      child: Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const FilterFood();
+                                  });
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage(filter),
+                              backgroundColor: Colors.transparent,
+                              radius: 30.0,
+                            ),
+                          ),
+                          Positioned(
+                            top: 0.0,
+                            right: 0.0,
+                            child: CircleAvatar(
+                                backgroundColor: kBNavigationColordark,
+                                radius: 10.0,
+                                child: Text(
+                                  filterCount.toString(),
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.white),
+                                )),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -124,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    Expanded(child: _updateUi(vm, userViewModel,um)),
+                    Expanded(child: _updateUi(vm, userViewModel, um)),
                   ],
                 ),
               ),
@@ -135,7 +192,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Widget _updateUi(FoodPostListViewModel vm, UserViewModel userViewModel,UserListViewModel um) {
+  Widget _updateUi(FoodPostListViewModel vm, UserViewModel userViewModel,
+      UserListViewModel um) {
     switch (vm.status) {
       case Status.loading:
         return Align(
@@ -144,10 +202,11 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       case Status.success:
         return FoodPost(
-          position: position,
+          position: position!,
           foods: vm.foods,
           food: widget.food,
-          userId: userViewModel.user!.id.toString(), users: um.users,
+          userId: userViewModel.user!.id.toString(),
+          users: um.users,
         );
       case Status.empty:
         return Align(
@@ -174,150 +233,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showAddModal(BuildContext context) {
-    showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(),
-                      Text(
-                        "Food Filter",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(Icons.close))
-                    ],
-                  ),
-                  Divider(
-                    thickness: 2,
-                    color: Colors.black,
-                  ),
-                  Text("Maximum Distance",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ColorChangeButton(
-                          onpress: () {},
-                          text: "All",
-                          ptop: 5,
-                          pbottom: 5,
-                          pleft: 25,
-                          pright: 25,
-                        ),
-                        ColorChangeButton(
-                          onpress: () {},
-                          text: "Available only",
-                          ptop: 5,
-                          pbottom: 5,
-                          pleft: 25,
-                          pright: 25,
-                        ),
-                        ColorChangeButton(
-                          onpress: () {},
-                          text: "Just Gone",
-                          ptop: 5,
-                          pbottom: 5,
-                          pleft: 25,
-                          pright: 25,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text("Item Availability",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ColorChangeButton(
-                          onpress: () {},
-                          text: "All",
-                          ptop: 5,
-                          pbottom: 5,
-                          pleft: 25,
-                          pright: 25,
-                        ),
-                        ColorChangeButton(
-                          onpress: () {},
-                          text: "1 km",
-                          ptop: 5,
-                          pbottom: 5,
-                          pleft: 25,
-                          pright: 25,
-                        ),
-                        ColorChangeButton(
-                          onpress: () {},
-                          text: "2 km",
-                          ptop: 5,
-                          pbottom: 5,
-                          pleft: 25,
-                          pright: 25,
-                        ),
-                        ColorChangeButton(
-                          onpress: () {},
-                          text: "5 km",
-                          ptop: 5,
-                          pbottom: 5,
-                          pleft: 25,
-                          pright: 25,
-                        ),
-                        ColorChangeButton(
-                          onpress: () {},
-                          text: "10 km",
-                          ptop: 5,
-                          pbottom: 5,
-                          pleft: 25,
-                          pright: 25,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text("Sort by",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  RadioButton(),
-                  Divider(
-                    thickness: 2,
-                    color: Colors.black,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Genaralbutton(
-                      pleft: 100,
-                      pright: 100,
-                      onpress: () {},
-                      text: "Apply",
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   Future<void> _getCurrentLocation() async {
     LocationPermission permission = await Geolocator.requestPermission();
 
@@ -331,10 +246,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
       setState(() {
         _locationMessage =
-        'Latitude: ${position.latitude}, Longitude: ${position.longitude}';
+            'Latitude: ${position!.latitude}, Longitude: ${position!.longitude}';
       });
     }
     print(_locationMessage);
-
   }
 }
