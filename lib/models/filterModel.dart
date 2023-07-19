@@ -1,5 +1,5 @@
 class FilterModel {
   bool? sortByCloset;
-
-  FilterModel({required this.sortByCloset});
+  int? filterCount;
+  FilterModel({required this.sortByCloset,required this.filterCount});
 }

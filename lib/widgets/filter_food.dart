@@ -17,6 +17,7 @@ class FilterFood extends StatefulWidget {
 
 class _FilterFoodState extends State<FilterFood> {
   bool sortByCloset = false;
+  int filterCount =0;
   late FoodPostListViewModel _foodPostListViewModel;
   @override
   void didChangeDependencies() {
@@ -166,6 +167,7 @@ class _FilterFoodState extends State<FilterFood> {
                     setState(() {
                       sortByCloset = value;
                     });
+                    getFilterCounter();
                   },
                 ),
               ],
@@ -180,7 +182,7 @@ class _FilterFoodState extends State<FilterFood> {
                 pleft: 100,
                 pright: 100,
                 onpress: () async {
-                  final newFilter = FilterModel(sortByCloset: sortByCloset);
+                  final newFilter = FilterModel(sortByCloset: sortByCloset,filterCount: filterCount);
                   filterProvider.setFilter(newFilter);
                   await _foodPostListViewModel.getAllFilterFoodPosts(newFilter);
                   Navigator.pop(context);
@@ -192,5 +194,12 @@ class _FilterFoodState extends State<FilterFood> {
         ),
       ),
     );
+  }
+  void getFilterCounter(){
+    if(sortByCloset==true){
+      setState(() {
+        filterCount++;
+      });
+    }
   }
 }

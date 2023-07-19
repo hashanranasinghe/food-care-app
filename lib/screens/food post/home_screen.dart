@@ -28,10 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Position? position;
   int filterCount = 0;
   bool? sort;
+  late FilterProvider _filterProvider;
   TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
+
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _populateAllFoodPosts();
     _getCurrentLocation();
@@ -48,8 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _populateAllFoodPosts() {
-    final filterProvider = Provider.of<FilterProvider>(context,listen: false);
-    final filterFood = filterProvider.filter;
+    _filterProvider = Provider.of<FilterProvider>(context,listen: false);
+    final filterFood = _filterProvider.filter;
     if(filterFood.sortByCloset != null || filterFood.sortByCloset ==false){
       setState(() {
         filterCount++;
@@ -130,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 backgroundColor: kBNavigationColordark,
                                 radius: 10.0,
                                 child: Text(
-                                  filterCount.toString(),
+                                  _filterProvider.filter.filterCount.toString(),
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.white),
                                 )),
