@@ -122,18 +122,6 @@ class MenuDrawer extends StatelessWidget {
                 Card(
                   elevation: 0,
                   child: ListTile(
-                      leading: const Icon(
-                        Icons.settings_outlined,
-                        color: kPrimaryColordark,
-                      ),
-                      title: const Text('Settings'),
-                      onTap: () {
-                        openSettings(context);
-                      }),
-                ),
-                Card(
-                  elevation: 0,
-                  child: ListTile(
                     leading: const Icon(
                       Icons.logout_rounded,
                       color: kPrimaryColordark,

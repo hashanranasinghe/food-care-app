@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_care/services/api%20services/food_api_services.dart';
+
 import 'package:food_care/utils/constraints.dart';
 import 'package:food_care/widgets/app_bar.dart';
-import 'package:food_care/widgets/buttons.dart';
+
 import 'package:food_care/widgets/filter_food.dart';
 import 'package:food_care/widgets/food_post.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../view models/filter view/filter_provider.dart';
 import '../../view models/food post view/food_post_list_view_model.dart';
 import '../../view models/user view/userViewModel.dart';
@@ -37,17 +37,10 @@ class _HomeScreenState extends State<HomeScreen> {
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _populateAllFoodPosts();
     _getCurrentLocation();
-    _loadFilter();
+
   }
 
-  Future<void> _loadFilter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool("sort") != null) {
-      setState(() {
-        sort = prefs.getBool('sort')!;
-      });
-    }
-  }
+
 
   void _populateAllFoodPosts() {
     _filterProvider = Provider.of<FilterProvider>(context,listen: false);
@@ -92,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return const Center(child: CircularProgressIndicator());
       } else {
         return AppBarWidget(
-          text: "Hi ${userViewModel.user!.name}",
+          text: "Welcome ${userViewModel.user!.name}",
           icon: Icons.notifications_none,
           widget: Column(
             mainAxisSize: MainAxisSize.min,
@@ -146,42 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: Column(
                   children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ColorChangeButton(
-                            onpress: () async {
-                              await FoodApiServices.getFoodPosts();
-                            },
-                            pleft: 30,
-                            pright: 30,
-                            pbottom: 15,
-                            ptop: 15,
-                            text: "Nearby",
-                            fontsize: 20,
-                          ),
-                          ColorChangeButton(
-                            onpress: () {},
-                            pleft: 30,
-                            pright: 30,
-                            pbottom: 15,
-                            ptop: 15,
-                            text: "Top Rated",
-                            fontsize: 20,
-                          ),
-                          ColorChangeButton(
-                            onpress: () {},
-                            pleft: 30,
-                            pright: 30,
-                            pbottom: 15,
-                            ptop: 15,
-                            text: "Quick",
-                            fontsize: 20,
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 10,
                     ),
                     Expanded(child: _updateUi(vm, userViewModel, um)),
                   ],

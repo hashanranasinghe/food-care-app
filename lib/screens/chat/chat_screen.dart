@@ -37,7 +37,6 @@ class _ChatScreenState extends State<ChatScreen> {
       } else {
         return AppBarWidget(
             text: "Chats",
-            icon: Icons.search_rounded,
             widget: _updateUi(vm, um, userViewModel));
       }
     });

@@ -50,6 +50,11 @@ class _CommentScreenState extends State<CommentScreen> {
       } else {
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back)),
             backgroundColor: kPrimaryColordark,
             title: Text('Comments'),
           ),

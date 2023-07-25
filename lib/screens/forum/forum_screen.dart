@@ -45,7 +45,7 @@ class _ForumScreenState extends State<ForumScreen> {
       final um = Provider.of<UserListViewModel>(context);
       // print(um.users);
       return AppBarWidget(
-        text: "Forum",
+        text: "Community",
         widget: _updateUi(vm, userViewModel,um),
       );
     });

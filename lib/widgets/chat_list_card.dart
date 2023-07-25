@@ -80,15 +80,6 @@ class _ChatListCardState extends State<ChatListCard> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("${lastMessage.message}"),
-                            CircleAvatar(
-                              radius: 12,
-                              backgroundColor: kPrimaryColordark,
-                              child: Text(
-                                "6",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                            )
                           ],
                         ),
                       );
