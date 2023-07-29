@@ -35,7 +35,7 @@ class User {
         address: json["address"],
         imageUrl: json["imageUrl"],
         isVerify: json['isVerify'],
-        deviceToken: List<dynamic>.from(json["deviceToken"].map((x) => x)),
+        deviceToken: List<dynamic>.from(json["deviceToken"]. map((x) => x)),
         dailyRequests:
             List<dynamic>.from(json["foodRequest"]?.map((x) => x) ?? []),
         verificationToken: json['verificationToken'],

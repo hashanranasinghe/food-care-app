@@ -129,7 +129,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
               widget.receiverName,
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-            backgroundColor: kPrimaryColordark,
+            backgroundColor: kPrimaryColorDark,
           ),
           body: Column(
             children: [

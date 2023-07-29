@@ -61,11 +61,14 @@ class FoodApiServices {
       request.fields['title'] = food.title;
       request.fields['author'] = food.author.toString();
       request.fields['description'] = food.description;
+      request.fields['category'] = food.category;
       request.fields['quantity'] = food.quantity.toString();
-      request.fields['other'] = food.other.toString();
-      request.fields['pickupTimes'] = food.pickupTimes;
       request.fields['isShared'] = food.isShared.toString();
       request.fields['listDays'] = food.listDays;
+      request.fields['availableTime[startTime]'] =
+          food.availableTime.startTime.toString();
+      request.fields['availableTime[endTime]'] =
+          food.availableTime.endTime.toString();
       request.fields['location[lan]'] = food.location.lan.toString();
       request.fields['location[lon]'] = food.location.lon.toString();
 
@@ -101,13 +104,15 @@ class FoodApiServices {
       request.fields['author'] = food.author.toString();
       request.fields['description'] = food.description;
       request.fields['quantity'] = food.quantity.toString();
-      request.fields['other'] = food.other.toString();
-      request.fields['pickupTimes'] = food.pickupTimes;
       request.fields['listDays'] = food.listDays;
       request.fields['isShared'] = food.isShared.toString();
       request.fields['location[lan]'] = food.location.lan.toString();
       request.fields['location[lon]'] = food.location.lon.toString();
-
+      request.fields['availableTime[startTime]'] =
+          food.availableTime.startTime.toString();
+      request.fields['availableTime[endTime]'] =
+          food.availableTime.endTime.toString();
+      request.fields['category'] = food.category;
       for (var file in food.imageUrls) {
         request.files.add(await http.MultipartFile.fromPath('imageUrls', file));
       }
@@ -128,7 +133,8 @@ class FoodApiServices {
     }
   }
 
-  static Future<int> requestFoodPost({required String foodId,required String requesterId}) async {
+  static Future<int> requestFoodPost(
+      {required String foodId, required String requesterId}) async {
     int res = resFail;
     // Get the JWT token from secure storage
     String? token = await StoreToken.getToken();
@@ -138,13 +144,12 @@ class FoodApiServices {
       'requesterId': requesterId,
     });
     final response = await client.put(
-      Uri.http(Config.apiURL, Config.requestFood(id: foodId)),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: userData
-    );
+        Uri.http(Config.apiURL, Config.requestFood(id: foodId)),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: userData);
 
     // Check if the response was successful
     if (response.statusCode == 200) {

@@ -29,20 +29,16 @@ class FoodPostViewModel {
     return food.quantity;
   }
 
+  String get category {
+    return food.category;
+  }
+
   List<dynamic> get imageUrls {
     return food.imageUrls;
   }
 
-  String? get other {
-    return food.other;
-  }
-
   String? get listDays {
     return food.listDays;
-  }
-
-  String? get pickupTimes {
-    return food.pickupTimes;
   }
 
   bool get isShared {
@@ -55,6 +51,10 @@ class FoodPostViewModel {
 
   Location get location {
     return food.location;
+  }
+
+  AvailableTime get availableTime {
+    return food.availableTime;
   }
 
   DateTime get createdAt {

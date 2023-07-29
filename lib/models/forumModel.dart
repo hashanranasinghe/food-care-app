@@ -7,7 +7,7 @@ class Forum {
   String description;
   String author;
   String? imageUrl;
-
+  String? category;
   List<dynamic> likes;
   List<Comment> comments;
   DateTime createdAt;
@@ -21,6 +21,7 @@ class Forum {
     required this.author,
     required this.likes,
     this.imageUrl,
+    this.category,
     required this.comments,
     required this.createdAt,
     required this.updatedAt,
@@ -33,6 +34,7 @@ class Forum {
         description: json["description"],
         author: json["author"],
         imageUrl: json["imageUrl"],
+        category: json["category"],
         likes: List<dynamic>.from(json["likes"].map((x) => x)),
         comments: List<Comment>.from(
             json["comments"].map((x) => Comment.fromJson(x))),
@@ -47,6 +49,7 @@ class Forum {
         "description": description,
         "author": author,
         "imageUrl": imageUrl,
+        "category": category,
         "likes": List<dynamic>.from(likes.map((x) => x)),
         "comments": List<dynamic>.from(comments.map((x) => x.toJson())),
         "createdAt": createdAt.toIso8601String(),

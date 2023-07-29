@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-const Color kPrimaryColorlight = Color.fromARGB(255, 212, 241, 254);
-const Color kPrimaryColordark = Color(0xFF286B8C);
-const Color kBNavigationColordark = Color(0xFF050736);
-const Color kSecondColorlight = Color(0xFFF5F5F5);
+const Color kPrimaryColorLight = Color.fromARGB(255, 212, 241, 254);
+const Color kPrimaryColorDark = Color(0xFF286B8C);
+const Color kBNavigationColorDark = Color(0xFF050736);
+const Color kSecondColorLight = Color(0xFFF5F5F5);
 const Color kSecondColorDark = Color(0xFFECECEC);
 
 class Convert {

@@ -18,7 +18,7 @@ import '../../view models/map_view/place_view_model.dart';
 
 class MapScreen extends StatefulWidget {
   Location? location;
-  MapScreen({Key? key,this.location}) : super(key: key);
+  MapScreen({Key? key, this.location}) : super(key: key);
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -33,6 +33,8 @@ class _MapScreenState extends State<MapScreen> {
   PlaceDetails? selectedPlace;
   String? id;
   late Position position;
+  LatLng? selectedLocation;
+
   @override
   void initState() {
     fm = Provider.of<FoodPostAddViewModel>(context, listen: false);
@@ -54,14 +56,31 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _onMapCreated(GoogleMapController googleMapController) async {
-    LocationPermission permission = await Geolocator.requestPermission();
-    _controller.complete(googleMapController);
+        _controller.complete(googleMapController);
     position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
 
-    googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(position.latitude, position.longitude), zoom: 14)));
+    if (selectedLocation != null) {
+      googleMapController.animateCamera(
+        CameraUpdate.newLatLng(selectedLocation!),
+      );
+    } else {
+      googleMapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 14,
+          ),
+        ),
+      );
+    }
+  }
+
+  void _handleMapTap(LatLng tappedLocation) {
+    setState(() {
+      selectedLocation = tappedLocation;
+    });
   }
 
   Set<Marker> _getPlaceMarkers(List<PlaceViewModel> places) {
@@ -85,13 +104,25 @@ class _MapScreenState extends State<MapScreen> {
         ),
       );
     }
+    if (selectedLocation != null) {
+      markers.add(
+        Marker(
+          markerId: MarkerId(id.toString()),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+          position:
+              LatLng(selectedLocation!.latitude, selectedLocation!.longitude),
+        ),
+      );
+    }
     if (widget.location!.lan != "0.0") {
       markers.add(
         Marker(
           markerId: MarkerId('passed_location'),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           infoWindow: InfoWindow(title: 'Passed Location'),
-          position: LatLng(double.parse(widget.location!.lan),double.parse(widget.location!.lon)),
+          position: LatLng(double.parse(widget.location!.lan),
+              double.parse(widget.location!.lon)),
         ),
       );
     }
@@ -163,6 +194,9 @@ class _MapScreenState extends State<MapScreen> {
                 ),
                 Expanded(
                   child: GoogleMap(
+                    onTap: (latLng) {
+                      _handleMapTap(latLng);
+                    },
                     markers: _getPlaceMarkers(vm.places),
                     myLocationEnabled: true,
                     onMapCreated: _onMapCreated,
@@ -180,14 +214,24 @@ class _MapScreenState extends State<MapScreen> {
                   padding: EdgeInsets.only(bottom: screenHeight * 0.01),
                   child: Genaralbutton(
                     onpress: () {
-                      fm.location = Location(
-                          lan: selectedPlace != null
-                              ? selectedPlace!.latitude.toString()
-                              : position.latitude.toString(),
-                          lon: selectedPlace != null
-                              ? selectedPlace!.longitude.toString()
-                              : position.longitude.toString());
-                      print(fm.location.lan);
+                      if (selectedLocation != null) {
+                        fm.location = Location(
+                            lan: selectedLocation != null
+                                ? selectedLocation!.latitude.toString()
+                                : position.latitude.toString(),
+                            lon: selectedLocation != null
+                                ? selectedLocation!.longitude.toString()
+                                : position.longitude.toString());
+                      } else {
+                        fm.location = Location(
+                            lan: selectedPlace != null
+                                ? selectedPlace!.latitude.toString()
+                                : position.latitude.toString(),
+                            lon: selectedPlace != null
+                                ? selectedPlace!.longitude.toString()
+                                : position.longitude.toString());
+                      }
+
                       Navigator.pop(context);
                     },
                     text: "Set up pickup location",

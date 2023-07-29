@@ -56,7 +56,7 @@ class _ChatListCardState extends State<ChatListCard> {
                               id: memberId);
                         },
                         leading: CircleAvatar(
-                          backgroundColor: kPrimaryColorlight,
+                          backgroundColor: kPrimaryColorLight,
                           backgroundImage: member.imageUrl == null
                               ? AssetImage(icon.toString())
                               : NetworkImage(Config.imageUrl(

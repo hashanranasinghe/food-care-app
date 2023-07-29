@@ -15,11 +15,11 @@ import '../../utils/config.dart';
 import '../../widgets/Gtextformfiled.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/show_images.dart';
+import 'package:intl/intl.dart';
 
 class AddFoodPostScreen extends StatefulWidget {
   final Food? food;
-  const AddFoodPostScreen({Key? key, this.food})
-      : super(key: key);
+  const AddFoodPostScreen({Key? key, this.food}) : super(key: key);
 
   @override
   State<AddFoodPostScreen> createState() => _AddFoodPostScreenState();
@@ -28,7 +28,11 @@ class AddFoodPostScreen extends StatefulWidget {
 class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   late FoodPostAddViewModel _foodPostAddViewModel;
   late FoodPostListViewModel _foodPostListViewModel;
-  List request =[];
+  List request = [];
+  DateTime now = DateTime.now();
+  String formattedTime = DateFormat('hh:mm a').format(DateTime.now());
+  String endTime = "";
+  TimeOfDay? _timeOfDay;
   @override
   void initState() {
     // TODO: implement initState
@@ -36,18 +40,17 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     if (widget.food != null) {
       titleController.text = widget.food!.title;
       descriptionController.text = widget.food!.description;
-      otherController.text =
-          (widget.food!.other == "null" ? "" : widget.food!.other)!;
-      pickUptimesController.text = widget.food!.pickupTimes;
       _selectedDay = widget.food!.listDays;
       imageUrls = widget.food!.imageUrls;
       _selectedValue = int.parse(widget.food!.quantity);
-      location =widget.food!.location;
+      availableTime = widget.food!.availableTime;
+      _selectCategory = widget.food!.category;
+      location = widget.food!.location;
       request = widget.food!.requests;
-    }else{
+    } else {
       location = Location(lan: "0.0", lon: "0.0");
     }
-
+    startController.text = formattedTime;
     imageUrls = _convertToLinks();
     _foodPostAddViewModel =
         Provider.of<FoodPostAddViewModel>(context, listen: false);
@@ -64,17 +67,14 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController otherController = TextEditingController();
-  TextEditingController pickUptimesController = TextEditingController();
+  TextEditingController startController = TextEditingController();
+  TextEditingController endController = TextEditingController();
   Location? location;
+  AvailableTime? availableTime;
+  String? _selectCategory;
   String? _selectedDay;
+  DateTime selectedTime = DateTime.now();
   final List<String> _days = [
-    'Until midnight',
-    '1 hour',
-    '2 hours',
-    '4 hours',
-    '6 hours',
-    '8 hours',
     '1 day',
     '2 days',
     '3 days',
@@ -82,6 +82,12 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     '5 days',
     '6 days',
     '1 week',
+  ];
+  final List<String> _categories = [
+    'Fruits',
+    'Vegetables',
+    'Cooked',
+    'Short-Eats',
   ];
 
   final List<String> quantities = ['1', '2', '3', '4', '5'];
@@ -100,6 +106,8 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<FoodPostAddViewModel>(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -196,28 +204,53 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                       ),
                     ),
                     const DividerWidget(),
-                    Gtextformfiled(
-                        label: "Other",
-                        onchange: (text) {
-                          vm.other = text;
-                        },
-                        valid: (text) {},
-                        save: (text) {
-                          other = text!;
-                        },
-                        controller: otherController),
-                    Gtextformfiled(
-                        label: "PickUp Times",
-                        onchange: (text) {
-                          vm.pickupTimes = text;
-                        },
-                        valid: (text) {
-                          return Validater.genaralvalid(text!);
-                        },
-                        save: (text) {
-                          pickUpTimes = text!;
-                        },
-                        controller: pickUptimesController),
+                    Column(
+                      children: [
+                        Text("Available time"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              width: screenWidth * 0.3,
+                              height: screenHeight * 0.13,
+                              child: TextFieldWidget(
+                                keybordtype: TextInputType.number,
+                                label: "Start",
+                                readOnly: false,
+                                onchange: (value) {
+                                  setState(() {});
+                                },
+                                valid: (value) {},
+                                save: (value) {},
+                                controller: startController,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _getTime();
+                              },
+                              child: SizedBox(
+                                width: screenWidth * 0.3,
+                                height: screenHeight * 0.13,
+                                child: TextFieldWidget(
+                                  keybordtype: TextInputType.number,
+                                  readOnly: false,
+                                  label: "End",
+                                  onchange: (value) {
+                                    setState(() {
+                                      endTime = value;
+                                    });
+                                  },
+                                  valid: (value) {},
+                                  save: (value) {},
+                                  controller: endController,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 5),
@@ -244,10 +277,25 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
+                            "Select category",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          _getCategoriesDropDown()
+                        ],
+                      ),
+                    ),
+                    const DividerWidget(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
                             "List for",
                             style: TextStyle(color: Colors.black),
                           ),
-                          _getDropDown(),
+                          _getDaysDropDown(),
                         ],
                       ),
                     ),
@@ -278,9 +326,6 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                         ),
                       ),
                     ],
-                    ElevatedButton(onPressed:(){
-                      print(location!.lan);
-                    }, child:Text("test"))
                   ],
                 ),
               );
@@ -289,7 +334,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     );
   }
 
-  _getDropDown() {
+  _getDaysDropDown() {
     return DropdownButton(
       hint: Text('Select'),
       value: _selectedDay,
@@ -307,18 +352,61 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     );
   }
 
+  _getCategoriesDropDown() {
+    return DropdownButton(
+      hint: Text('Select'),
+      value: _selectCategory,
+      onChanged: (newValue) {
+        setState(() {
+          _selectCategory = newValue.toString();
+        });
+      },
+      items: _categories.map((category) {
+        return DropdownMenuItem(
+          child: new Text(category),
+          value: category,
+        );
+      }).toList(),
+    );
+  }
+
+  void _getTime() {
+    showTimePicker(context: context, initialTime: TimeOfDay.now())
+        .then((value) {
+      if (value != null) {
+        setState(() {
+          _timeOfDay = value;
+
+          String formattedTime = _formatTimeOfDay(_timeOfDay!);
+          endController.text = formattedTime; // Update the text field value
+        });
+      }
+    });
+  }
+
+  String _formatTimeOfDay(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    setState(() {
+      selectedTime = DateTime(
+          now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    });
+
+    return DateFormat('hh:mm a').format(selectedTime);
+  }
+
   void uploadAPost(
       {required FoodPostAddViewModel vm, required User user}) async {
-
     if (_form.currentState!.validate()) {
       setState(() {
         vm.quantity = _selectedValue.toString();
         vm.listDays = _selectedDay.toString();
+        vm.category = _selectCategory.toString();
+        vm.availableTime = AvailableTime(
+            startTime: startController.text, endTime: endController.text);
         vm.imageUrls = imagePaths;
         vm.author = user.name;
         vm.isShared = false;
       });
-
 
       int res = await _foodPostAddViewModel.saveFoodPost();
       if (res == resOk) {
@@ -338,11 +426,11 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
       _foodPostAddViewModel.title = titleController.text;
       _foodPostAddViewModel.description = descriptionController.text;
       _foodPostAddViewModel.quantity = _selectedValue.toString();
-      _foodPostAddViewModel.other = otherController.text;
-      _foodPostAddViewModel.pickupTimes = pickUptimesController.text;
+      _foodPostAddViewModel.availableTime = AvailableTime(
+          startTime: startController.text, endTime: endController.text);
       _foodPostAddViewModel.listDays = _selectedDay!;
       _foodPostAddViewModel.isShared = false;
-_foodPostAddViewModel.requests = request;
+      _foodPostAddViewModel.requests = request;
       if (imagePaths.isNotEmpty) {
         print('Image path: $imagePaths');
         _foodPostAddViewModel.imageUrls = imagePaths;

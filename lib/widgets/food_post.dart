@@ -135,7 +135,7 @@ class _FoodPostState extends State<FoodPost> {
                               Row(
                                 children: [
                                   CircleAvatar(
-                                    backgroundColor: kPrimaryColorlight,
+                                    backgroundColor: kPrimaryColorLight,
                                     radius: 10,
                                     backgroundImage: user.imageUrl == null
                                         ? AssetImage(icon.toString())
@@ -156,33 +156,6 @@ class _FoodPostState extends State<FoodPost> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Pick up Times",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      height: 1.5,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      food.pickupTimes.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        height: 1.5,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -432,12 +405,12 @@ class _FoodPostState extends State<FoodPost> {
                           backgroundColor: Colors.transparent,
                           child: CircleAvatar(
                             radius: 78.0,
-                            backgroundColor: kPrimaryColorlight,
+                            backgroundColor: kPrimaryColorLight,
                             backgroundImage: food.imageUrls.length == 0
                                 ? AssetImage('assets/images/food.jpg')
                                 : NetworkImage(Config.imageUrl(
-                                        imageUrl: food.imageUrls[0].toString()))
-                                    as ImageProvider<Object>,
+                                imageUrl: food.imageUrls[0].toString()))
+                            as ImageProvider<Object>,
                           ),
                         ),
                       )),

@@ -75,7 +75,7 @@ class _FilterFoodState extends State<FilterFood> {
               children: [
                 Text("Closet"),
                 CustomCheckBox(
-                  checkedFillColor: kBNavigationColordark,
+                  checkedFillColor: kBNavigationColorDark,
                   value: sortByCloset,
                   onChanged: (value) {
                     setState(() {

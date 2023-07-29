@@ -17,7 +17,9 @@ class ForumViewModel {
   String get title {
     return forum.title;
   }
-
+  String? get category {
+    return forum.category;
+  }
   String get description {
     return forum.description;
   }

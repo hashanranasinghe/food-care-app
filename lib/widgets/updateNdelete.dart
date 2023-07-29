@@ -45,7 +45,7 @@ class UpdateNDelete extends StatelessWidget {
                             child: Text(
                               shareText.toString(),
                               style: TextStyle(
-                                color: kPrimaryColordark,
+                                color: kPrimaryColorDark,
                                 fontSize: 16.0,
                               ),
                             ),
@@ -66,7 +66,7 @@ class UpdateNDelete extends StatelessWidget {
                             child: const Text(
                               'Update Forum',
                               style: TextStyle(
-                                color: kPrimaryColordark,
+                                color: kPrimaryColorDark,
                                 fontSize: 16.0,
                               ),
                             ),

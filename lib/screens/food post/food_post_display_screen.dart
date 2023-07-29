@@ -69,7 +69,7 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                   return Scaffold(
                     appBar: AppBar(
                       centerTitle: true,
-                      backgroundColor: kPrimaryColordark,
+                      backgroundColor: kPrimaryColorDark,
                       title: Text(foodPost.title),
                     ),
                     body: SingleChildScrollView(
@@ -190,33 +190,7 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                             ],
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 5),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "Pickup times",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10),
-                                                child:
-                                                    Icon(Icons.label_important),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 15),
-                                                child: Text(
-                                                    "${foodPost.pickupTimes}"),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 5),
@@ -376,12 +350,6 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                           ] else ...[
                             Container()
                           ],
-                          ElevatedButton(
-                              onPressed: () {
-                                print(
-                                    userViewModel.user!.dailyRequests!.length);
-                              },
-                              child: Text("print"))
                         ],
                       ),
                     ),

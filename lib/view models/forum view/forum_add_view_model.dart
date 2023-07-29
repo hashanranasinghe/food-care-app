@@ -10,6 +10,7 @@ class AddForumViewModel extends ChangeNotifier {
   late String description;
   late String imageUrl;
   late String userId;
+  late String category;
   late List<dynamic> likes;
   late List<Comment> comments;
   late DateTime createdAt;
@@ -21,6 +22,7 @@ class AddForumViewModel extends ChangeNotifier {
         title: title,
         description: description,
         author: author,
+        category: category,
         likes: likes = [],
         comments: comments = [],
         createdAt: createdAt = DateTime.now(),
@@ -38,6 +40,7 @@ class AddForumViewModel extends ChangeNotifier {
         title: title,
         description: description,
         author: author,
+        category: category,
         likes: likes = [],
         comments: comments = [],
         createdAt: createdAt = DateTime.now(),

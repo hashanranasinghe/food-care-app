@@ -21,7 +21,7 @@ class GetUserImage extends StatelessWidget {
             final user = snapshot.data!;
             return CircleAvatar(
               radius: radius,
-              backgroundColor: kPrimaryColorlight,
+              backgroundColor: kPrimaryColorLight,
               backgroundImage: user.imageUrl == null ||user.imageUrl==""
                   ? const AssetImage(icon)
                   : NetworkImage(
@@ -32,7 +32,7 @@ class GetUserImage extends StatelessWidget {
             return Text('User not found');
           }
         } else {
-          return Icon(Icons.face,color: kPrimaryColordark,);
+          return Icon(Icons.face,color: kPrimaryColorDark,);
         }
       },
     );

@@ -20,7 +20,7 @@ class PopupDialog {
             btnOkOnPress: () {
               actionFun();
             },
-            btnOkColor: kPrimaryColordark,
+            btnOkColor: kPrimaryColorDark,
             btnCancelColor: Colors.grey)
         .show();
   }

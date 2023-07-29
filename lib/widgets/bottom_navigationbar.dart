@@ -42,30 +42,30 @@ class _BottomNavigationState extends State<BottomNavigation> {
       Icon(
         Icons.home_outlined,
         size: 30,
-        color: kPrimaryColorlight,
+        color: kPrimaryColorLight,
       ),
       Icon(
         Icons.forum_outlined,
         size: 30,
-        color: kPrimaryColorlight,
+        color: kPrimaryColorLight,
       ),
       InkWell(
         onTap: () => _showAddModal(context),
         child: Icon(
           Icons.add,
           size: 30,
-          color: kPrimaryColorlight,
+          color: kPrimaryColorLight,
         ),
       ),
       Icon(
         Icons.message_rounded,
         size: 30,
-        color: kPrimaryColorlight,
+        color: kPrimaryColorLight,
       ),
       Icon(
         Icons.face_outlined,
         size: 30,
-        color: kPrimaryColorlight,
+        color: kPrimaryColorLight,
       ),
     ];
   }
@@ -111,10 +111,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         extendBody: true,
         body: screens[index],
         bottomNavigationBar: CurvedNavigationBar(
-          buttonBackgroundColor: kPrimaryColordark,
+          buttonBackgroundColor: kPrimaryColorDark,
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),
-          color: kBNavigationColordark,
+          color: kBNavigationColorDark,
           backgroundColor: Colors.transparent,
           index: index,
           height: 60,

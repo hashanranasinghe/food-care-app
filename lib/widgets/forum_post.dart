@@ -80,7 +80,7 @@ class _ForumPostState extends State<ForumPost> {
                         Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: kPrimaryColorlight,
+                              backgroundColor: kPrimaryColorLight,
                               radius: 10,
                               backgroundImage: user.imageUrl == null
                                   ? AssetImage(icon.toString())
@@ -184,7 +184,7 @@ class _ForumPostState extends State<ForumPost> {
                           right: 0,
                           height: 50,
                           child: Container(
-                            color: kPrimaryColorlight,
+                            color: kPrimaryColorLight,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 right: 10,

@@ -90,6 +90,7 @@ class ForumApiServices {
     request.fields['title'] = forum.title;
     request.fields['description'] = forum.description;
     request.fields['author'] = forum.author;
+    request.fields['category'] = forum.category!;
 
     var response = await request.send();
     if (response.statusCode == 200) {
@@ -152,6 +153,8 @@ class ForumApiServices {
       'title': forum.title,
       'description': forum.description,
       'author': forum.author,
+      'category': forum.category!,
+
     });
 
     final response = await request.send();

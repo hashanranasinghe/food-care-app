@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontFamily: 'InriaSans',
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
-                    color: kPrimaryColordark),
+                    color: kPrimaryColorDark),
               ),
               onPressed: () {
                 openForget(context);
@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextButton(
                 child: const Text('Sign up',
                     style: TextStyle(
-                        color: kPrimaryColordark, fontWeight: FontWeight.bold)),
+                        color: kPrimaryColorDark, fontWeight: FontWeight.bold)),
                 onPressed: () {
                   openUserSignUp(context);
                 },

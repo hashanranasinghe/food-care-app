@@ -10,11 +10,11 @@ class FoodPostAddViewModel extends ChangeNotifier {
   late String title;
   late String description;
   late String quantity;
-  late String other;
-  late String pickupTimes;
   late String listDays;
+  late String category;
   late bool isShared;
   late Location location;
+  late AvailableTime availableTime;
   late List<dynamic> requests;
   late List<String> imageUrls;
   late DateTime createdAt;
@@ -26,16 +26,17 @@ class FoodPostAddViewModel extends ChangeNotifier {
         title: title,
         description: description,
         quantity: quantity,
-        other: other,
-        pickupTimes: pickupTimes,
         listDays: listDays,
         isShared: isShared,
         requests: requests = [],
         location: location,
+        category: category,
+        availableTime: availableTime,
         imageUrls: imageUrls,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now());
     int res = await FoodApiServices.createFoodPost(food: foodPost);
+
     notifyListeners();
     return res;
   }
@@ -50,11 +51,11 @@ class FoodPostAddViewModel extends ChangeNotifier {
         title: title,
         description: description,
         quantity: quantity,
-        other: other,
-        pickupTimes: pickupTimes,
         listDays: listDays,
         isShared: isShared,
         requests: requests,
+        category: category,
+        availableTime: availableTime,
         location: location,
         imageUrls: imageUrls,
         createdAt: DateTime.now(),

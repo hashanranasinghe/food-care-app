@@ -61,7 +61,6 @@ dependencies:
   geolocator: ^9.0.2
   flutter_typeahead: ^4.3.7
   url_launcher: ^6.1.10
-  shared_preferences: ^2.2.0
 
 
 dev_dependencies:

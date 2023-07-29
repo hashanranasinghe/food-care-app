@@ -226,7 +226,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: const Text(
                       'Log in',
                       style: TextStyle(
-                          color: kPrimaryColordark,
+                          color: kPrimaryColorDark,
                           fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {

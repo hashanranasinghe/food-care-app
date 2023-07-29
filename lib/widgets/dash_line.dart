@@ -45,7 +45,7 @@ class DashedSquarePainter extends CustomPainter {
     this.borderRadius = 0,
     required this.icon,
     this.iconSize = 24,
-    this.iconColor = kPrimaryColorlight,
+    this.iconColor = kPrimaryColorLight,
   });
 
   @override

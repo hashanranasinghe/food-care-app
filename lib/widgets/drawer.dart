@@ -29,7 +29,7 @@ class MenuDrawer extends StatelessWidget {
                 Container(
                   height: 230,
                   child: UserAccountsDrawerHeader(
-                    decoration: const BoxDecoration(color: kPrimaryColordark),
+                    decoration: const BoxDecoration(color: kPrimaryColorDark),
                     accountName: Text(
                       userViewModel.user!.name,
                       style: TextStyle(color: Colors.white),
@@ -53,7 +53,7 @@ class MenuDrawer extends StatelessWidget {
                   child: ListTile(
                     leading: const Icon(
                       Icons.home_outlined,
-                      color: kPrimaryColordark,
+                      color: kPrimaryColorDark,
                     ),
                     title: const Text('Home'),
                     onTap: () async {
@@ -66,7 +66,7 @@ class MenuDrawer extends StatelessWidget {
                   child: ListTile(
                       leading: const Icon(
                         Icons.emoji_food_beverage_outlined,
-                        color: kPrimaryColordark,
+                        color: kPrimaryColorDark,
                       ),
                       title: const Text('My Food Posts'),
                       onTap: () {
@@ -78,7 +78,7 @@ class MenuDrawer extends StatelessWidget {
                   child: ListTile(
                       leading: const Icon(
                         Icons.emoji_food_beverage_outlined,
-                        color: kPrimaryColordark,
+                        color: kPrimaryColorDark,
                       ),
                       title: const Text('Requested food'),
                       onTap: () {
@@ -90,7 +90,7 @@ class MenuDrawer extends StatelessWidget {
                   child: ListTile(
                       leading: const Icon(
                         Icons.forum_outlined,
-                        color: kPrimaryColordark,
+                        color: kPrimaryColorDark,
                       ),
                       title: const Text('My Forums'),
                       onTap: () {
@@ -102,7 +102,7 @@ class MenuDrawer extends StatelessWidget {
                   child: ListTile(
                       leading: const Icon(
                         Icons.message,
-                        color: kPrimaryColordark,
+                        color: kPrimaryColorDark,
                       ),
                       title: const Text('Message'),
                       onTap: () async {
@@ -114,7 +114,7 @@ class MenuDrawer extends StatelessWidget {
                   child: ListTile(
                       leading: const Icon(
                         Icons.notifications_none,
-                        color: kPrimaryColordark,
+                        color: kPrimaryColorDark,
                       ),
                       title: const Text('Notifications'),
                       onTap: () {}),
@@ -124,7 +124,7 @@ class MenuDrawer extends StatelessWidget {
                   child: ListTile(
                     leading: const Icon(
                       Icons.logout_rounded,
-                      color: kPrimaryColordark,
+                      color: kPrimaryColorDark,
                     ),
                     title: const Text('Logout'),
                     onTap: () {

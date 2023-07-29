@@ -37,30 +37,25 @@ class _HomeScreenState extends State<HomeScreen> {
     _scaffoldKey = GlobalKey<ScaffoldState>();
     _populateAllFoodPosts();
     _getCurrentLocation();
-
   }
 
-
-
   void _populateAllFoodPosts() {
-    _filterProvider = Provider.of<FilterProvider>(context,listen: false);
+    _filterProvider = Provider.of<FilterProvider>(context, listen: false);
     final filterFood = _filterProvider.filter;
-    if(filterFood.sortByCloset != null || filterFood.sortByCloset ==false){
+    if (filterFood.sortByCloset != null || filterFood.sortByCloset == false) {
       setState(() {
         filterCount++;
       });
     }
 
-
     if (widget.food == true) {
-      if(filterCount!=0){
+      if (filterCount != 0) {
         Provider.of<FoodPostListViewModel>(context, listen: false)
             .getAllFilterFoodPosts(filterFood);
-      }else{
+      } else {
         Provider.of<FoodPostListViewModel>(context, listen: false)
             .getAllFoodPosts();
       }
-
     } else {
       Provider.of<FoodPostListViewModel>(context, listen: false)
           .getAllOwnFoodPosts();
@@ -102,27 +97,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Stack(
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return const FilterFood();
-                                  });
-                            },
-                            child: CircleAvatar(
-                              backgroundImage: AssetImage(filter),
-                              backgroundColor: Colors.transparent,
-                              radius: 30.0,
-                            ),
-                          ),
+                              onTap: () {
+                                showModalBottomSheet(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const FilterFood();
+                                    });
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 8, left: 10),
+                                child: Image.asset(
+                                  filter,
+                                  scale: 15,
+                                ),
+                              )),
                           Positioned(
                             top: 0.0,
                             right: 0.0,
                             child: CircleAvatar(
-                                backgroundColor: kBNavigationColordark,
+                                backgroundColor: kBNavigationColorDark,
                                 radius: 10.0,
                                 child: Text(
                                   _filterProvider.filter.filterCount.toString(),
@@ -188,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
       style: TextStyle(fontSize: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: kSecondColorlight,
+        color: kSecondColorLight,
       ),
       controller: searchController,
     );

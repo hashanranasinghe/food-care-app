@@ -77,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           CircleAvatar(
                             backgroundImage: _getImage(),
-                            backgroundColor: kPrimaryColorlight,
+                            backgroundColor: kPrimaryColorLight,
                             radius: 50.0,
                           ),
                           Positioned(

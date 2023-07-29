@@ -58,7 +58,7 @@ class _MsgFieldState extends State<MsgField> {
                                     topLeft: Radius.circular(10),
                                     bottomRight: Radius.circular(10),
                                     bottomLeft: Radius.circular(10))),
-                            color: kPrimaryColordark,
+                            color: kPrimaryColorDark,
                             margin:
                                 EdgeInsets.only(left: 10, right: 10, bottom: 5),
                             child: Padding(
@@ -103,7 +103,7 @@ class _MsgFieldState extends State<MsgField> {
                                   topRight: Radius.circular(10),
                                   bottomRight: Radius.circular(10),
                                   bottomLeft: Radius.circular(10))),
-                          color: kPrimaryColordark,
+                          color: kPrimaryColorDark,
                           margin:
                               EdgeInsets.only(left: 15, right: 15, bottom: 10),
                           child: Padding(

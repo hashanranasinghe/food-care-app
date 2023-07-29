@@ -37,6 +37,7 @@ class _AddForumScreenState extends State<AddForumScreen> {
       descriptionController.text = widget.forum!.description;
       imageUrl = widget.forum!.imageUrl.toString();
       _addForumViewModel.imageUrl = widget.forum!.imageUrl.toString();
+      _selectCategory = widget.forum!.category;
     }
 
     _forumListViewModel =
@@ -49,7 +50,13 @@ class _AddForumScreenState extends State<AddForumScreen> {
   String description = "";
   String imagePath = "";
   String imageUrl = "";
-
+  String? _selectCategory;
+  final List<String> _categories = [
+    'Recipe',
+    'Preservation methods',
+    'Food-thoughts',
+    'Food-culture',
+  ];
   final _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -83,7 +90,7 @@ class _AddForumScreenState extends State<AddForumScreen> {
                         Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: kPrimaryColorlight,
+                              backgroundColor: kPrimaryColorLight,
                               child: Image.asset(icon),
                             ),
                             Padding(
@@ -226,6 +233,20 @@ class _AddForumScreenState extends State<AddForumScreen> {
                               description = text!;
                             },
                             controller: descriptionController),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Select category",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              _getCategoriesDropDown()
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -235,7 +256,7 @@ class _AddForumScreenState extends State<AddForumScreen> {
                     onpress: () {
                       uploadForum(context, author: userViewModel.user!.name);
                     },
-                    text: "Upload",
+                    text: "Post",
                   ),
                 ],
               ),
@@ -254,6 +275,8 @@ class _AddForumScreenState extends State<AddForumScreen> {
           _addForumViewModel.title = titleController.text;
           _addForumViewModel.description = descriptionController.text;
           _addForumViewModel.author = author;
+
+          print(_selectCategory);
           if (imagePath != "") {
             print('Image path: $imagePath');
             _addForumViewModel.imageUrl = imagePath.toString();
@@ -265,7 +288,7 @@ class _AddForumScreenState extends State<AddForumScreen> {
         });
         int res = await _addForumViewModel.updateForum();
 
-        if(res == resOk){
+        if (res == resOk) {
           await _forumListViewModel.getOwnAllForums();
           openOwnForums(context);
           ToastWidget.toast(msg: "Forum updated successfully");
@@ -288,5 +311,24 @@ class _AddForumScreenState extends State<AddForumScreen> {
         }
       }
     }
+  }
+
+  _getCategoriesDropDown() {
+    return DropdownButton(
+      hint: const Text('Select'),
+      value: _selectCategory,
+      onChanged: (newValue) {
+        setState(() {
+          _selectCategory = newValue.toString();
+          _addForumViewModel.category = (_selectCategory ?? 'none');
+        });
+      },
+      items: _categories.map((category) {
+        return DropdownMenuItem(
+          child: Text(category),
+          value: category,
+        );
+      }).toList(),
+    );
   }
 }

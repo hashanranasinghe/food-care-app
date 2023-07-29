@@ -55,7 +55,7 @@ class _CommentScreenState extends State<CommentScreen> {
                   Navigator.pop(context);
                 },
                 icon: Icon(Icons.arrow_back)),
-            backgroundColor: kPrimaryColordark,
+            backgroundColor: kPrimaryColorDark,
             title: Text('Comments'),
           ),
           body: Column(
@@ -68,7 +68,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     final comment = vm.comments[index];
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: kPrimaryColordark,
+                        backgroundColor: kPrimaryColorDark,
                         child: Icon(Icons.person),
                       ),
                       title: Text(comment.commenter),
@@ -98,21 +98,18 @@ class _CommentScreenState extends State<CommentScreen> {
                       ),
                     ),
                     SizedBox(width: 8),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_form.currentState!.validate()) {
-                          setState(() {
-                            addVm.commenter = userViewModel.user!.name;
-                          });
-                          await _commentAddViewModel
-                              .saveComment(widget.forumId);
-                          _populateAllComments();
-                          commentController.clear();
-                          _populateForums();
-                        }
-                      },
-                      child: Text('Post'),
-                    ),
+                    IconButton(onPressed: ()async{
+                      if (_form.currentState!.validate()) {
+                        setState(() {
+                          addVm.commenter = userViewModel.user!.name;
+                        });
+                        await _commentAddViewModel
+                            .saveComment(widget.forumId);
+                        _populateAllComments();
+                        commentController.clear();
+                        _populateForums();
+                      }
+                    }, icon:Icon(Icons.send_rounded,size: 40,color: kPrimaryColorDark,))
                   ],
                 ),
               ),

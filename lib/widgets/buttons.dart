@@ -15,7 +15,7 @@ class Iconbutton extends StatelessWidget {
   final Function onpress;
   final Icon bicon;
   const Iconbutton({
-    this.color = kPrimaryColordark,
+    this.color = kPrimaryColorDark,
     this.textcolor = Colors.white,
     this.text = "Button",
     this.pleft = 15,
@@ -42,9 +42,8 @@ class Iconbutton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
-          ),
+          ), backgroundColor: color,
           elevation: 15.0,
-          primary: color,
           padding: EdgeInsets.only(
               left: pleft, right: pright, top: ptop, bottom: pbottom)),
     );
@@ -65,8 +64,8 @@ class Genaralbutton extends StatelessWidget {
   final double fontsize;
   final bool isActive;
   const Genaralbutton({
-    this.color = kPrimaryColordark,
-    this.textcolor = kPrimaryColorlight,
+    this.color = kPrimaryColorDark,
+    this.textcolor = kPrimaryColorLight,
     this.text = "Button",
     this.pleft = 15,
     this.pright = 15,
@@ -120,8 +119,8 @@ class ColorChangeButton extends StatefulWidget {
 
   const ColorChangeButton({
     super.key,
-    this.color = kPrimaryColordark,
-    this.textcolor = kPrimaryColorlight,
+    this.color = kPrimaryColorDark,
+    this.textcolor = kPrimaryColorLight,
     this.text = "Button",
     this.pleft = 15,
     this.pright = 15,
@@ -151,9 +150,8 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-            ),
+            ), backgroundColor: _isButtonClicked ? kPrimaryColorDark : kPrimaryColorLight,
             elevation: 5.0,
-            primary:  _isButtonClicked ? kPrimaryColordark : kPrimaryColorlight,
             padding: EdgeInsets.only(
                 left: widget.pleft,
                 right: widget.pright,
@@ -162,7 +160,7 @@ class _ColorChangeButtonState extends State<ColorChangeButton> {
         child: Text(
           widget.text,
           style: TextStyle(
-              color: _isButtonClicked ? kPrimaryColorlight : kPrimaryColordark,
+              color: _isButtonClicked ? kPrimaryColorLight : kPrimaryColorDark,
               fontSize: widget.fontsize,
               fontWeight: FontWeight.bold),
         ),
