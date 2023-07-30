@@ -254,7 +254,7 @@ class _SignupScreenState extends State<SignupScreen> {
           address: address,
           imageUrl: imagePath,
           deviceToken: [deviceToken],
-          dailyRequests: [],
+          foodRequest: [],
           password: password);
 
       int res = await UserAPiServices.registerUser(user);

@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:food_care/services/store_token.dart';
 import 'package:food_care/utils/constraints.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 import '../../models/userModel.dart';
 import '../../utils/config.dart';
 
 class UserAPiServices {
   static var client = http.Client();
+  static var uuid = const Uuid();
   // Function to get the login user from the API
   static Future<int> loginUser(
       String email, String password, BuildContext context) async {
@@ -68,7 +70,7 @@ class UserAPiServices {
     request.fields['isVerify'] = user.isVerify.toString();
     request.fields['verificationToken'] = user.verificationToken.toString();
     request.fields['deviceToken'] = user.deviceToken.join(',');
-    request.fields['foodRequest']= user.dailyRequests.toString();
+    request.fields['foodRequest'] = user.foodRequest.toString();
     request.fields['password'] = user.password!;
 
     // Add the user's image to the request
@@ -160,7 +162,7 @@ class UserAPiServices {
     if (response.statusCode == 200) {
       final userJson = json.decode(response.body) as Map<String, dynamic>;
       final user = User.fromJson(userJson);
-      print("${user.name} hi ${user.id}  ${user.dailyRequests!.length}");
+      print("${user.name} hi ${user.id}  ${user.foodRequest!.length}");
       return user;
     } else {
       throw Exception('Failed to get current user');
@@ -274,25 +276,24 @@ class UserAPiServices {
     }
   }
 
-
   //food request
-  static Future<void> foodRequest({required String foodId,required String userId}) async {
+  static Future<void> foodRequest(
+      {required String foodId,
+      required String userId,
+      required String path,
+      required String state}) async {
     // Get the JWT token from secure storage
     String? token = await StoreToken.getToken();
-    final foodData = jsonEncode({
-      "foodId":foodId,
-      "userId":userId
-    });
+    final foodData = jsonEncode(
+        {"foodId": foodId, "userId": userId, "permission": state});
 
     // Send a PUT request to the API with the token in the Authorization header
-    final response = await client.put(
-      Uri.http(Config.apiURL, Config.request),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: foodData
-    );
+    final response = await client.put(Uri.http(Config.apiURL, path),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: foodData);
 
     // Check if the response was successful
     if (response.statusCode == 200) {

@@ -241,6 +241,8 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                         _foodPostListViewModel
                                             .getAllFoodPosts();
                                         await UserAPiServices.foodRequest(
+                                          state: "PENDING",
+                                          path: Config.request,
                                             foodId: foodPost.id.toString(),
                                             userId: userViewModel.user!.id
                                                 .toString());
@@ -250,10 +252,10 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                     text: "Cancel Request",
                                   ),
                                 ] else ...[
-                                  if (userViewModel.user!.dailyRequests !=
+                                  if (userViewModel.user!.foodRequest !=
                                           null &&
                                       userViewModel
-                                              .user!.dailyRequests!.length <
+                                              .user!.foodRequest!.length <
                                           4) ...[
                                     Genaralbutton(
                                       pleft: 60,
@@ -274,6 +276,8 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                           _foodPostListViewModel
                                               .getAllFoodPosts();
                                           await UserAPiServices.foodRequest(
+                                              state: "PENDING",
+                                            path: Config.request,
                                               foodId: foodPost.id.toString(),
                                               userId: userViewModel.user!.id
                                                   .toString());

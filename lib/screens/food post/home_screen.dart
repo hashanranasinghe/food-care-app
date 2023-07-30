@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 radius: 10.0,
                                 child: Text(
                                   _filterProvider.filter.filterCount.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 12, color: Colors.white),
                                 )),
                           ),

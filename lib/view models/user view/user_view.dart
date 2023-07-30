@@ -41,6 +41,6 @@ class UserView {
   }
 
   List<dynamic>? get dailyRequest {
-    return user.dailyRequests;
+    return user.foodRequest;
   }
 }

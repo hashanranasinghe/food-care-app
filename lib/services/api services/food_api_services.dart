@@ -163,6 +163,36 @@ class FoodApiServices {
     }
   }
 
+  static Future<int> permissionFoodPost(
+      {required String foodId, required String requesterId,required String path}) async {
+    int res = resFail;
+    // Get the JWT token from secure storage
+    String? token = await StoreToken.getToken();
+
+    // Send a PUT request to the API with the token in the Authorization header
+    final userData = jsonEncode({
+      'foodId':foodId,
+      'requesterId': requesterId,
+    });
+    final response = await client.put(
+        Uri.http(Config.apiURL, path),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: userData);
+
+    // Check if the response was successful
+    if (response.statusCode == 200) {
+      final message = json.decode(response.body);
+      print("ok");
+      res = resOk;
+      return res;
+    } else {
+      return res;
+      // throw Exception('Failed to like forum');
+    }
+  }
   //get own foods
   static Future<List<Food>> getOwnFoodPosts() async {
     String? token = await StoreToken.getToken();

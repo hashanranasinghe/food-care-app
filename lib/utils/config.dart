@@ -10,6 +10,7 @@ class Config {
   static const String currentUserAPI = "/api/users/current";
   static const String users = "/api/users/users";
   static const String request = "/api/users/requestFood";
+  static const String permission = "/api/users/permissionfood";
   static const String emailUrl = "http://localhost:5001";
   static const String mapApi = "AIzaSyAGk8VdNEZK46Wjyj422bmjvxwucaSrLE8";
 
@@ -57,7 +58,8 @@ class Config {
   //food
   static const String getFoodPosts = "/api/food";
   static const String getOwnFoods = "api/food/ownfood";
-
+  static const String acceptFood = "api/food/accept";
+  static const String rejectFood = "api/food/reject";
   static String getOwnFoodPost({required String id}) {
     String path = "api/food/ownfood/$id";
     return path;

@@ -49,6 +49,10 @@ class FoodPostViewModel {
     return food.requests;
   }
 
+  List<dynamic> get acceptRequest {
+    return food.acceptRequests;
+  }
+
   Location get location {
     return food.location;
   }

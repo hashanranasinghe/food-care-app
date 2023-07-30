@@ -117,7 +117,9 @@ class MenuDrawer extends StatelessWidget {
                         color: kPrimaryColorDark,
                       ),
                       title: const Text('Notifications'),
-                      onTap: () {}),
+                      onTap: () {
+                        openRequestList(context);
+                      }),
                 ),
                 Card(
                   elevation: 0,
