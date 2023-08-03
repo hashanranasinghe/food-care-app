@@ -14,7 +14,7 @@ class ShowTimeAgoRow extends StatelessWidget {
           Icons.av_timer_outlined,
           size: 20,
         ),
-        Text("${Date.getStringdatetime(time)} ago"),
+        Text("${Date.getStringDateTime(time)} ago"),
       ],
     );
   }

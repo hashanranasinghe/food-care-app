@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils/constraints.dart';
 import 'drawer.dart';
 
 class AppBarWidget extends StatefulWidget {
@@ -27,7 +28,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:kNavBarColor,
       key: _scaffoldKey, // set the key to the scaffold
       drawer: MenuDrawer(),
       appBar: AppBar(

@@ -1,10 +1,10 @@
 class Config {
   //user
   static const String appName = "FoodCare App";
-  static const String apiURL = "10.0.2.2:5001";
-  static const String socketUrl = "http://10.0.2.2:8900";
-  //static const String socketUrl = "http://192.168.156.156:8900";
-  //static const String apiURL = "192.168.156.156:5001";
+  // static const String apiURL = "10.0.2.2:5001";
+  // static const String socketUrl = "http://10.0.2.2:8900";
+  static const String socketUrl = "http://192.168.143.203:8900";
+  static const String apiURL = "192.168.143.203:5001";
   static const String loginUserAPI = "/api/users/login";
   static const String registerUserAPI = "/api/users/register";
   static const String currentUserAPI = "/api/users/current";

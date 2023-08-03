@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                         color: kPrimaryColorDark, fontWeight: FontWeight.bold)),
                 onPressed: () {
-                  openUserSignUp(context);
+                  openRoleSelecting(context);
                 },
               )
             ],

@@ -22,13 +22,14 @@ class FoodApiServices {
     if (response.statusCode == 200) {
       final List<dynamic> foodJsonList = json.decode(response.body);
       List<Food> foodList =
-          foodJsonList.map((foodJson) => Food.fromJson(foodJson)).toList();
+      foodJsonList.map((foodJson) => Food.fromJson(foodJson)).toList();
       print(foodList);
       return foodList;
     } else {
       throw Exception('Failed to get forums');
     }
   }
+
 
   static Future<Food> getFoodPost({required String foodId}) async {
     String? token = await StoreToken.getToken();

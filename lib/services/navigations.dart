@@ -13,6 +13,7 @@ import 'package:food_care/screens/login%20&%20register/foget_password_screen.dar
 import 'package:food_care/screens/login%20&%20register/login_screen.dart';
 import 'package:food_care/screens/chat/messaging_screen.dart';
 import 'package:food_care/screens/login%20&%20register/reset_password_screen.dart';
+import 'package:food_care/screens/login%20&%20register/role_selecting_screen.dart';
 import 'package:food_care/screens/settings/profile_screen.dart';
 import 'package:food_care/screens/settings/settings_screen.dart';
 import 'package:food_care/screens/login%20&%20register/signup_screen.dart';
@@ -21,9 +22,9 @@ import 'package:food_care/widgets/bottom_navigationbar.dart';
 import '../models/foodPostModel.dart';
 import '../models/userModel.dart';
 
-void openUserSignUp(BuildContext context) async {
+void openUserSignUp(BuildContext context,String role) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const SignupScreen()));
+      context, MaterialPageRoute(builder: (context) => SignupScreen(role: role,)));
 }
 
 void openUserSignIn(BuildContext context) async {
@@ -166,4 +167,9 @@ void openRequestedFood(BuildContext context,String id) async{
 void openRequestList(BuildContext context) async {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => const RequestListScreen()));
+}
+
+void openRoleSelecting(BuildContext context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const RoleSelectingScreen()));
 }

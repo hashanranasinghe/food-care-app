@@ -9,8 +9,10 @@ class User {
   String? address;
   String? imageUrl;
   String? password;
+  String role; // Added the 'role' field for user roles
   List<dynamic> deviceToken;
   List<dynamic>? foodRequest;
+
   User({
     this.id,
     this.uid,
@@ -24,6 +26,7 @@ class User {
     this.foodRequest,
     this.imageUrl,
     this.password,
+    required this.role, // Added the 'role' field in the constructor
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -39,6 +42,7 @@ class User {
     foodRequest: List<dynamic>.from(json["foodRequest"]?.map((x) => x) ?? []),
     verificationToken: json['verificationToken'],
     password: json["password"],
+    role: json["role"], // Added the 'role' field
   );
 
   Map<String, dynamic> toJson() => {
@@ -52,6 +56,7 @@ class User {
     "verificationToken": verificationToken,
     "imageUrl": imageUrl,
     "password": password,
+    "role": role, // Added the 'role' field
     "deviceToken": List<dynamic>.from(deviceToken.map((x) => x)),
     "foodRequest": List<dynamic>.from(foodRequest!.map((x) => x)),
   };

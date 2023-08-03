@@ -43,4 +43,8 @@ class UserView {
   List<dynamic>? get dailyRequest {
     return user.foodRequest;
   }
+
+  String get role {
+    return user.role;
+  }
 }

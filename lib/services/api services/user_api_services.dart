@@ -72,6 +72,7 @@ class UserAPiServices {
     request.fields['deviceToken'] = user.deviceToken.join(',');
     request.fields['foodRequest'] = user.foodRequest.toString();
     request.fields['password'] = user.password!;
+    request.fields['role']=user.role;
 
     // Add the user's image to the request
 

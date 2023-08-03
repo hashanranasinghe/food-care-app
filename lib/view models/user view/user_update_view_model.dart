@@ -12,6 +12,7 @@ class UserUpdateViewModel extends ChangeNotifier {
   late String verificationToken;
   late bool isVerify;
   late List<dynamic> deviceToken;
+  late String role;
 
   Future<void> updateUser() async {
     final user = User(
@@ -22,7 +23,8 @@ class UserUpdateViewModel extends ChangeNotifier {
         imageUrl: imageUrl,
         isVerify: isVerify,
         deviceToken: deviceToken,
-        verificationToken: verificationToken);
+        verificationToken: verificationToken,
+        role: role);
     await UserAPiServices.updateUser(user: user);
 
     notifyListeners();

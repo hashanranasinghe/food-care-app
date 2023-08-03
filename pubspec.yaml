@@ -36,7 +36,6 @@ dependencies:
   flutter_launcher_icons: ^0.9.2
   cupertino_icons: ^1.0.2
   awesome_dialog: ^3.0.2
-  curved_navigation_bar: ^1.0.3
   path_drawing: ^1.0.1
   flutter_secure_storage: ^8.0.0
   http: ^0.13.3
@@ -61,6 +60,7 @@ dependencies:
   geolocator: ^9.0.2
   flutter_typeahead: ^4.3.7
   url_launcher: ^6.1.10
+  font_awesome_flutter: ^10.4.0
 
 
 dev_dependencies:

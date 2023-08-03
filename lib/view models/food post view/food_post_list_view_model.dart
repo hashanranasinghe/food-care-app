@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:food_care/models/filterModel.dart';
 import 'package:food_care/services/api%20services/food_api_services.dart';
+import 'package:food_care/services/date.dart';
 import 'package:geolocator/geolocator.dart';
 import 'food_post_view_model.dart';
 
@@ -87,6 +88,19 @@ class FoodPostListViewModel extends ChangeNotifier {
     if (filterModel.sortByCloset == true) {
       foods.sort((a, b) => calculateDistance(a, currentPosition)
           .compareTo(calculateDistance(b, currentPosition)));
+    }
+
+    if (filterModel.category != null) {
+      foods =
+          foods.where((food) => food.category == filterModel.category).toList();
+    }
+    if (filterModel.hours != null) {
+      foods = foods
+          .where((food) =>
+          Date.parseHours(filterModel.hours.toString())>Date.calculateTimeDifference(
+                  food.availableTime.startTime, food.availableTime.endTime)
+              )
+          .toList();
     }
 
     status = foods.isEmpty ? Status.empty : Status.success;

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:food_care/services/api%20services/food_api_services.dart';
 import 'package:food_care/services/api%20services/user_api_services.dart';
 import 'package:food_care/utils/config.dart';
+import 'package:food_care/view%20models/food%20post%20view/food_post_view_model.dart';
 import 'package:food_care/widgets/app_bar.dart';
+import 'package:food_care/widgets/popup_dialog.dart';
 import 'package:food_care/widgets/requesting_card.dart';
 import 'package:provider/provider.dart';
 import '../../models/userModel.dart';
@@ -71,32 +73,26 @@ class _RequestListScreenState extends State<RequestListScreen> {
                                         user: user,
                                         food: food,
                                         accept: () async {
-                                          await FoodApiServices
-                                              .permissionFoodPost(
-                                                  foodId: food.id.toString(),
-                                                  requesterId:
-                                                      user.uid.toString(),
-                                                  path: Config.acceptFood);
-                                          await UserAPiServices.foodRequest(
-                                              state: "ACCEPT",
-                                              foodId: food.id.toString(),
-                                              userId: user.uid.toString(),
-                                              path: Config.permission);
-                                          print("accept");
+                                          PopupDialog.showPopupDialog(
+                                              context,
+                                              "Request",
+                                              "Are you sure about the accepting request?",
+                                              () async {
+                                            await accept(
+                                                food: food, user: user);
+                                            vm.getAllFoodPosts();
+                                          });
                                         },
                                         reject: () async {
-                                          await FoodApiServices
-                                              .permissionFoodPost(
-                                                  foodId: food.id.toString(),
-                                                  requesterId:
-                                                      user.uid.toString(),
-                                                  path: Config.rejectFood);
-                                          await UserAPiServices.foodRequest(
-                                              state: "REJECT",
-                                              foodId: food.id.toString(),
-                                              userId: user.uid.toString(),
-                                              path: Config.permission);
-                                          print("reject");
+                                          PopupDialog.showPopupDialog(
+                                              context,
+                                              "Request",
+                                              "Are you sure about the rejecting request?",
+                                              () async {
+                                            await reject(
+                                                food: food, user: user);
+
+                                          });
                                         });
                                   } else {
                                     return Text('User not found');
@@ -120,5 +116,34 @@ class _RequestListScreenState extends State<RequestListScreen> {
         );
       }
     });
+  }
+
+  reject({required FoodPostViewModel food, required User user}) async {
+    await FoodApiServices.permissionFoodPost(
+        foodId: food.id.toString(),
+        requesterId: user.uid.toString(),
+        path: Config.rejectFood);
+    await UserAPiServices.foodRequest(
+        state: "REJECT",
+        foodId: food.id.toString(),
+        userId: user.uid.toString(),
+        path: Config.permission).whenComplete(() => Navigator.pop(context));
+
+    print("reject");
+
+  }
+
+  accept({required FoodPostViewModel food, required User user}) async {
+    await FoodApiServices.permissionFoodPost(
+        foodId: food.id.toString(),
+        requesterId: user.uid.toString(),
+        path: Config.acceptFood);
+    await UserAPiServices.foodRequest(
+        state: "ACCEPT",
+        foodId: food.id.toString(),
+        userId: user.uid.toString(),
+        path: Config.permission);
+
+    print("accept");
   }
 }

@@ -74,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final vm = Provider.of<FoodPostListViewModel>(context);
     final um = Provider.of<UserListViewModel>(context);
+    Size screenSize = MediaQuery.of(context).size;
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       if ((userViewModel.user == null) || (position == null)) {
         userViewModel.getCurrentUser();
@@ -88,12 +89,13 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(width: 300, child: _buildSearchBar()),
+                  SizedBox(height: screenSize.height*0.1,),
+                  SizedBox(width: screenSize.width*0.8, child: _buildSearchBar()),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: EdgeInsets.only(left: screenSize.width*0.01),
                     child: SizedBox(
-                      width: 50.0,
-                      height: 50.0,
+                      width: screenSize.width*0.12,
+                      height: screenSize.width*0.12,
                       child: Stack(
                         children: [
                           GestureDetector(
@@ -184,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
       style: TextStyle(fontSize: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: kSecondColorLight,
+        color: Colors.white,
       ),
       controller: searchController,
     );
