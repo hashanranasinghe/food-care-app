@@ -9,6 +9,7 @@ const Color kSecondColorDark = Color(0xFFECECEC);
 const Color kNavItemsColor =Color(0xFF23374D);
 const Color kSNavItemsColor =Color(0xFFE5E5E5);
 const Color kNavBarColor=Color(0xFFEEEEEE);
+const kPrimaryErrorColor = Color(0xFFFF4949);
 class Convert {
   static String convertTimeFormat({required DateTime dateTime}) {
     return DateFormat('hh:mm a').format(dateTime);
@@ -21,3 +22,6 @@ const int resEmail = 2;
 const icon = "assets/images/icon.png";
 const filter = "assets/images/filter.png";
 const userIcon = "assets/images/user.png";
+
+
+

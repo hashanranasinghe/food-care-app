@@ -57,7 +57,7 @@ class MenuDrawer extends StatelessWidget {
                     ),
                     title: const Text('Home'),
                     onTap: () async {
-                      openHome(context, userViewModel.user!);
+                      openHome(context, userViewModel.user!,0);
                     },
                   ),
                 ),

@@ -91,7 +91,7 @@ class StartState extends State<SplashScreen> {
     var token = await StoreToken.getToken();
     if (token != null) {
       final user = await UserAPiServices.getCurrentUser();
-      openHome(context, user);
+      openHome(context, user,0);
     } else if (widget.initialLink != null) {
       openReset(context,
           widget.initialLink!.link.queryParameters['token'].toString());

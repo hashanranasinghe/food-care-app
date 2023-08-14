@@ -37,6 +37,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     emailController.text = widget.user.email;
     passwordController.text = widget.user.password!;
     imageUrl = widget.user.imageUrl.toString();
+    isVerify = widget.user.isVerify;
+    deviceToken = widget.user.deviceToken;
+    verificationToken  =widget.user.verificationToken!;
+    role = widget.user.role;
     _userUpdateViewModel.imageUrl = (widget.user.imageUrl ?? "null");
   }
 
@@ -47,7 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String imagePath = '';
   String imageUrl = '';
   String password = '';
+  String verificationToken='';
   String confirmPassword = '';
+  String role = '';
+  List<dynamic> deviceToken=[];
+  bool isVerify =false;
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -221,7 +229,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _userUpdateViewModel.phone = mobileNumber;
       _userUpdateViewModel.address = address;
       _userUpdateViewModel.email = email;
-
+      _userUpdateViewModel.isVerify = isVerify;
+      _userUpdateViewModel.deviceToken =deviceToken;
+      _userUpdateViewModel.verificationToken = verificationToken;
+      _userUpdateViewModel.role = role;
       if (imagePath != "") {
         print('Image path: $imagePath');
         _userUpdateViewModel.imageUrl = imagePath.toString();

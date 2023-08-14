@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../models/userModel.dart';
@@ -8,11 +7,13 @@ import '../utils/constraints.dart';
 
 class GetUserImage extends StatelessWidget {
   final String id;
-  final double radius ;
-  const GetUserImage({Key? key, required this.id, this.radius = 20.0}) : super(key: key);
+  final double radius;
+  const GetUserImage({Key? key, required this.id, this.radius = 20.0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return FutureBuilder<User>(
       future: UserAPiServices.getUser(id),
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
@@ -22,17 +23,23 @@ class GetUserImage extends StatelessWidget {
             return CircleAvatar(
               radius: radius,
               backgroundColor: kPrimaryColorLight,
-              backgroundImage: user.imageUrl == null ||user.imageUrl==""
-                  ? const AssetImage(icon)
+              backgroundImage: user.imageUrl == null || user.imageUrl == ""
+                  ? const AssetImage(userIcon)
                   : NetworkImage(
                           Config.imageUrl(imageUrl: user.imageUrl.toString()))
                       as ImageProvider<Object>,
             );
           } else {
-            return Text('User not found');
+            return Image(
+              image: AssetImage(userIcon),
+              width: screenSize.width * 0.15,
+            );
           }
         } else {
-          return Icon(Icons.face,color: kPrimaryColorDark,);
+          return Image(
+            image: AssetImage(userIcon),
+            width: screenSize.width * 0.15,
+          );
         }
       },
     );

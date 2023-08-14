@@ -5,7 +5,7 @@ class Food {
   String title;
   String description;
   String quantity;
-  String listDays;
+
   Location location;
   AvailableTime availableTime;
   String category;
@@ -26,7 +26,7 @@ class Food {
     required this.description,
     required this.quantity,
     required this.isShared,
-    required this.listDays,
+
     required this.location,
     required this.availableTime,
     required this.imageUrls,
@@ -43,7 +43,7 @@ class Food {
         title: json["title"],
         description: json["description"],
         quantity: json["quantity"],
-        listDays: json["listDays"],
+
         isShared: json["isShared"],
         requests: List<dynamic>.from(json["requests"].map((x) => x)),
         acceptRequests:
@@ -67,7 +67,7 @@ class Food {
         "author": author,
         "description": description,
         "quantity": quantity,
-        "listDays": listDays,
+
         "isShared": isShared,
         "location": location.toJson(),
         "availableTime": availableTime.toJson(),

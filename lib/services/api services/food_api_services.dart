@@ -65,7 +65,6 @@ class FoodApiServices {
       request.fields['category'] = food.category;
       request.fields['quantity'] = food.quantity.toString();
       request.fields['isShared'] = food.isShared.toString();
-      request.fields['listDays'] = food.listDays;
       request.fields['availableTime[startTime]'] =
           food.availableTime.startTime.toString();
       request.fields['availableTime[endTime]'] =
@@ -105,7 +104,6 @@ class FoodApiServices {
       request.fields['author'] = food.author.toString();
       request.fields['description'] = food.description;
       request.fields['quantity'] = food.quantity.toString();
-      request.fields['listDays'] = food.listDays;
       request.fields['isShared'] = food.isShared.toString();
       request.fields['location[lan]'] = food.location.lan.toString();
       request.fields['location[lon]'] = food.location.lon.toString();

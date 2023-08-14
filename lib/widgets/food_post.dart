@@ -71,8 +71,53 @@ class _FoodPostState extends State<FoodPost> {
                   top: 15),
               child: GestureDetector(
                 onTap: () async {
-                  openDisplayFoodPost(
-                      context, food.id.toString(), widget.userId);
+                  if (widget.food == true) {
+                    openDisplayFoodPost(
+                        context, food.id.toString(), widget.userId,widget.position);
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return UpdateNDelete(
+                            isShared: food.isShared,
+                            shareText: "Share Food",
+                            share: () async {
+                              PopupDialog.showPopupDialog(
+                                  context, "Cannot undo", "", () async {
+                                setState(() {
+                                  foodPostAddViewModel.isShared = true;
+                                });
+                                await foodPostAddViewModel.updateFoodPost();
+                                await foodPostListViewModel
+                                    .getAllOwnFoodPosts();
+                                Navigator.pop(context);
+                              });
+                            },
+                            update: () async {
+                              final getFood =
+                                  await FoodApiServices.getOwnFoodPost(
+                                      foodId: food.id.toString());
+                              openUpdateFoodPost(context, getFood);
+                              openUpdateFoodPost(context, getFood);
+                            },
+                            delete: () async {
+                              int res = await FoodApiServices.deleteFoodPost(
+                                  foodId: food.id.toString());
+                              if (res == resOk) {
+                                Provider.of<FoodPostListViewModel>(context,
+                                        listen: false)
+                                    .getAllOwnFoodPosts();
+                                Navigator.pop(context);
+                                ToastWidget.toast(
+                                    msg: "Food Post deleted successfully");
+                              } else {
+                                ToastWidget.toast(
+                                    msg: "Something went to wrong.");
+                              }
+                            });
+                      },
+                    );
+                  }
                 },
                 child: Stack(children: [
                   Card(
@@ -106,7 +151,9 @@ class _FoodPostState extends State<FoodPost> {
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
-                                CategoryCard(text: Convertor.upperCase(text: food.category))
+                                CategoryCard(
+                                    text: Convertor.upperCase(
+                                        text: food.category))
                               ],
                             ),
                           ),
@@ -175,7 +222,7 @@ class _FoodPostState extends State<FoodPost> {
                                       topic: "End TIme"),
                                   FoodPostDetailRow(
                                       text:
-                                          "${getDifferenceLocation(widget.position, food.location).toString()} Km",
+                                          "${Convertor.getDifferenceLocation(widget.position, food.location).toString()} Km",
                                       topicIcon: Icons.location_on_outlined,
                                       topic: "Distance"),
                                   SizedBox(height: 10),
@@ -213,20 +260,5 @@ class _FoodPostState extends State<FoodPost> {
             );
           }),
     );
-  }
-
-  double getDifferenceLocation(
-      Position currentPosition, Location foodLocation) {
-    double distanceInMeters = Geolocator.distanceBetween(
-      currentPosition.latitude,
-      currentPosition.longitude,
-      double.parse(foodLocation.lan),
-      double.parse(foodLocation.lon),
-    );
-
-    double distanceInKilometers = distanceInMeters / 1000;
-    double roundedDistance =
-        double.parse(distanceInKilometers.toStringAsFixed(1));
-    return roundedDistance;
   }
 }

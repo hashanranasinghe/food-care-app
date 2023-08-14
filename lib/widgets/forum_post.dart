@@ -54,6 +54,7 @@ class _ForumPostState extends State<ForumPost> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return ListView.builder(
         shrinkWrap: true,
         itemCount: widget.forums.length,
@@ -158,7 +159,7 @@ class _ForumPostState extends State<ForumPost> {
                   forum.imageUrl == null
                       ? Container()
                       : SizedBox(
-                          height: 500,
+                          height: screenSize.height*0.26,
                           child: Image.network(Config.imageUrl(
                               imageUrl: forum.imageUrl.toString()))),
                   // ignore: prefer_const_constructors

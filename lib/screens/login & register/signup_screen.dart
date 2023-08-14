@@ -16,8 +16,8 @@ import '../../widgets/flutter_toast.dart';
 import '../../widgets/take_images.dart';
 
 class SignupScreen extends StatefulWidget {
-  final String role;
-  const SignupScreen({Key? key, required this.role}) : super(key: key);
+
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -257,7 +257,7 @@ class _SignupScreenState extends State<SignupScreen> {
           deviceToken: [deviceToken],
           foodRequest: [],
           password: password,
-      role: widget.role);
+      role:"DONOR");
 
       int res = await UserAPiServices.registerUser(user);
 

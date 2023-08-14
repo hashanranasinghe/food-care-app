@@ -11,14 +11,15 @@ import '../models/userModel.dart';
 
 class BottomNavigation extends StatefulWidget {
   final User user;
-  const BottomNavigation({Key? key, required this.user}) : super(key: key);
+  int index;
+  BottomNavigation({Key? key, required this.user, this.index = 0}) : super(key: key);
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int index = 0;
+
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = const HomeScreen(
@@ -93,7 +94,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         children: [
                           FaIcon(
                             FontAwesomeIcons.house,
-                            color: index == 0
+                            color: widget.index == 0
                                 ? kNavItemsColor
                                 : Colors.grey.shade500,
                           ),
@@ -101,7 +102,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             "Home",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: index == 0
+                              color: widget.index == 0
                                   ? kNavItemsColor
                                   : Colors.grey.shade500,
                             ),
@@ -113,7 +114,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           currentScreen = const HomeScreen(
                             food: true,
                           );
-                          index = 0;
+                          widget.index = 0;
                         });
                       }),
                   MaterialButton(
@@ -123,7 +124,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         children: [
                           Icon(
                             Icons.dashboard_outlined,
-                            color: index == 1
+                            color: widget.index == 1
                                 ? kNavItemsColor
                                 : Colors.grey.shade500,
                           ),
@@ -131,7 +132,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             "Community",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: index == 1
+                              color: widget.index == 1
                                   ? kNavItemsColor
                                   : Colors.grey.shade500,
                             ),
@@ -141,7 +142,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       onPressed: () {
                         setState(() {
                           currentScreen = const ForumScreen(forum: true);
-                          index = 1;
+                          widget.index = 1;
                         });
                       }),
                 ],
@@ -157,7 +158,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         children: [
                           Icon(
                             Icons.message_outlined,
-                            color: index == 2
+                            color: widget.index == 2
                                 ? kNavItemsColor
                                 : Colors.grey.shade500,
                           ),
@@ -165,7 +166,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             "Chat",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: index == 2
+                              color: widget.index == 2
                                   ? kNavItemsColor
                                   : Colors.grey.shade500,
                             ),
@@ -177,7 +178,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           currentScreen = ChatScreen(
                             id: widget.user.id,
                           );
-                          index = 2;
+                          widget.index = 2;
                         });
                       }),
                   MaterialButton(
@@ -187,7 +188,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         children: [
                           Icon(
                             Icons.face,
-                            color: index == 3
+                            color: widget.index == 3
                                 ? kNavItemsColor
                                 : Colors.grey.shade500,
                           ),
@@ -195,7 +196,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             "Profile",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: index == 3
+                              color: widget.index == 3
                                   ? kNavItemsColor
                                   : Colors.grey.shade500,
                             ),
@@ -205,7 +206,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       onPressed: () {
                         setState(() {
                           currentScreen = ProfileScreen(user: widget.user);
-                          index = 3;
+                          widget.index = 3;
                         });
                       }),
                 ],

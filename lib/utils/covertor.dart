@@ -1,5 +1,10 @@
 
+
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+
+import '../models/foodPostModel.dart';
 
 class Convertor {
   static String upperCase({required String text}) {
@@ -22,6 +27,35 @@ class Convertor {
     } else {
       String day = "${DateFormat('yyyy MMMM d').format(date)} ";
       return day;
+    }
+  }
+
+  static double getDifferenceLocation(
+      Position currentPosition, Location foodLocation) {
+    double distanceInMeters = Geolocator.distanceBetween(
+      currentPosition.latitude,
+      currentPosition.longitude,
+      double.parse(foodLocation.lan),
+      double.parse(foodLocation.lon),
+    );
+
+    double distanceInKilometers = distanceInMeters / 1000;
+    double roundedDistance =
+    double.parse(distanceInKilometers.toStringAsFixed(1));
+    return roundedDistance;
+  }
+
+  static Color selectColor(String text) {
+    if (text == "Fruits") {
+      return const Color(0xFFFFA500);
+    } else if (text == "Vegetables") {
+      return const Color(0xFF006400);
+    } else if (text == "Cooked") {
+      return const Color(0xFFBDB76B);
+    } else if(text == "Short-Eats"){
+      return const Color(0xFF00008B);
+    }else{
+      return Colors.black87;
     }
   }
 

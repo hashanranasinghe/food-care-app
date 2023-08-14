@@ -10,7 +10,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
   late String title;
   late String description;
   late String quantity;
-  late String listDays;
+
   late String category;
   late bool isShared;
   late Location location;
@@ -27,7 +27,7 @@ class FoodPostAddViewModel extends ChangeNotifier {
         title: title,
         description: description,
         quantity: quantity,
-        listDays: listDays,
+
         isShared: isShared,
         requests: requests = [],
         acceptRequests: acceptRequests=[],
@@ -53,10 +53,10 @@ class FoodPostAddViewModel extends ChangeNotifier {
         title: title,
         description: description,
         quantity: quantity,
-        listDays: listDays,
+
         isShared: isShared,
         requests: requests,
-        acceptRequests: acceptRequests,
+        acceptRequests: acceptRequests ?? [],
         category: category,
         availableTime: availableTime,
         location: location,

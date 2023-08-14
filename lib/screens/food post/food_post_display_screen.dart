@@ -6,25 +6,30 @@ import 'package:food_care/services/api%20services/map_services.dart';
 import 'package:food_care/services/api%20services/user_api_services.dart';
 import 'package:food_care/services/navigations.dart';
 import 'package:food_care/utils/constraints.dart';
+import 'package:food_care/utils/covertor.dart';
 import 'package:food_care/view%20models/chat%20view/conversation/conversastion_add_view_model.dart';
 import 'package:food_care/view%20models/chat%20view/conversation/conversation_view_model.dart';
 import 'package:food_care/view%20models/user%20view/userViewModel.dart';
 import 'package:food_care/widgets/buttons.dart';
+import 'package:food_care/widgets/food_post_detail_row.dart';
 import 'package:food_care/widgets/get_user_image.dart';
 import 'package:food_care/widgets/popup_dialog.dart';
 import 'package:food_care/widgets/show_time_ago_row.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/foodPostModel.dart';
 import '../../utils/config.dart';
 import '../../view models/food post view/food_post_list_view_model.dart';
 import '../../widgets/flutter_toast.dart';
+import '../../widgets/foodpost_display_row.dart';
 
 class FoodPostDisplayScreen extends StatefulWidget {
   final String foodId;
   final String id;
+  final Position position;
   const FoodPostDisplayScreen(
-      {Key? key, required this.foodId, required this.id})
+      {Key? key, required this.foodId, required this.id, required this.position})
       : super(key: key);
 
   @override
@@ -51,6 +56,7 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return Consumer<UserViewModel>(builder: (context, userViewModel, child) {
       if (userViewModel.user == null) {
         userViewModel.getCurrentUser();
@@ -67,6 +73,7 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                 } else {
                   final Food foodPost = snapshot.data!;
                   return Scaffold(
+                    backgroundColor: kNavBarColor,
                     appBar: AppBar(
                       centerTitle: true,
                       backgroundColor: kPrimaryColorDark,
@@ -96,15 +103,23 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Card(
-                              color: kSecondColorDark,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              elevation: 8,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize.width * 0.04,
+                                vertical: screenSize.height * 0.01),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Text(
+                                    Convertor.upperCase(text: foodPost.title),
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 15),
                                     child: Row(
@@ -113,7 +128,7 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                       children: [
                                         GetUserImage(
                                           id: foodPost.userId.toString(),
-                                          radius: 30,
+                                          radius: 25,
                                         ),
                                         Padding(
                                           padding:
@@ -128,16 +143,13 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "${foodPost.author} give away",
+                                                      Convertor.upperCase(
+                                                          text:
+                                                              "${foodPost.author} give away"),
                                                       style: TextStyle(
-                                                          fontSize: 15),
-                                                    ),
-                                                    Text(
-                                                      foodPost.title,
-                                                      style: TextStyle(
-                                                          fontSize: 25,
+                                                          fontSize: 20,
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                              FontWeight.w500),
                                                     ),
                                                     ShowTimeAgoRow(
                                                         time:
@@ -152,8 +164,8 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, top: 10, bottom: 10),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: screenSize.width * 0.05),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -161,36 +173,37 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                         Text(
                                           "${foodPost.description}",
                                           textAlign: TextAlign.justify,
-                                          style: TextStyle(fontSize: 20),
+                                          style: TextStyle(fontSize: 15),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 5),
-                                          child: Row(
+                                          padding:EdgeInsets.symmetric(vertical: screenSize.height*0.03),
+                                          child: Column(
                                             children: [
-                                              Text(
-                                                "Listing for",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10),
-                                                child:
-                                                    Icon(Icons.label_important),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 15),
-                                                child: Text(
-                                                    "${foodPost.listDays}"),
-                                              ),
+                                              FoodPostDisplayRow(
+                                                  text: foodPost.availableTime.startTime,
+                                                  topicIcon:
+                                                  Icons.timer_outlined,
+                                                  topic: "Start Time"),
+                                              FoodPostDisplayRow(
+                                                  text: foodPost.availableTime.endTime,
+                                                  topicIcon:
+                                                  Icons.timer_outlined,
+                                                  topic: "End Time"),
+
+                                              FoodPostDisplayRow(
+                                                  text: "${Convertor.getDifferenceLocation(widget.position, foodPost.location).toString()} Km",
+                                                  topicIcon:
+                                                  Icons.location_on_outlined,
+                                                  topic: "Distance"),
+                                              FoodPostDisplayRow(
+                                                  text: foodPost.category,
+                                                  topicIcon:
+                                                  Icons.category_outlined,
+                                                  topic: "Category"),
+
                                             ],
                                           ),
                                         ),
-
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 5),
@@ -241,8 +254,8 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                         _foodPostListViewModel
                                             .getAllFoodPosts();
                                         await UserAPiServices.foodRequest(
-                                          state: "PENDING",
-                                          path: Config.request,
+                                            state: "PENDING",
+                                            path: Config.request,
                                             foodId: foodPost.id.toString(),
                                             userId: userViewModel.user!.id
                                                 .toString());
@@ -252,10 +265,8 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                     text: "Cancel Request",
                                   ),
                                 ] else ...[
-                                  if (userViewModel.user!.foodRequest !=
-                                          null &&
-                                      userViewModel
-                                              .user!.foodRequest!.length <
+                                  if (userViewModel.user!.foodRequest != null &&
+                                      userViewModel.user!.foodRequest!.length <
                                           4) ...[
                                     Genaralbutton(
                                       pleft: 60,
@@ -277,7 +288,7 @@ class _FoodPostDisplayScreenState extends State<FoodPostDisplayScreen> {
                                               .getAllFoodPosts();
                                           await UserAPiServices.foodRequest(
                                               state: "PENDING",
-                                            path: Config.request,
+                                              path: Config.request,
                                               foodId: foodPost.id.toString(),
                                               userId: userViewModel.user!.id
                                                   .toString());

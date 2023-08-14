@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../services/date.dart';
@@ -10,11 +11,14 @@ class ShowTimeAgoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(
+        Icon(
           Icons.av_timer_outlined,
           size: 20,
+          color: Colors.black.withOpacity(0.4),
         ),
-        Text("${Date.getStringDateTime(time)} ago"),
+        Text("${Date.getStringDateTime(time)} ago",style: TextStyle(
+          color: Colors.black.withOpacity(0.4)
+        ),),
       ],
     );
   }

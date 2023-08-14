@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     await UserAPiServices.loginUser(email, password, context);
                 if (res == resOk) {
                   final user = await UserAPiServices.getCurrentUser();
-                  openHome(context, user);
+                  openHome(context, user,0);
                   ToastWidget.toast(msg: "Login successfully");
                 } else if (res == resEmail) {
                   ToastWidget.toast(msg: "Please verify your email.");
@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                         color: kPrimaryColorDark, fontWeight: FontWeight.bold)),
                 onPressed: () {
-                  openRoleSelecting(context);
+                  openUserSignUp(context);
                 },
               )
             ],

@@ -13,18 +13,19 @@ import 'package:food_care/screens/login%20&%20register/foget_password_screen.dar
 import 'package:food_care/screens/login%20&%20register/login_screen.dart';
 import 'package:food_care/screens/chat/messaging_screen.dart';
 import 'package:food_care/screens/login%20&%20register/reset_password_screen.dart';
-import 'package:food_care/screens/login%20&%20register/role_selecting_screen.dart';
+
 import 'package:food_care/screens/settings/profile_screen.dart';
 import 'package:food_care/screens/settings/settings_screen.dart';
 import 'package:food_care/screens/login%20&%20register/signup_screen.dart';
 import 'package:food_care/view%20models/chat%20view/conversation/conversation_view_model.dart';
 import 'package:food_care/widgets/bottom_navigationbar.dart';
+import 'package:geolocator/geolocator.dart';
 import '../models/foodPostModel.dart';
 import '../models/userModel.dart';
 
-void openUserSignUp(BuildContext context,String role) async {
+void openUserSignUp(BuildContext context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => SignupScreen(role: role,)));
+      context, MaterialPageRoute(builder: (context) => SignupScreen()));
 }
 
 void openUserSignIn(BuildContext context) async {
@@ -32,11 +33,12 @@ void openUserSignIn(BuildContext context) async {
       context, MaterialPageRoute(builder: (context) => const LoginScreen()));
 }
 
-void openHome(BuildContext context, User user) async {
+void openHome(BuildContext context, User user,int index) async {
   Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => BottomNavigation(
+            index: index,
                 user: user,
               )));
 }
@@ -115,13 +117,14 @@ void openOwnFoodPosts(BuildContext context) async {
       MaterialPageRoute(builder: (context) => const HomeScreen(food: false)));
 }
 
-void openDisplayFoodPost(BuildContext context, String foodId, String id) async {
+void openDisplayFoodPost(BuildContext context, String foodId, String id,Position position) async {
   Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => FoodPostDisplayScreen(
                 foodId: foodId,
                 id: id,
+            position: position,
               )));
 }
 
@@ -169,7 +172,3 @@ void openRequestList(BuildContext context) async {
       context, MaterialPageRoute(builder: (context) => const RequestListScreen()));
 }
 
-void openRoleSelecting(BuildContext context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const RoleSelectingScreen()));
-}

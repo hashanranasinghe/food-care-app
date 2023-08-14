@@ -29,6 +29,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   late FoodPostAddViewModel _foodPostAddViewModel;
   late FoodPostListViewModel _foodPostListViewModel;
   List request = [];
+  List acceptRequest = [];
   DateTime now = DateTime.now();
   String formattedTime = DateFormat('hh:mm a').format(DateTime.now());
   String endTime = "";
@@ -40,13 +41,14 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     if (widget.food != null) {
       titleController.text = widget.food!.title;
       descriptionController.text = widget.food!.description;
-      _selectedDay = widget.food!.listDays;
       imageUrls = widget.food!.imageUrls;
       _selectedValue = int.parse(widget.food!.quantity);
       availableTime = widget.food!.availableTime;
       _selectCategory = widget.food!.category;
       location = widget.food!.location;
       request = widget.food!.requests;
+      acceptRequest=widget.food!.acceptRequests;
+      location = widget.food!.location;
     } else {
       location = Location(lan: "0.0", lon: "0.0");
     }
@@ -72,17 +74,9 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
   Location? location;
   AvailableTime? availableTime;
   String? _selectCategory;
-  String? _selectedDay;
+
   DateTime selectedTime = DateTime.now();
-  final List<String> _days = [
-    '1 day',
-    '2 days',
-    '3 days',
-    '4 days',
-    '5 days',
-    '6 days',
-    '1 week',
-  ];
+
   final List<String> _categories = [
     'Fruits',
     'Vegetables',
@@ -285,21 +279,6 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
                       ),
                     ),
                     const DividerWidget(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "List for",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          _getDaysDropDown(),
-                        ],
-                      ),
-                    ),
-                    const DividerWidget(),
                     if (widget.food != null) ...[
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
@@ -334,23 +313,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     );
   }
 
-  _getDaysDropDown() {
-    return DropdownButton(
-      hint: Text('Select'),
-      value: _selectedDay,
-      onChanged: (newValue) {
-        setState(() {
-          _selectedDay = newValue.toString();
-        });
-      },
-      items: _days.map((day) {
-        return DropdownMenuItem(
-          child: new Text(day),
-          value: day,
-        );
-      }).toList(),
-    );
-  }
+
 
   _getCategoriesDropDown() {
     return DropdownButton(
@@ -399,7 +362,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
     if (_form.currentState!.validate()) {
       setState(() {
         vm.quantity = _selectedValue.toString();
-        vm.listDays = _selectedDay.toString();
+
         vm.category = _selectCategory.toString();
         vm.availableTime = AvailableTime(
             startTime: startController.text, endTime: endController.text);
@@ -411,7 +374,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
       int res = await _foodPostAddViewModel.saveFoodPost();
       if (res == resOk) {
         await _foodPostListViewModel.getAllFoodPosts();
-        openHome(context, user);
+        openHome(context, user,0);
         ToastWidget.toast(msg: "Food Post uploaded successfully");
       } else {
         ToastWidget.toast(msg: "Something went to wrong.");
@@ -428,9 +391,12 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
       _foodPostAddViewModel.quantity = _selectedValue.toString();
       _foodPostAddViewModel.availableTime = AvailableTime(
           startTime: startController.text, endTime: endController.text);
-      _foodPostAddViewModel.listDays = _selectedDay!;
+
       _foodPostAddViewModel.isShared = false;
       _foodPostAddViewModel.requests = request;
+      _foodPostAddViewModel.category = _selectCategory!;
+      _foodPostAddViewModel.acceptRequests=acceptRequest;
+      _foodPostAddViewModel.location = location!;
       if (imagePaths.isNotEmpty) {
         print('Image path: $imagePaths');
         _foodPostAddViewModel.imageUrls = imagePaths;
@@ -443,7 +409,7 @@ class _AddFoodPostScreenState extends State<AddFoodPostScreen> {
 
     if (res == resOk) {
       await _foodPostListViewModel.getAllFoodPosts();
-      openHome(context, user);
+      openHome(context, user,0);
       ToastWidget.toast(msg: "Food Post updated successfully");
     } else {
       ToastWidget.toast(msg: "Something went to wrong.");

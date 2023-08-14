@@ -37,9 +37,7 @@ class FoodPostViewModel {
     return food.imageUrls;
   }
 
-  String? get listDays {
-    return food.listDays;
-  }
+
 
   bool get isShared {
     return food.isShared;

@@ -290,7 +290,7 @@ class _AddForumScreenState extends State<AddForumScreen> {
 
         if (res == resOk) {
           await _forumListViewModel.getOwnAllForums();
-          openOwnForums(context);
+          openForums(context);
           ToastWidget.toast(msg: "Forum updated successfully");
         } else {
           ToastWidget.toast(msg: "Something went to wrong.");
